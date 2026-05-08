@@ -59,5 +59,14 @@
       ],
       "key": "D"
     }
+  ],
+  "tars:LoadTemplateFile": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "T"
+    }
   ]
 }
