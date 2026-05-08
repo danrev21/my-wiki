@@ -164,8 +164,19 @@
               "icon": "lucide-list",
               "title": "Структура Без названия"
             }
+          },
+          {
+            "id": "9a91b0a539f2b661",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
           }
-        ]
+        ],
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
@@ -185,7 +196,7 @@
       "audio-recorder:Начать/остановить запись": false
     }
   },
-  "active": "c5b79f5a333312b2",
+  "active": "ec630a663275ec09",
   "lastOpenFiles": [
     "здоровье",
     "Без названия.md",
