@@ -1,0 +1,6 @@
+---
+- import_playbook: playbook1-ssh.yaml
+- import_playbook: playbook2-requirements.yaml
+- import_playbook: playbook3-nginx.yaml
+- import_playbook: playbook4-apache.yaml
+- import_playbook: playbook5-j2.yaml

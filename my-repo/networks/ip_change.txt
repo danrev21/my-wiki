@@ -1,0 +1,78 @@
+ sudo systemctl status systemd-networkd  
+ sudo systemctl status NetworkManager   
+ 
+ 
+ # to know default gateway:
+ ip route
+ ip route show
+ 
+ #to know ip address:
+ip address show 
+ip a
+curl ifconfig.me
+curl ipinfo.io
+
+ 
+ #Temporary IP Address Assignment
+ #ip will be lost after a reboot.
+sudo ip addr add 10.102.66.200/24 dev enp0s25
+
+ #The ip can then be used to set the link up or down.
+ip link set dev enp0s25 up
+ip link set dev enp0s25 down
+
+ #verify the IP address configuration of enp0s25, you can 
+ #use the ip command in the following manner.
+ip address show dev enp0s25
+
+ #To verify your default gateway configuration, you can 
+ #use the ip command in the following manner.
+ip route show
+
+sudo vim /etc/netplan/99_config.yaml
+ #or
+sudo vim /etc/netplan/01-network-manager-all.yaml
+
+network :
+  version : 2
+  renderer : networkd
+  ethernets :
+    wlo1 :          #-название адаптера (может быть enp03s и т.д.)
+      dhcp4: no
+      addresses : [192.168.0.7/24]
+      gateway4 : 192.168.0.1      #---может быть ошибка,тогда ниже пример - routes 
+      nameservers:
+        addresses: [8.8.8.8,8.8.4.4]
+
+sudo netplan try
+sudo netplan apply
+ip a
+
+
+#example
+---
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eno1:
+      dhcp4: false
+      dhcp6: false
+      addresses:
+      - 192.168.0.10/24
+      routes:
+      - to: default
+        via: 192.168.0.1
+      nameservers:
+        addresses: [192.168.0.1]
+       
+--------------------------------------------------------------------------
+
+# если не помогает с нетпланом:
+sudo vim /etc/NetworkManager/system-connections
+# находим необходимое соединение и редактируем адрес
+
+---------------------------------------------------------------------------   
+       
+      
+

@@ -1,0 +1,9 @@
+$ printf "Open issues: %snClosed issues: %sn" "34" "65"
+Open issues: 34
+Closed issues: 65
+
+# Строка Open issues: %snClosed issues: %sn — это format а 
+# «34» и «65» — аргументы. Строка формата содержит два символа 
+# новой строки ( n ) и два спецификатора формата ( %s ), 
+# которые заменяются аргументами.
+

@@ -1,0 +1,9 @@
+# /etc/nginx/sites-available/upstrem (CREATE LINK !)
+
+upstream apache2 {
+	# least_conn;
+	# ip_hash;
+	server localhost:8080;
+	server localhost:8081;
+	server localhost:8082;
+}

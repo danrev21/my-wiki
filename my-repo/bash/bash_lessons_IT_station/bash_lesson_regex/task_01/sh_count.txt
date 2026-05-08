@@ -1,0 +1,4 @@
+/bin/bash:2
+/bin/false:1
+/bin/sync:1
+/usr/sbin/nologin:23

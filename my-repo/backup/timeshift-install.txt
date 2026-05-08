@@ -1,0 +1,20 @@
+sudo apt update
+sudo apt install timeshift
+sudo timeshift --create
+ #The above command will also create a new configuration
+ #file located at the following location: /etc/timeshift.json
+
+timeshift --create --comments "after update" --tags D
+
+sudo timeshift --list
+
+ #Restore from the backup snapshot:
+sudo timeshift --restore --snapshot "2022-02-23_18-32-36"
+
+
+ #Delete selected backup snapshot:
+sudo timeshift --delete  --snapshot '2022-02-23_18-32-36'
+
+# Если при установке не находит в репозитории,
+ добавляем РРА репозиторий, инфа здесь:
+https://launchpad.net/ubuntu/+ppas?name_filter=timeshift

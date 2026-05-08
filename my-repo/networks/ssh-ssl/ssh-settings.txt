@@ -1,0 +1,63 @@
+ip addr show   ---both vm
+
+systemctl status sshd
+ssh -V
+
+ping -c 4 192.168.0.20
+
+ssh-keygen -t rsa   
+ssh-copy-id user2@192.168.0.20
+если проблема с пермишеном, на 2й вм (удаленной) в /etc/ssh/sshd_config 
+меняем в PasswordAuthentication на 'yes', после подключения можно поменять назад на 'no'
+
+
+ssh user2@192.168.0.12
+----------------------------------------------------------------
+Create ssh config file on VM1:
+vim .ssh/config
+
+Host vmhost2
+  HostName 192.168.0.20
+  User user1
+ 
+ssh vmhost2
+-----------------------------------------------------------------
+Copy a file from VM1 to VM2:
+touch file1
+scp file1 user2@192.168.0.20:/home/user2
+
+-----------------------------------------------------------------
+# to automate SSH login with password:
+
+sudo apt-get install sshpass
+sshpass -p your_password ssh user@hostname
+
+export SSHPASS='my_secret_password'
+sshpass -e ssh user@host
+
+# or using flag -f:
+echo ZZtAuMJoA705 > ~/host_passw
+sshpass -f ~/host_passw ssh user@hostname
+
+----------------------------------------------------------------
+# ssh tunnel:
+
+ssh -L 8085:localhost:8085 adminvm@86.57.194.22 -p 21022
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,29 @@
+---
+- name: Working with directories and loop
+  hosts: all
+  gather_facts: no
+  vars:
+    home_dirs:
+      - dir1
+      - dir2
+      - dir3
+  tasks:
+  
+  - name: Check if dirs exist and mkdir if doesn't
+    file:
+      path: "/home/vagrant/{{ item }}"
+      state: directory
+    loop: "{{ home_dirs }}" 
+
+  - name: ls /home/vagrant
+    command: "ls /home/vagrant"    
+    register: home_dirs
+
+  - name: ls /home/vagrant
+    command: ls /home/vagrant
+    register: home_dirs
+
+  - name: Output all created dirs
+    debug:
+      msg: home_dirs
+    loop: "{{ home_dirs.stdout_lines }}"

@@ -1,0 +1,60 @@
+sudo apt install lxd
+sudo lxd init
+logout
+sudo lxc profile edit default
+ssh-keygen
+sudo lxc profile edit default
+--------------------------------------
+### This is a YAML representation of the profile.
+### Any line starting with a '# will be ignored.
+###
+### A profile consists of a set of configuration items followed by a set of
+### devices.
+###
+### An example would look like:
+### name: onenic
+### config:
+###   raw.lxc: lxc.aa_profile=unconfined
+### devices:
+###   eth0:
+###     nictype: bridged
+###     parent: lxdbr0
+###     type: nic
+###
+### Note that the name is shown but cannot be changed
+
+config: 
+  user.user-data: |
+    #cloud-config
+    ssh_authorized_keys:                                                           
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCuzZlAHxfrmU7CRPSHG7HzJyLi7xM4uAFY7k4Yy/hKf0Y9Jxip3P5Eyq+MfHa7aIbcCkJ+eJupS1uSgxvQtnkNSavtjzlVgYDcMKjoZKeZO4YZ3J>
+description: Default LXD profile
+devices:
+  eth0:
+    name: eth0
+    network: lxdbr0
+    type: nic
+  root:
+    path: /
+    pool: default
+    type: disk
+name: default
+used_by: []
+---------------------------------------
+sudo lxc launch ubuntu:
+lxc --help
+sudo lxc exec lasting-macaw -- sh -c "ls"
+sudo lxc exec lasting-macaw -- sh -c "pwd"
+sudo lxc exec lasting-macaw -- sh -c "ls /"
+sudo lxc exec lasting-macaw -- sh -c "df -h"
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

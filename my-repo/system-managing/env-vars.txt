@@ -1,0 +1,7 @@
+Set the environment variable JAVA_OPTS (this is actually the environment variable of Java , used to specify the parameters attached when starting the java program), and attach the -javaagent parameter. 
+Specifically, you can do this:
+- You can put commands like export JAVA_OPTS="-javaagent:/path/to/atlassian-agent.jar ${JAVA_OPTS}" into a file like .bashrc or .bash_profile .
+- You can put: Export the JAVA_OPTS =" - the javaagent: /path/to/atlassian-agent.jar the JAVA_OPTS $ {} " such an order where the service is installed into the bin directory  under the setenv.sh or setenv.bat (for windows use) in.
+- You can also directly execute the command line: JAVA_OPTS="-javaagent:/path/to/atlassian-agent.jar" /path/to/start-confluence.sh to start your service.
+- Or other methods of modifying environment variables that you know, but if there are unrelated services on your machine, it is not recommended to modify the global JAVA_OPTS environment variable.
+In short, you find a way to attach the -javaagent parameter to the java process to be started .

@@ -1,0 +1,244 @@
+Генерация пары ssh ключей:
+
+     ssh-keygen -t rsa -C "vitali_shulha@epam.com"
+
+Публичный ключ (id_rsa) нужно отправить владельцу репозитория для получения прав работы. Или загрузить в настройки профиля в bitbucket/github/gitlab
+
+Настройка имени пользователя и емейла:
+
+     git config --global user.name “Vitali“
+
+     git config --global user.email “vitali@example.com"
+
+
+git gui  --гит в графич виде
+git gui& --в той же сессии
+
+gitk&    --история коммитов в 
+
+==================================================================
+
+To create a new git repository, you’ll use
+
+git init
+git status && tree .git
+.gitconfig   # configuration levels correspond 
+git config --global user.email "dan@example.com"
+git config --global user.name "Dan"
+git config --global core.editor "/usr/bin/vi"
+git config --list
+cat ~/.gitconfig
+
+
+#### create a complete local copy of a Git repository from a public project
+git clone [url of git repo]
+ls -la
+
+#### copy an existing Git repository from a server to the local
+git clone https://git.domain.com/Dan_Gusev/first_project.git /tasks/5
+git status
+
+----------------------------------------------------------------------------
+#### SSH
+yum install openssh-clients -y
+ssh-keygen
+ls -al ~/.ssh
+eval $(ssh-agent -s)
+ssh-add ~/.ssh/id_rsa
+cat .ssh/id_rsa.pub
+
+git clone [ URL ]
+cd first_project/
+git status
+
+git add README.md
+git add --all
+git commit -m "commit message"
+git commit -m "Initial commit"
+git status
+git add *.txt
+
+# commit without 'git add' command
+git commit -a -m 'Add new benchmarks'
+
+.gitignore
+git add .gitignore
+git commit -m "Adding .gitignore" && git status
+git check-ignore -v <file>
+
+git log
+git log --oneline
+git log --graph --oneline --decorate
+git log -3 
+git log -1
+git log -1 -p
+git log --after="2021-12-10"
+ --after or --before
+git log --author="Daniil"
+git shortlog
+
+
+   # to upload local repository content to a remote repository
+git push      
+   # fetching imports commits to local branches, pushing exports commits to remote branches   
+git fetch         
+git push origin main
+git push -u <REMOTENAME> <BRANCHNAME>
+git push <REMOTENAME> --force
+   # Push all of your local branches to the specified remote.
+git push <REMOTENAME> --all
+   # Tags are not automatically pushed when you push a branch or use the --all option. The --    # tags flag sends all of your local tags to the remote repository.
+git push <REMOTENAME> --tags
+   # Using -u (short for –set-upstream) will set up the tracking information during the push.
+git push -u <REMOTENAME> <BRANCHNAME>
+   # command to push the current repository to the remote origin?
+git remote push
+
+
+   # from a remote repository to the local repository
+git pull <remote>
+   # Similar to the default invocation, fetches the remote content but does not create a new merge commit.
+git pull --no-commit <remote>
+git pull <REMOTENAME> <BRANCHNAME>
+
+----------------------------------------------------------------------------
+#### BRANCHES
+   # Inspect all branches in the repository:
+git branch -a
+   # Which shows that you have one branch only called master. This is synonymous with
+git branch --list
+   # You can quickly switch to the previous branch using
+git checkout -
+git branch <name>
+git checkout <name>
+   # Create from master a new branch called FastFix
+   # Switched to branch 'master'
+git checkout master
+git branch -m master main  #rename from master to main
+git push -u origin main    #after rename
+git checkout -b FastFix
+git branch -d branch-name  #delete 
+git branch -D branch-name  #delete after commit, but before merge
+git push --set-upstream origin branch-name   # add branch on github
+git push origin --delete branch-name  # delete branch on github
+
+----------------------------------------------------------------------------
+#### MERGE
+   # Push this local branch <name> to the your remote repository.
+push -u origin <name>
+   # The branch FastFix should be merged into master branch.
+   # Switched to branch 'master'
+git checkout master
+git merge FastFix
+
+----------------------------------------------------------------------------
+#### REMOTE
+   # To add a new remote Git repository as a shortname you can reference easily
+git remote add origin [ URL ]  #or
+git remote set-url origin [ URL ]
+   # Inspect remote repository
+git remote -v
+   # fetch and pull all updates to your local git_init repository.
+git fetch origin
+git pull origin master 
+   # Push updates from local to remote repository
+git push -u origin master
+Return to your GitLab project and you will see the changes.
+git remote remove <name>         # удаление
+git remote rename <old> <new>    # переименование
+
+----------------------------------------------------------------------------
+#### CHECKOUT
+git checkout
+git checkout -- file1  #отменяет изменения в файле до add
+git checkout -b stable
+git status
+git checkout stable && git status
+   # создать на гите ветку и переместить все на локал
+git fetch --all
+   # You can then checkout the remote branch like a local branch
+git checkout web_remote_branch
+git status
+git branch
+
+----------------------------------------------------------------------------
+#### TAGS
+git tag v1.0
+git log --pretty=oneline
+   # Listing Tags
+git tag
+   # with a wild card expression:
+git tag -l *-rc
+Which uses the -l option and a wildcard expression of *-rc which returns a list of all tags marked with a -rc prefix, traditionally used to identify release candidates.
+Sharing tags is similar to pushing branches. By default, git push will not push tags. Tags have to be explicitly passed to git push.
+   # create a new annotated tag identified with v1.4:
+git tag -a v1.4 -m "my version 1.4"
+   # create a lightweight tag identified as v1.4-lw
+git tag v1.4-rc
+git tag v1.5-rc
+git tag -a v1.5 -m "my version 1.5"
+
+git push origin v1.4
+
+To push multiple tags simultaneously pass the --tags option to git push command. When another user clones or pulls a repo they will receive the new tags.
+git push origin --tags   
+   # Checking Out Tags
+git checkout v1.4
+git checkout master
+git tag -d v1.4-lw   # delete
+
+----------------------------------------------------------------------------
+   # To compare two Git branches 
+git diff
+git diff <commit1> <commit2>
+git diff <branch1>..<branch2>
+git diff --color-words
+
+----------------------------------------------------------------------------
+#### CHANGING
+git log  #choose needed commit
+git checkout f3d737c5afcfd67918807d0cc4dcd6ea13c10e3d
+git log
+
+----------------------------------------------------------------------------
+#### RESET
+git reset --soft
+git reset --soft HEAD~3  #delete only 3 last commits from history, data is not change
+git reset --mixed  # or git reset
+git reset --hard HEAD^
+git reset --hard HEAD~2  #full back on two commits
+git commit --amend  #edit last commit
+
+----------------------------------------------------------------------------
+#### Rebase master branch from feature
+git rebase featute # rebase current master branch onto feature branch
+git status && git log --oneline --graph
+
+git cherry-pick <commit-hash>
+
+<<<<<<< HEAD
+Welcome to Git course
+Course is completed
+=======
+Thanks a lot
+>>>>>>> conflict_branch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

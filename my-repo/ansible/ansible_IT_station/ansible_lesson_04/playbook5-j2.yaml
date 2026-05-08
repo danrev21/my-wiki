@@ -1,0 +1,42 @@
+---
+- name: Test j2
+  hosts: all
+  gather_facts: no
+  
+  vars:
+    node_app_dir: /home/vagrant/lesson-example
+    # variable to connect to remote machine after setup ssh connection
+    # instead next command: ansible-playbook playbook1.yaml -l server1 --key-file ssh_key
+    ansible_ssh_private_key_file: "{{ playbook_dir }}/{{ ssh_keys_dir }}/{{ inventory_hostname }}_ssh_key"
+
+  vars_files:
+  - vars.yaml
+
+  environment:
+    PATH: "{{ node_app_dir }}:{{ ansible_env.PATH }}"
+
+  tasks:
+
+  - setup:
+      filter: ansible_env
+      
+  - name: mkdir directory
+    file:
+      state: directory
+      path: "{{ node_app_dir }}"
+
+  - name: Template example
+    template: 
+      src: example.sh.j2
+      dest: "{{ node_app_dir }}/example.sh"
+      mode: 0777
+    # vars:
+    #   echo_words: "Hello {{ inventory_hostname }}"
+
+  - name: Execute script
+    command:
+      cmd: example.sh      
+    register: output
+
+  - debug:
+      var: output.stdout

@@ -1,0 +1,109 @@
+## Install all Needed Packages on nextcoud server
+## From https://docs.nextcloud.com/server/latest/admin_manual/installation/example_ubuntu.html
+
+sudo apt update && sudo apt upgrade -y
+sudo apt install apache2 mariadb-server libapache2-mod-php php-gd php-mysql \
+php-curl php-mbstring php-intl php-gmp php-bcmath php-xml php-imagick php-zip
+
+# For security DB:
+sudo mysql_secure_installation    # set up root password and off anonymous user
+
+# To start the MySQL command line mode use the following command:
+sudo mysql
+
+CREATE USER 'username'@'localhost' IDENTIFIED BY 'password'
+CREATE DATABASE IF NOT EXISTS nextcloud CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
+GRANT ALL PRIVILEGES ON nextcloud.* TO 'username'@'localhost'
+FLUSH PRIVILEGES
+
+# Download the archive of the latest Nextcloud version:
+wget https://download.nextcloud.com/server/releases/latest.tar.bz2
+# Unpack:
+tar -xjvf nextcloud-x.y.z.tar.bz2
+# or
+unzip nextcloud-x.y.z.zip
+
+sudo cp -r nextcloud /var/www
+sudo chown -R www-data:www-data /var/www/nextcloud
+
+
+## Set up Apache configuration
+## From https://docs.nextcloud.com/server/latest/admin_manual/installation/source_installation.html
+
+# Additional recommended modules:
+sudo a2enmod rewrite headers env dir mime
+
+# Create file:
+sudo vim /etc/apache2/sites-available/nextcloud.conf
+
+<VirtualHost *:80>
+  DocumentRoot /var/www/nextcloud/
+  ServerName  your.server.com
+
+  <Directory /var/www/nextcloud/>
+    Require all granted
+    AllowOverride All
+    Options FollowSymLinks MultiViews
+
+    <IfModule mod_dav.c>
+      Dav off
+    </IfModule>
+  </Directory>
+</VirtualHost>
+
+ll /etc/apache2/sites-available/
+
+# To enable the configuration:
+
+ll /etc/apache2/sites-enabled/
+
+sudo a2dissite 000-default.conf
+sudo a2ensite nextcloud.conf
+
+sudo systemctl reload apache2
+
+ll /etc/apache2/sites-enabled/
+
+# Go to browser
+
+================================================
+## Install openVPN server on VDS:
+## From https://github.com/Nyr
+sudo su
+wget https://git.io/vpn -O openvpn-install.sh
+bash openvpn-install.sh
+# Create config file for clients of openVpn:
+ll /root
+ip a
+
+# For example file client1.ovpn for mobile
+# and homeserver.ovpn for 
+
+=============================================== 
+# Use cerbot on VDS for setting SSL
+
+
+===============================================
+# On home nextcloud server:
+sudo su
+apt update
+apt install openvpn
+# Copying homeserver.ovpn into home directory
+sudo cp homeserver.ovpn /root
+
+sudo cp homeserver.ovpn /etc/openvpn/client.conf
+
+curl ifconfig.me
+
+# Activaiting OpenVPN:
+openvpn --client --config /etc/openvpn/client.conf &
+
+ip a
+curl ifconfig.me
+
+# For automatic start openvpn:
+systemctl enable openvpn-client@.service
+
+
+
+

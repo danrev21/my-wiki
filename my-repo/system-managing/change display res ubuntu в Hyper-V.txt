@@ -1,0 +1,10 @@
+
+
+Как изменить разрешение экрана Linux в Hyper-V?
+
+1. Открыть терминал
+2. sudo nano /etc/default/grub
+ищем строку, которая начинается с GRUB_CMDLINE_LINUX_DEFAULT и добавляем video=hyperv_fb:[разрешение экрана, которое нужно]. Например, мне нужно 1280x720, тогда строка будет выглядеть так: GRUB_CMDLINE_LINUX_DEFAULT="quiet splash video=hyperv_fb:1280x720"
+3. Сохраняем CtrX и закрываем редактор.
+4. sudo update-grub
+5. Перезагрузка виртуальной машины.

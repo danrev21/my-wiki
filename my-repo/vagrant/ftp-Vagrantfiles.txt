@@ -1,0 +1,74 @@
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.insert_key = false
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+  end
+  
+  config.vm.synced_folder ".", "/vagrant/volume/", type: "rsync", rsync__exclude: "./ubuntu-xenial-16.04-cloudimg-console.log"
+
+  config.vm.synced_folder ".", "/home/vagrant/volume/",
+    owner: "vagrant", group: "vagrant"
+  config.vm.synced_folder "/home/dan/Workdir/vagrant/ftp/ftp-mars", "/home/ftpuser/sharing",
+    owner: "ftpuser", group: "ftpuser"
+  config.vm.define "ftp-server" do |app|
+    app.vm.hostname = "ftp-server"
+    app.vm.box = "xenial-server"
+    app.vm.network "public_network", ip: "192.168.0.156", bridge: "wlo1"
+#  config.vm.provision "shell", path: "ftp-provision.sh"
+  end
+
+
+end
+
+---
+#Install and set up FTPD-SERVER
+
+sudo apt update
+sudo apt upgrade -y
+sudo apt install -y proftpd-basic
+-----------------------------------------------------------------------------
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.insert_key = true
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+  end
+  
+#  config.vm.synced_folder ".", "/vagrant/volume/", type: "rsync", rsync__exclude: "./ubuntu-xenial-16.04-cloudimg-console.log"
+
+#  config.vm.synced_folder ".", "/home/vagrant/volume/",
+#    owner: "vagrant", group: "vagrant"
+#  config.vm.synced_folder "/home/dan/Workdir/vagrant/ftp/ftp-mars", "/home/ftpuser/sharing",
+#    owner: "ftpuser", group: "ftpuser"
+  config.vm.define "ftp2" do |app|
+    app.vm.hostname = "ftp2"
+    app.vm.box = "xenial-server"
+    app.vm.network "public_network", ip: "192.168.0.100", bridge: "wlo1"
+#  config.vm.provision "shell", path: "ftp-provision.sh"
+  end
+
+------------------------------------------------------------------------------
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.insert_key = false
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "1512"]
+  end
+  config.vm.synced_folder ".", "/home/vagrant/hostdir",  #guest folder
+    owner: "vagrant", group: "vagrant"
+  config.vm.define "ftp-client" do |app|
+    app.vm.hostname = "ftp-client"
+    app.vm.box = "ubuntu/focal64"
+    app.vm.network "public_network", ip: "192.168.0.188", bridge: "wlo1" #to find interfaces names-->ifconfig
+  end
+end
+
+end
+
+

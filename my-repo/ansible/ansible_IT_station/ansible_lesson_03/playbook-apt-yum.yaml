@@ -1,0 +1,65 @@
+---
+- name: Host preparation
+  hosts: nginx
+  gather_facts: no
+  become: yes
+  vars:
+    requirements:
+    - git
+    - unzip
+    - wget
+    - net-tools
+    - python3.10-venv
+
+  tasks:
+
+  - name: Check/Install requirements packages
+    apt:
+      name: "{{ requirements }}"
+      state: present
+      update_cache: yes
+
+  - name: Check/Install nginx
+    apt:
+      name: nginx
+      state: present
+      update_cache: yes
+    notify: start nginx
+
+  - name: Check ngins working
+    uri:
+      url: "http://{{ ansible_host }}:80"
+      return_content: true
+      status_code: 200
+    register: nginx_content
+
+  - name: debud
+    debug:
+      msg: "{{ nginx_content }}"
+
+  handlers:
+  - name: start nginx
+    become: yes
+    service:
+      name: nginx
+      state: started      
+      
+- name: Apache host preparation
+  hosts: apache
+  gather_facts: no
+  become: yes
+
+  tasks:
+  - name: Check/Install apache
+    yum:
+      name: httpd
+      state: present
+      update_cache: yes
+    notify: start apache
+
+  handlers:
+  - name: start apache
+    become: yes
+    service:
+      name: httpd
+      state: started

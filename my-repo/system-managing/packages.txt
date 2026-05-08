@@ -1,0 +1,56 @@
+sudo wget -P /root http://archive.ubuntu.com/ubuntu/pool/main/f/firefox/firefox_1snap1-0ubuntu2_amd64.deb
+sudo ls -l /root
+sudo dpkg -i /root/firefox_1snap1-0ubuntu2_amd64.deb
+sudo apt install firefox
+sudo dpkg -P firefox
+  
+sudo apt install firefox
+  
+  # Search for a given package:
+sudo apt search chromium-browser
+sudo apt install -y chromium-browser
+sudo apt remove firefox
+  
+sudo apt -y install htop tree cmatrix nginx git
+sudo apt search text editing
+sudo apt install -y jupp
+sudo apt purge -y jupp
+sudo apt remove -y tree
+  
+  # Show information for a package:  
+sudo apt show nginx
+sudo apt -a show nginx
+sudo apt install apt-file
+sudo apt-file update
+sudo apt-file search nginx
+  
+sudo apt-file show nginx
+whereis nginx
+
+whereis nginx
+sudo apt list nginx
+dpkg -S /usr/bin/nginx
+dpkg -s nginx
+
+curl cheat.sh/apt
+curl cheat.sh/apt-file
+  
+sudo apt list
+sudo apt autoremove
+sudo apt clean
+  
+# List all packages:
+apt list
+  
+# List installed packages:
+apt list --installed
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

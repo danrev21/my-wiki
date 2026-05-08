@@ -1,0 +1,44 @@
+-----------------------------------------------------
+
+list(range(0,10,2))
+Out: [0, 2, 4, 6, 8]
+
+x = range(4)
+for i in x: print(i)
+Out: 
+0
+1
+2
+3
+
+x = range(3, 6)
+for i in x: print(i)
+Out: 
+3
+4
+5
+
+x = range(3, 12, 2)
+for i in x: print(i)
+Out: 
+3
+5
+7
+9
+11
+
+for i in range(0, 10, 2): print(a[i])
+Out: 
+0
+2
+4
+6
+8
+
+
+
+
+
+
+
+

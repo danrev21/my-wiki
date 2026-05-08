@@ -1,0 +1,41 @@
+---
+- name: First server preparation
+  hosts: all
+  gather_facts: no
+  become: no
+  vars:
+    # for rerun this playbook uncomment variable because ssh connection setup already
+    # ansible_ssh_private_key_file: "{{ playbook_dir }}/{{ ssh_keys_dir }}/{{ inventory_hostname }}_ssh_key"
+    local_user: dan
+    ssh_key_filename: "{{ inventory_hostname }}_ssh_key"  # inventory_hostname - magic ansible variable
+  vars_files:
+  - vars.yaml
+
+  tasks:
+
+  - name: Get ssh-keys directory using magic variable 'playbook_dir'
+    set_fact: 
+      ssh_key_location_path: "{{ playbook_dir }}/{{ ssh_keys_dir }}"
+
+  - name: Create directory for ssh-keys
+    file:
+      state: directory
+      path: "{{ ssh_key_location_path }}"            
+    delegate_to: localhost
+    run_once: yes
+
+  - name: Create user "{{ local_user }}" on localhost if doesn't exists, and generate SSH key "{{ ssh_key_filename }}" on localhost
+    user:
+      name: "{{ local_user }}"
+      generate_ssh_key: yes
+      ssh_key_type: rsa
+      ssh_key_bits: 4096
+      ssh_key_file: "{{ ssh_key_location_path }}/{{ ssh_key_filename }}"
+      force: no
+    delegate_to: localhost
+ 
+  - name: Add key to remote host
+    authorized_key:
+      key: "{{ lookup('file', ssh_key_location_path+'/'+ssh_key_filename+'.pub') }}"
+      state: present
+      user: "{{ ansible_user }}"

@@ -1,0 +1,8 @@
+sudo shutdown -h +30 'will be turned off after 30 minutes'
+
+
+apt-get install -y pm-utilsend"
+sudo bash -c "sleep 30m; pm-suspend"  # suspend in 30 minutes
+sudo bash -c "sleep 1h; pm-suspend"  # suspend in 1 hour
+
+sudo shutdown -r now Вуе!

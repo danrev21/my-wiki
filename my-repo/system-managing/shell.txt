@@ -1,0 +1,25 @@
+# find out what shell is using now:
+ps
+ps $$
+ps -p $$
+echo $SHELL
+echo $0
+
+# list shells:
+cat /etc/shells
+
+# temporary change shell:
+sh
+
+# permanently change shell:
+sudo chsh -s /bin/bash
+# for user den:
+sudo chsh -s /bin/bash den
+
+
+
+
+
+
+
+

@@ -1,0 +1,86 @@
+--dan
+sudo useradd user1
+sudo useradd user2
+sudo passwd user1   
+sudo passwd user2  
+su user1
+--user1
+mkdir /tmp/homework && chmod 700 /tmp/homework && ls -l /tmp
+vi /tmp/homework/read      --content: Hello
+chmod 400 /tmp/homework/read
+vi /tmp/homework/write    
+chmod 600 /tmp/homework/write
+vi /tmp/homework/execute   
+--content:
+#!/bin/bash
+
+echo Hello
+chmod 700 /tmp/homework/execute && ls -l /tmp/homework
+su user2
+ls -l /tmp/homework       --permission denied
+su user1
+chmod 704 /tmp/homework    
+su user2
+ls -ld /tmp/homework      --cat >> /tmp/homework/read
+
+su user1
+chmod 707 /tmp/homework 
+
+su user2
+ls -ld /tmp/homework 
+
+su user1
+chmod o=r /tmp/homework/read
+chmod o=w /tmp/homework/write
+chmod o=rx /tmp/homework/execute
+
+su user2
+cat /tmp/homework/read
+cat >> /tmp/homework/write
+sh /tmp/homework/execute 
+
+su user1
+emacs /tmp/homework/immutable   
+emacs /tmp/homework/ownership  
+chmod 770 /tmp/homework/immutable  /tmp/homework/ownership
+
+su t.dan
+sudo chown user2 /tmp/homework/ownership
+
+su user2
+cat >> /tmp/homework/ownership
+cat /tmp/homework/ownership
+
+su t.dan
+sudo chattr +i /tmp/homework/immutable 
+sudo lsattr /tmp/homework/immutable
+rm /tmp/homework/immutable          --permission denied
+sudo chattr -i /tmp/homework/immutable 
+sudo lsattr /tmp/homework/immutable 
+rm /tmp/homework/immutable
+
+---------------------------------------------------------------
+read (content: Hello, permissions: 400)
+write (permissions: 600)
+execute (content: echo Hello, permissions: 700)
+immutable, ownership (permissions: 770)
+---------------------------------------------------------------
+chmod o+w, ... /tmp/homework/read --/tmp/homework/write /tmp/homework/execute
+sudo chattr -R +i /tmp/homework/
+---------------------------------------------------------------
+stat -c "%a %n" file1
+chmod +x file.command   --убедиться что файл исполняемый
+
+sudo chmod u=rx, g=rx, o= file1    --rewrite permissions file
+sudo chmod g-w, o+r file1               --modify permissions
+sudo chmod 640 /tmp/test
+
+lsattr
+
+chown user1:group2 file1
+
+
+
+
+
+ 

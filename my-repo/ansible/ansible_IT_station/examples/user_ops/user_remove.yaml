@@ -1,0 +1,9 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: remove user
+    ansible.builtin.user:
+      name: ansible_test
+      state: absent
+      remove: true

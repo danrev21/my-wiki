@@ -1,0 +1,10 @@
+---failed to start the nginx http and reverse proxy server. centos 7
+---decision
+---Ошибка в основном означает, что какое-то другое приложение использует эти порты по умолчанию. Вы можете проверить это с помощью :
+sudo netstat -tulpn
+
+---Получите PID процесса, который уже использует этот порт, и отправьте сигнал с командой kill.
+sudo kill -2 <PID>
+sudo service nginx restart
+--------------------------------------
+yum install net-tools

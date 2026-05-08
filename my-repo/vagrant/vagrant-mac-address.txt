@@ -1,0 +1,39 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.insert_key = false
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "512"]
+  end
+    
+  config.vm.define "web1" do |web1|
+    web1.vm.hostname = "web1"
+    web1.vm.box = "ubuntu/jammy64"
+    web1.vm.base_mac = "76d9ccf051a0"                        
+    web1.vm.provision "shell", inline: <<-SHELL
+      apt update
+      apt install -y nginx
+      sed -i 's/nginx/WEB1/' /var/www/html/index*
+    SHELL
+  end
+
+  config.vm.define "web2" do |web2|
+    web2.vm.hostname = "web2"
+    web2.vm.box = "ubuntu/jammy64"
+    web2.vm.base_mac = "080027007916"
+    web2.vm.provision "shell", inline: <<-SHELL
+      apt update
+      apt install -y nginx
+      sed -i 's/nginx/WEB2/' /var/www/html/index*
+    SHELL
+  end
+end
+
+# one more:
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.insert_key = false
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", "id", "--macaddress1", "5b6783f749b4"]
+  end

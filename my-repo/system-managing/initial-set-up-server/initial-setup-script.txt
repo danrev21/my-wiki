@@ -1,0 +1,19 @@
+# initial setup script:
+
+timedatectl set-timezone Europe/Minsk
+
+???
+sudo apt-get install ntp
+sudo service ntp start
+sudo dpkg-reconfigure tzdata
+???
+
+apt update
+apt install -y timeshift fail2ban vim net-tools tree ncdu bash-completion curl dnsutils htop iftop pwgen screen sudo wget 
+useradd -mG sudo -p $(perl -e 'print crypt($ARGV[0], "password")' pa$$word) -s /bin/bash user-name
+echo 127.0.1.1 vismi >> /etc/hosts && hostnamectl set-hostname vismi
+echo "PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;35m\]\w\[\033[00m\]\$'" >> .bashrc && bash
+
+# firewall setup:
+ufw allow OpenSSH
+ufw enable

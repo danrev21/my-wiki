@@ -1,0 +1,25 @@
+systemctl list-units                         ---lists all available unites.
+systemctl list-units --type=<unit_type>      ---lists all units of this type
+
+sudo systemctl status <application.service>
+systemctl -l status <application.service>
+sudo systemctl start <application.service>
+sudo systemctl stop <application.service>
+sudo systemctl restart <application.service>
+
+sudo systemctl show <application.service>     ---shows low-level properties of a unit
+
+sudo systemctl list-dependencies <application.service>  ---shows a unit’s dependency tree
+
+sudo systemctl mask <application.service>     ---mark a unit as completely unstartable, automatically or manually
+sudo systemctl list-unit-files                ---shows unit status
+sudo systemctl unmask <application.service>   ---make unit available for use again
+
+---не забываем после исправлений в юните перегружать демон systemd
+systemctl daemon-reload
+
+
+
+
+
+

@@ -1,0 +1,41 @@
+
+
+# List All Block Devices:
+lsblk
+
+sudo fdisk -l
+sudo fdisk -l /dev/sdb1
+blkid
+
+#Create a New Partition:
+sudo gdisk /dev/sdb   # --> n, w
+
+# Create an Ext4 File System:
+sudo mkfs.ext4 /dev/sdb1
+
+# Mount the File System:
+sudo mkdir -p /mnt/disks/backup
+sudo mount /dev/sdb1 /mnt/disks/backup
+
+# Configure read and write permissions on the disk. 
+# For this example, grant write access to the disk for all users:
+sudo chmod a+w /mnt/disks/backup/
+
+# sudo cp /etc/fstab /etc/fstab.backup:
+sudo cp /etc/fstab /etc/fstab.backup
+
+# Automatic Mount on Boot: If you want this partition 
+# to mount automatically at boot, you'd have to add an 
+# entry to /etc/fstab:
+sudo blkid /dev/sdb1
+sudo vim /etc/fstab
+  UUID=уид    /mnt/disks/backup   ext4    defaults    0  2
+
+# To verify if the filesystem is mounted use: 
+mount | grep /dev/sdb1
+df -hP | grep /dev/sdb1  
+
+======================================================
+
+
+

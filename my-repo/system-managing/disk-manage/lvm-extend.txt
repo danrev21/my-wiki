@@ -1,0 +1,28 @@
+
+# если при наличии неразмеченного свободного места на диске необходимо расширить диск:
+ lsblk
+ lsblk -f
+ df -Th
+ 
+# чтобы увидеть точные имена логического тома на выбор:
+sudo lvdisplay | grep "LV Path"
+ls -la /dev/mapper/
+sudo lvs
+
+# команда для всей операции:
+sudo pvresize /dev/sda3 && sudo lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv && sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv && df -h /
+ 
+# либо:
+ sudo pvresize /dev/sda3 && sudo lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv && sudo resize2fs /dev/ubuntu-vg/ubuntu-lv && df -h /
+ 
+# либо скрипт:
+# Находим правильный путь к LV
+LV_PATH=$(sudo lvdisplay | grep "LV Path" | awk '{print $3}')
+
+echo "Найден Logical Volume: $LV_PATH"
+
+# Выполняем расширение
+sudo pvresize /dev/sda3 && \
+sudo lvextend -l +100%FREE $LV_PATH && \
+sudo resize2fs $LV_PATH && \
+df -h / 

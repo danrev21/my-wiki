@@ -1,0 +1,50 @@
+https://linuxconfig.org/how-to-use-find-command-to-search-for-files-based-on-file-size
+
+How to use find command to search for files based on file size
+28 November 2020 by Admin
+This config will list few examples on how to search files using find command based on the file size.
+
+Example 1
+Let’s start by searching for all files in our current working directory with file size of 6MB:
+
+$ find . -size 6M
+
+The suffix M denotes Megabytes that is 1048576 bytes. The other available suffixes to our disposal are:
+
+b – 512-byte blocks (this is the default if no suffix is used)
+c – bytes
+w – two-byte words
+k – Kilobytes
+M – Megabytes
+G – Gigabytes
+
+Example 2
+The below example will search for all files greater than 2 Gigabytes. Note the use of+ sign:
+$ find . -size +2G
+
+Example 3
+The above find command was used to search for all files greater than specified size. Next, find command example will search for all files with less than 10 Kilobytes in size. Note the use of- sign:
+$ find . -size -10k
+
+Example 4
+In this example we will use find command to search for files greater than 10MB but smaller than 20MB:
+# find . -size +10M -size -20M
+
+Example 5
+In this example we use the find command to search for files in /etc directory which are greater than 5MB and we also print its relevant file size:
+$ find /etc -size +5M -exec ls -sh {} +
+6.1M /etc/udev/hwdb.bin
+
+Example 6
+Find first 3 largest files located in a in a current directory recursively:
+$ find . -type f -exec ls -s {} + | sort -n -r | head -3
+
+Example 7
+Find first 3 smallest files located in a in a current directory recursively:
+$ find /etc/ -type f -exec ls -s {} + | sort -n | head -3
+
+Example 8
+In the last example we will use find command to search for empty files:
+$ find . -type f -size 0b
+OR 
+$ find . -type f -empty

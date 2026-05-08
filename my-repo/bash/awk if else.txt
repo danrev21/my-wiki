@@ -1,0 +1,72 @@
+$ awk '{
+if($3 <= 40)
+{
+print "The salary of ",$1, " is ", $4, "\n"
+}
+else
+{
+print "The age of ",$1, " is ", $3, "\n"
+}
+ 
+}' employee.txt
+-------------------------------------------------------
+{
+name=$1;
+if ( name=="JACKSON" ) color="Blue";
+else if (name=="MARTIN") color="Black";
+else if (name=="LILY") color="Red";
+else if (name=="ROBINSON") color="White";
+else color="None";
+ 
+if(color!="None") print "The favorite color of ", name, "is ", color;
+else print "No person found";
+ 
+}
+Run the following command to execute the file if_elseif.awk with person.txt
+
+$ awk -f if_elseif.awk person.txt
+--------------------------------------------------------------------
+$ awk '{ print ($3=="Manager") ? "Name is " $1 : "Gender is " $2}' person.txt
+----------------------------------------------------------------------------
+$ awk '{ if ($3 >= 30 && $2 == "HR") print "Employee id: ",
+$1, " and ", "Salary: ", $4, "\n";}' employee.txt
+-----------------------------------------------------------------
+$ awk -F: '{if($1=="root") {print $0}}' /etc/passwd   
+root:x:0:0:root:/root:/usr/bin/zsh  
+----------------------------------------------------------
+$ awk -F: '{if($1=="root" || ($1=="ssirohi")) {print $0}}' /etc/passwd    
+root:x:0:0:root:/root:/usr/bin/zsh                                                        
+ssirohi:x:1000:1000:ssirohi,,,:/home/ssirohi:/bin/bash  
+--------------------------------------------------------------
+$ ls -l | awk '{if (NF>9 && $9=="os-release") {print $9,$10,$11}}'   
+os-release -> ../usr/lib/os-release     
+-----------------------------------------------------
+df -hTP | awk '{if($2~"ext") {print $1 "\t" "xfs" "\t" $3 " Need-Updated"} else{print $1 "\t" $2 "\t" $3}}'| column -t  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

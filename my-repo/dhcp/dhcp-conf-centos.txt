@@ -1,0 +1,25 @@
+#
+# DHCP Server Configuration file.
+#   see /usr/share/doc/dhcp*/dhcpd.conf.example
+#   see dhcpd.conf(5) man page
+
+subnet 10.10.100.0 netmask 255.255.255.0 {
+        range 10.10.100.60 10.10.100.150;
+        option domain-name-servers 8.8.8.8;
+        option domain-name "myserver.local";
+        option routers 10.10.100.1;
+        option broadcast-address 10.10.100.255;
+        default-lease-time 300;
+        max-lease-time 200;
+}
+
+# чтобы dhcp логи ложились в указанную папку:
+
+# add in /etc/rsyslog.conf  --->  local6.*   /var/log/dhcp.log 
+# add this:
+log-facility    local6;
+
+# after that restart rsyslog and dhcpd
+# and now all the dhcp logs  ---> /var/log/dhcp.log 
+
+~                              

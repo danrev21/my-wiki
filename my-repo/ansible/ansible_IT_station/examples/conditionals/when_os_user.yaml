@@ -1,0 +1,24 @@
+---
+- hosts: all
+  become: true
+  tasks:
+  - name: create user on remote host
+    ansible.builtin.user:
+      name: ansible_test
+      shell: /bin/bash
+      group: wheel
+    when: ansible_facts['os_family'] == "RedHat"
+
+  - name: create user on remote host
+    ansible.builtin.user:
+      name: ansible_test
+      shell: /bin/bash
+      group: sudo
+    when: ansible_facts['os_family'] == "Debian"      
+
+  - name: Create a 2048-bit SSH key for user jsmith on remote host in ~smith/.ssh/ans_key
+    ansible.builtin.user:
+      name: smith
+      generate_ssh_key: yes
+      ssh_key_bits: 2048
+      ssh_key_file: .ssh/ans_key

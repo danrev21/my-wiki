@@ -1,0 +1,40 @@
+chown
+chgrp
+chmod
+
+r=4   w=2   x=1
+
+chown user1:shared /tmp/test
+
+chmod 640 /tmp/test
+chmod 600 /tmp/homework/write
+chmod 770 /tmp/homework/immutable  /tmp/homework/ownership
+chmod o=r /tmp/homework/read
+chmod o=w /tmp/homework/write
+chmod o=rx /tmp/homework/execute
+
+chmod +x file.command   --убедиться что файл исполняемый
+
+sudo chown user2 /tmp/homework/ownership
+
+sudo chattr +i /tmp/homework/immutable 
+sudo lsattr /tmp/homework/immutable
+rm /tmp/homework/immutable          --permission denied
+sudo chattr -i /tmp/homework/immutable 
+sudo lsattr /tmp/homework/immutable 
+rm /tmp/homework/immutable
+sudo chattr -R +i /tmp/homework/
+
+sudo chmod ugo+x file1
+sudo chmod a+x file1     # the same like previous command (all)
+sudo chmod g-rw file1
+sudo chmod o=rw file1
+
+----------------------------------------
+# StickyBit
+
+mkdir myDir -m 777   # any user can delete files in myDir
+sudo chmod o=t myDir  # only owner can delete files in myDir
+
+sudo chmod 1777 myDir   # on StickyBit
+sudo chmod 0777 myDir   # off StickyBit

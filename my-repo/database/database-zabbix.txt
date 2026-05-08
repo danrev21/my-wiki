@@ -1,0 +1,85 @@
+# создание бд в забикс сервере
+CREATE DATABASE zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
+CREATE USER 'zabbix'@'IP-АДРЕС_ВАШЕГО_СЕРВЕРА_ZABBIX' IDENTIFIED BY 'НОВЫЙ_ПАРОЛЬ';
+GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'IP-АДРЕС_СЕРВЕРА_ZABBIX';
+FLUSH PRIVILEGES;
+
+-- 1. Выдать права
+GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'192.168.1.100';
+
+-- 2. Проверить, что права применились (без FLUSH)
+SHOW GRANTS FOR 'zabbix'@'192.168.1.100';
+
+-- 3. Если права отображаются корректно, FLUSH не нужен
+
+-- Ситуация: вы удалили пользователя вручную
+DELETE FROM mysql.user WHERE User = 'problem_user';
+
+-- Нужно применить изменения
+FLUSH PRIVILEGES;
+
+-- Лучше так (правильный способ)
+DROP USER 'problem_user'@'localhost';  -- FLUSH не нужен
+
+-- Перезагрузить привилегии (то же самое)
+FLUSH PRIVILEGES;
+
+-- Перезагрузить только конкретные кэши
+FLUSH USER_RESOURCES;  -- Сбросить лимиты ресурсов пользователей
+FLUSH TABLES;          -- Перезагрузить кэш таблиц
+FLUSH HOSTS;           -- Очистить кэш хостов (при ошибках подключения)
+
+
+# проверка параметров бд (символы)
+-- Показать настройки базы данных zabbix
+USE zabbix;
+SELECT @@character_set_database, @@collation_database;
+
+-- Или посмотреть информацию о базе
+SELECT default_character_set_name, default_collation_name 
+FROM information_schema.SCHEMATA 
+WHERE schema_name = 'zabbix';
+
+# полный дамп (backup) существующей базы данных на старом сервере:
+
+mysqldump -u root -p --single-transaction --routines --triggers --all-databases > /tmp/full_zabbix_backup.sql
+
+ Объяснение: --routines и --triggers критически важны для Zabbix, так как в новых версиях там есть внутренние механизмы (например, для автоматического перевода имен хостов в верхний регистр) . Без них миграция может пойти не так.
+
+Скопируйте получившийся дамп на новый сервер:
+
+scp /tmp/full_zabbix_backup.sql root@IP_НОВОГО_СЕРВЕРА:/tmp/
+
+если не будет прав, то user@IP_НОВОГО_СЕРВЕРА:/tmp/
+
+На новом сервере БД импортируйте данные:
+
+mysql -u root -p < /tmp/full_zabbix_backup.sql
+
+Отредактируйте главный конфиг Zabbix Server:
+
+sudo nano /etc/zabbix/zabbix_server.conf
+DBHost=IP-АДРЕС_НОВОГО_СЕРВЕРА_БД
+DBName=zabbix
+DBUser=zabbix
+DBPassword=НОВЫЙ_ПАРОЛЬ
+
+Важно: Если вы используете веб-интерфейс на том же старом сервере, ему тоже нужно указать новый адрес БД. Отредактируйте database.inc.php:
+
+sudo nano /etc/zabbix/web/zabbix.conf.php  
+# Или /usr/share/zabbix/conf/zabbix.conf.php
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

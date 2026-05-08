@@ -1,0 +1,14 @@
+# https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+
+---
+- name: Create users
+  hosts: ubuntu
+  become: yes  # Run tasks with root/sudo privileges
+
+  tasks:
+    - name: Create user
+      user:
+        name: john2  # Username
+        password: "{{ 'mypassword' | password_hash('sha512') }}"  # Encrypted password
+        state: present  # Ensure the user is present
+        createhome: yes  # Create the user's home directory

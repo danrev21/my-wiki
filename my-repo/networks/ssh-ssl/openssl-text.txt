@@ -1,0 +1,7 @@
+# зашифровка и расшифровка текста:
+
+ssh-keygen -t rsa -b 4096 -m PEM -f cryptoKey
+
+openssl rsautl -encrypt -pubin -inkey cryptoKey.pub -in text.txt -out encrypted-text.txt
+
+openssl rsautl -decrypt -inkey cryptoKey -in encrypted-text.txt -out decrypted-text.txt

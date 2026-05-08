@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+
+awk -F':' '{ if ($1=="Name")  {name=$2}
+             if ($1=="Title") {title=$2}
+             if ($1=="Country") {print "{\nName:"name",\nTitle:"title",\nCountry:"$2"\n},"}
+           }' | head -c -2
+echo
+
+---head и echo используются здесь для устранения ненужной запятой в конце
+
+Name: john 
+...some random characters
+Title: Dev
+...some random characters
+Country: Iceland
+...some random characters
+Name: randy
+...
+Title: Professor
+...
+Country: Greenland
+...
+
+$ ./txt2json.sh <data.txt  ---- or ./txt2json.sh <data.txt >output.json
+{
+Name: john,
+Title: Dev,
+Country: Iceland
+},
+{
+Name: randy,
+Title: Professor,
+Country: Greenland
+}
+--------------------------------------------------------------------------------------------
+VARIANT2
+
+awk '
+    BEGIN {FS=": *"; OFS=":"}
+    /^Name:/ {name=$2}
+    /^Title:/ {title=$2}
+    /^Country:/ {print(name,title,$2)}
+' text.txt | jq -Rs 'split("\n")[] | select(length > 0) | split(":") | {Name: .[0], Title: .[1], Country: .[2]}'
+
+-------------------------------------------------------------------------------------------------
+VARIANT3
+
+#!/bin/sh
+
+ed -s file.txt <<'EOF'
+v/^Name:\|^Title:\|^Country:/d
+,s/^\(.*[^:]*\): \(.*\)/"\1": "\2"/
+g/Name\|Title/s/$/,/
+,s/^/   /
+g/Country/t. \
+s/.*/},/g
+1,$-1g/}/t. \
+s/.*/{/g
+0a
+{
+.
+$s/,//
+,p
+Q
+EOF
+
+Измените Q на wq из сценария sh, чтобы отредактировать файл file.txt на месте. Чтобы аргумент / файл не был жестко закодирован для сценария, измените file.txt на «$ 1», затем вы можете вызвать сценарий, например (при условии, что имя сценария - myscript
+---------------------------------------------------------------------------------------------------------------
+Предполагая, что ключи «Имя», «Название» и «Страна» отображаются по порядку, как насчет решения, объединяющего awk и jq:
+
+awk '
+    BEGIN {FS=": *"; OFS=":"}
+    /^Name:/ {name=$2}
+    /^Title:/ {title=$2}
+    /^Country:/ {print(name,title,$2)}
+' text.txt | jq -Rs 'split("\n")[] | select(length > 0) | split(":") | {Name: .[0], Title: .[1], Country: .[2]}'
+---------------------------------------------------------------------------------------------
+
+VAR="one two three"
+VAR=$(echo $VAR | sed -e 's/\(\w*\)/,""/g' | cut -d , -f 2-)
+echo "{var: [$VAR]}"
+
+{
+  "arr": ["one", "two", "three"]
+}
+---------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,70 @@
+---
+- name: First server preparation
+  hosts: all
+  gather_facts: no
+  become: no
+
+  vars:
+    # for rerun this playbook uncomment variable because ssh connection setup already
+    # ansible_ssh_private_key_file: "{{ playbook_dir }}/{{ ssh_keys_dir }}/{{ inventory_hostname }}_ssh_key"
+    local_user: dan
+    ssh_key_filename: "{{ inventory_hostname }}_ssh_key"  # inventory_hostname - magic ansible variable
+    sshd_config_file: /etc/ssh/sshd_config
+
+  vars_files:
+  - vars.yaml
+
+  tasks:
+
+  - name: Get ssh-keys directory using magic variable 'playbook_dir'
+    set_fact: 
+      ssh_key_location_path: "{{ playbook_dir }}/{{ ssh_keys_dir }}"
+
+  - name: mkdir for ssh-keys
+    file:
+      state: directory
+      path: "{{ ssh_key_location_path }}"            
+    delegate_to: localhost
+    run_once: yes
+
+  - name: create user 'dan' on localhost if doesn't exists, and generate SSH key "{{ ssh_key_filename }}" on localhost
+    user:
+      name: "{{ local_user }}"
+      generate_ssh_key: yes
+      ssh_key_type: rsa
+      ssh_key_bits: 4096
+      ssh_key_file: "{{ ssh_key_location_path }}/{{ ssh_key_filename }}"
+      force: no
+    delegate_to: localhost
+ 
+  - name: add key to remote host
+    authorized_key:
+      key: "{{ lookup('file', ssh_key_location_path+'/'+ssh_key_filename+'.pub') }}"
+      state: present
+      user: "{{ ansible_user }}"
+
+  - name: Disable root login, empty password, password ssh connection
+    become: yes
+    lineinfile:
+      path: "{{ sshd_config_file }}"
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+    loop:
+      - { regexp: '^#?PermitRootLogin', line: 'PermitRootLogin no' }
+      - { regexp: '^#?PermitEmptyPasswords', line: 'PermitEmptyPasswords no' } 
+      - { regexp: '^#?PasswordAuthentication', line: 'PasswordAuthentication no' } 
+    notify: restart sshd
+
+  handlers:
+  - name: restart sshd
+    become: yes
+    service:
+      name: sshd
+      state: restarted
+
+
+# USED COMMANDS:
+# ssh-keygen -R 192.168.0.31
+# ansible-playbook --check playbook.yaml -l server1
+# ansible-playbook playbook1.yaml -l server1
+# ansible-playbook playbook1.yaml -l server1 --key-file ssh_admin_key   ---> after disable ssh connection         

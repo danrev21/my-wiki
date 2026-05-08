@@ -1,0 +1,59 @@
+awk 'BEGIN{ for(i=1; i<=5; i++){ array[i] = i*2 - 1; } for(i in array){ print i" = " array[i]; }}'
+результат:
+4 = 7
+5 = 9
+1 = 1
+2 = 3
+3 = 5
+--------------------------------------------------
+awk 'BEGIN{ for(i=1; i<=3; i++){ array[i] = i*i; print i" = "array[i]; } print for(i=1; i<=length(array); i++){ if(array[i] > 5){  # larger 5 then break break;  } print i" = "array[i]; }}'
+результат:
+1 = 1
+2 = 4
+3 = 9
+
+1 = 1
+2 = 4
+-------------------------------------------------------------------
+awk 'BEGIN{ test = 80; if(test >= 90){ print "good"; }else if(test >= 80){ print "soso"; }else{ print "fail"; }}'
+Результат:soso
+------------------------------------------------------
+ awk -v par="${arr[*]}" 'BEGIN{...
+  ---------------------------------------------------
+  awk -v par="$(IFS=:;echo "${arr[*]}")" ....
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

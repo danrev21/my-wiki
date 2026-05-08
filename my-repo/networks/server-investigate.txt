@@ -1,0 +1,44 @@
+# свои данные:
+ip a
+curl ifconfig.me
+curl ipinfo.io
+
+# устанавливаем необходимое
+sudo apt install -y vim net-tools tree fail2ban ncdu bash-completion curl wget dnsutils htop iftop pwgen screen sudo jq 
+
+# траффик на нашем интерфейсе:
+sudo tcpdump -ni eth0 dst 92.53.124.92
+
+# интенсивность (количество) попыток авторизации на наш сервер:
+sudo tail -f /var/log/auth.log | grep -v your_ip
+sudo cat /var/log/auth.log | sed -n '/172.173.138.110 port [0-9]* ssh2/p' | wc -l
+
+# геолокация сервера:
+curl https://ipinfo.io/172.173.138.110
+curl https://ipinfo.io/172.173.138.110 | jq
+
+# открытые порты сервера:
+nmap -Pn 172.173.138.110
+
+# какой вебсервер:
+nmap -sV -Pn -p 80 172.173.138.110
+curl -I 92.53.124.92
+
+# заглушить 
+sudo iptables -A INPUT -s 172.173.138.110 -j DROP
+
+-----------------------------------------------------------------------
+# to find the Country that an IP address or hostname можно и так:
+sudo apt-get install geoip-bin
+
+geoiplookup -i 43.132.184.62
+GeoIP Country Edition: JP, Japan
+  ipaddr: 43.132.184.62
+  range_by_ip:  43.113.228.0 - 43.191.27.255
+  network:      43.128.0.0 - 43.159.255.255 ::11
+  ipnum: 730118206
+  range_by_num: 728884224 - 733944831
+  network num:  729808896 - 731906047 ::11
+
+# и заглушить диапазон адресов
+

@@ -1,0 +1,30 @@
+
+
+Dictionaries in Python are collections of key-value pairs.
+Dictionary methods provide ways to manipulate and retrieve data from dictionaries.
+
+### Common Dictionary Methods:
+dict.keys(), dict.values(), dict.items(): Retrieve keys, values, or key-value pairs.
+dict.get(key, default): Get the value for a key, with a default value if the key is not present.
+dict.update(): Update a dictionary with key-value pairs from another dictionary.
+dict.pop(key): Remove an item with the specified key.
+
+# Example:
+person = {'name': 'John', 'age': 30, 'city': 'New York'}
+
+keys = person.keys()
+values = person.values()
+items = person.items()
+
+print(keys)    # Output: dict_keys(['name', 'age', 'city'])
+print(values)  # Output: dict_values(['John', 30, 'New York'])
+print(items)   # Output: dict_items([('name', 'John'), ('age', 30), ('city', 'New York')])
+
+# Adding a new key-value pair
+person['occupation'] = 'Engineer'
+
+# Removing a key-value pair
+removed_item = person.pop('age')
+
+print(person)         # Output: {'name': 'John', 'city': 'New York', 'occupation': 'Engineer'}
+print(removed_item)   # Output: 30

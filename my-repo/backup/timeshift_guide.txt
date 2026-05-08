@@ -1,0 +1,14 @@
+sudo apt update
+sudo apt install timeshift
+sudo timeshift --create
+ #The above command will also create a new configuration
+ #file located at the following location: /etc/timeshift.json
+
+sudo timeshift --list
+
+ #Restore from the backup snapshot:
+sudo timeshift --restore --snapshot "2022-02-23_18-32-36"
+
+
+ #Delete selected backup snapshot:
+sudo timeshift --delete  --snapshot '2022-02-23_18-32-36'

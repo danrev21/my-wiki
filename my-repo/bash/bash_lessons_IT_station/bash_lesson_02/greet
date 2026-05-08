@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Your task is to create a Bash script that meets the following criteria:
+# Naming:
+# The script should be named greet.
+# Input: The script should be designed to accept a single argument. 
+#   This argument will represent the name of a person.
+# Output: Based on the provided input, the script should display a 
+#   greeting. For instance, if you pass the name "John" as an argument, 
+#   your script should display a message in the format: Hello, [name]!. 
+#   Replace [name] with the appropriate input value. Important Elements to Include:
+# Your script should start with a shebang line specifying it's a Bash script. 
+# Recall how to access arguments passed to a script in Bash. 
+# Think about the variable you'd use to retrieve the first argument. 
+# Hint: You can use conditional statements to check if an argument is provided 
+# and display an error message if not.
+
+# Check:
+# ./greet John
+# Hello Jonh
+
+if [[ $1 == "Daniil" ]];
+   then echo "Hello, $1!";
+   else echo "Woops, not found such user" 
+fi

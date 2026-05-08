@@ -1,0 +1,26 @@
+[Interface]
+PrivateKey = QLbvMyiJpQyrOQjjXzVJK21CHnaxb+YbDGXLJPLeBHY=
+Address = 10.8.0.6/24
+DNS = 192.168.12.1
+
+[Peer]
+PublicKey = w+J+aH7xv/bvaTVvLm4b7bLxXcxxB4U20fYIbP3b510=
+PresharedKey = YpoV2CQhGgUW3b2F+A6+DM7vU0ryKyOwMwFGgKv84no=
+AllowedIPs = 0.0.0.0/0
+PersistentKeepalive = 12
+Endpoint = 186.157.194.120:50001
+
+=================================
+
+[Interface]
+PrivateKey = 4JliEcQxTTvbPe2wskLmymMPHfF7BzZ5UE6TfoPaCXc=
+Address = 10.45.1.2/24
+# DNS = 192.168.0.1
+
+[Peer]
+PublicKey = zxTK8U8qS0nzs3CfitGMaDPt+LV/DSWz5io8B+9ClDk=
+# PresharedKey = nLJIdrV0d4pDa/FX12n0ycfgP0tHHDB917MzO6QVDx0=
+Endpoint = 192.168.0.101:51820
+AllowedIPs = 10.45.1.0/24, 172.16.0.0/24
+PersistentKeepalive = 10
+

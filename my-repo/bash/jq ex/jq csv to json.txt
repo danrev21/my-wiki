@@ -1,0 +1,26 @@
+CSV TO JSON
+
+file.csv:
+Name,Id,MemorySize
+chrome,1092,8794112
+chrome,1144,26820608
+chrome,1720,22118400
+
+$ cat file.csv | jq --slurp --raw-input --raw-output 'split("\n") | .[1:] | map(split(",")) | map({"Name": .[0], "Id": .[1], "MemorySize": .[2]})' > file.json
+$ cat file.json
+
+output:
+[
+  {
+    "Name": "chrome",        
+    "Id": "1092",
+    "MemorySize": "8794112\r"
+  },
+  {
+    "Name": "chrome",
+    "Id": "1144",
+    "MemorySize": "26820608\r"
+  }
+]
+
+выражение, .[1:]чтобы пропустить первую строку файла данных, поскольку в этой строке есть только названия меток столбцов

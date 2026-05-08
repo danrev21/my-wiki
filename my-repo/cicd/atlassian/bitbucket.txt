@@ -1,0 +1,151 @@
+sudo su
+apt update
+
+# Update the /etc/hosts file on the bamboo server:
+echo "192.168.0.111   bitbucket1" >> /etc/hosts
+
+# install java:
+apt install -y openjdk-17-jdk
+
+# set java variables:
+
+sed -i '1s/^/JAVA_HOME=\/usr\/lib\/jvm\/java-17-openjdk-amd64\n /' /etc/environment
+sed -n '/^PATH=/p' /etc/environment | sed -i 's/"$/:\$JAVA_HOME\/bin"/' /etc/environment
+source /etc/environment
+
+git --version
+perl --version
+
+# install postgre:
+sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+apt-get update
+apt-get -y install postgresql-16
+
+# Creating a Bamboo database:
+sudo -s -H -u postgres
+# Create the Bamboo user:
+/usr/lib/postgresql/16/bin/createuser -S -d -r -P -E bitbucketuser
+# Create the bamboo database:
+/usr/lib/postgresql/16/bin/createdb -O bitbucketuser bitbucket
+exit
+
+# Create installation and home folders:
+mkdir -p /opt/bitbucket/installer /opt/bitbucket/home
+
+
+
+mkdir -p /opt/atlassian/application-data/bitbucket /opt/atlassian/bitbucket
+wget -c https://www.atlassian.com/software/stash/downloads/binary/atlassian-bitbucket-8.19.1.tar.gz -P /opt/atlassian/application-data/bitbucket
+tar -xzf /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1.tar.gz -C /opt/atlassian/application-data/bitbucket
+
+useradd --create-home --home-dir /usr/local/bitbucket -p $(perl -e 'print crypt($ARGV[0], "password")' pass123) --shell /bin/bash bitbucket
+chown -R bitbucket: /opt/atlassian
+
+vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/set-bitbucket-home.sh
+
+# Download Bitbucket and untar in /opt/bitbucket/installer:
+# https://www.atlassian.com/software/bitbucket/download-archives
+wget -c https://www.atlassian.com/software/stash/downloads/binary/atlassian-bitbucket-7.1.4.tar.gz -P /opt/bitbucket/installer
+tar -xzf /opt/bitbucket/installer/atlassian-bitbucket-7.1.4.tar.gz -C /opt/bitbucket/installer
+
+# Define bitbucket home dir:
+vim /opt/bitbucket/installer/atlassian-bitbucket-7.1.4/bin/set-bitbucket-home.sh 
+
+# Create a dedicated user to run Bamboo:
+useradd --create-home --home-dir /usr/local/bitbucket -p $(perl -e 'print crypt($ARGV[0], "password")' pass123) --shell /bin/bash bitbucket
+
+chown -R bitbucket: /opt/bitbucket
+
+
+
+bash /opt/bitbucket/installer/atlassian-bitbucket-7.1.4/bin/start-bitbucket.sh
+bash /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/stop-bitbucket.sh
+
+# keygen:
+vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+JAVA_OPTS="-javaagent:/atlassian-agent storage directory/atlassian-agent.jar -classpath $INST_DIR/app $JAVA_OPTS $BITBUCKET_ARGS $JMX_OPTS $JVM_REQUIRED_ARGS $JVM_SUPPORT_RECOMMENDED_ARGS"
+
+
+
+
+
+
+
+125  ll atlassian/bitbucket/log/
+  126  cat atlassian/bitbucket/log/atlassian-bitbucket.log
+  127  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/set-bitbucket-home.sh
+  128  cat /etc/hosts
+  129  echo $JAVA_HOME
+  130  cat atlassian/bitbucket/log/atlassian-bitbucket.log
+  131  ll atlassian/bitbucket/log/
+  132  ll atlassian/bitbucket/
+  133  ll atlassian/bitbucket/plugins/
+  134  top
+  135  df -h
+  136  ll atlassian/bitbucket/plugins/
+  137  rm -r atlassian/bitbucket/plugins/*
+  138  rm -r atlassian/bitbucket/plugins/.osgi-cache/
+  139  ll atlassian/bitbucket/plugins/
+  140  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+  141  java -jar /opt/atlassian/license/atlassian-agent.jar -p bitbucket -m email@domain.com -o ibm -s BMYA-1IDE-KIN4-8UI5
+  142  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+  143  java -jar /opt/atlassian/license/atlassian-agent.jar -p bitbucket -m email@domain.com -o ibm -s BMYA-1IDE-KIN4-8UI5
+  144  echo $JAVA_OPTS
+  145  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+  146  export JAVA_OPTS="-javaagent:/opt/atlassian/license/atlassian-agent.jar -classpath $INST_DIR/app $JAVA_OPTS $BITBUCKET_ARGS $JNDI_ARGS $JMX_OPTS $JVM_REQUIRED_ARGS $JVM_SUPPORT_RECOMMENDED_ARGS"
+  147  echo $JAVA_OPTS
+  148  java -jar /opt/atlassian/license/atlassian-agent.jar -p bitbucket -m email@domain.com -o ibm -s BMYA-1IDE-KIN4-8UI5
+  149  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+  150  echo $JAVA_OPTS
+  151  export JAVA_OPTS=
+  152  echo $JAVA_OPTS
+  153  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+  154  java -jar /opt/atlassian/license/atlassian-agent.jar -p bitbucket -m email@domain.com -o ibm -s BMYA-1IDE-KIN4-8UI5
+  155  echo $JAVA_OPTS
+  156  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+  157  java -jar /opt/atlassian/license/atlassian-agent.jar -p bitbucket -m email@domain.com -o ibm -s BMYA-1IDE-KIN4-8UI5
+  158  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+  159  java -jar /opt/atlassian/license/atlassian-agent.jar -p bitbucket -m email@domain.com -o ibm -s BMYA-1IDE-KIN4-8UI5
+  160  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+  161  java -jar /opt/atlassian/license/atlassian-agent.jar
+  162  java -jar /opt/atlassian/license/atlassian-agent.jar -d -p bitbucket -m email@domain.com -o ibm -s BMYA-1IDE-KIN4-8UI5
+  163  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+  164  java -jar /opt/atlassian/license/atlassian-agent.jar -d -p bitbucket -m email@domain.com -o ibm -s BMYA-1IDE-KIN4-8UI5
+  165  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+  166  ll /opt/atlassian/bitbucket/plugins/
+  167  rm -r /opt/atlassian/bitbucket/plugins/.osgi-cache/
+  168  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+  169  java -jar /opt/atlassian/license/atlassian-agent.jar -d -p bitbucket -m email@domain.com -o ibm -s BMYA-1IDE-KIN4-8UI5
+  170  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+  171  ll /opt/atlassian/
+  172  ll /opt/atlassian/license/
+  173  ll /opt/atlassian/license/atlassian-agent.jar 
+  174  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+  175  rm -r /opt/atlassian/bitbucket/plugins/.osgi-cache/
+  176  ll /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/
+  177  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_stop-webapp.sh
+  178  ll /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+  179  vim /opt/atlassian/application-data/bitbucket/atlassian-bitbucket-8.19.1/bin/_start-webapp.sh
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

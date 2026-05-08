@@ -1,0 +1,31 @@
+## apache2 config reverse proxy
+
+   <VirtualHost *:80>
+        ServerName marsfine.ru
+        RewriteEngine On
+        RewriteCond %{HHTPS} off
+        RewriteRule {.*} https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+   </VirtualHost>
+   <VirtualHost *:443>
+        SSLEngine On
+        RequestHeader set X-Forwarded-Proto "https"
+        SSLCertificateFile /etc/letsencrypt/live/marsfine.ru/fullchain.pem
+        SSLCertificateKeyfile /etc/letsencrypt/live/marsfine.ru/privkey.pem
+
+        Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"
+
+        ServerName marsfine.ru
+        ProxyPreserveHost On
+
+        # Servers to proxy the connection, or;
+        # List of application servers:
+        # Usage:
+        # ProxyPass / http://[IP Addr.]:[port]/
+        # ProxyPassReverse / http://[IP Addr.]:[port]/
+        # Example: 
+        ProxyPass / http://10.8.0.2:80/
+        ProxyPassReverse / http://10.8.0.2:80/
+
+        ServerName localhost
+    </VirtualHost>
+

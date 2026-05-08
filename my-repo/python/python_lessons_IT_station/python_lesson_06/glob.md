@@ -1,0 +1,30 @@
+# Glob examples
+
+import glob
+import iglob
+
+text_files = glob.glob("*.txt")
+print("Text Files:", text_files)
+
+--------------------------------------------------------------
+# recursive search, output as list:
+text_file = glob.glob("**/*txt", recursive=True)
+text_file
+
+# when we need iteration, iglob is better using(не занимает память):
+for folder in glob.iglob(path + "/test0*"):
+
+------------------------------------------------------------
+# files_grabbed is the list of pdf and cpp files:
+types = ('*.pdf', '*.cpp') # the tuple of file types
+files_grabbed = []
+for files in types:
+    files_grabbed.extend(glob.glob(files))
+
+-------------------------------------------------------------
+files_grabbed = [glob.glob(e) for e in ['*.pdf', '*.cpp']]
+
+-------------------------------------------------------------
+# Example: Find all HTML files in the current directory and its subdirectories
+html_files = glob.glob('**/*.html', recursive=True)
+print('HTML Files:', html_files)

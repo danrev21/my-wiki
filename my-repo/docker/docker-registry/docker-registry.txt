@@ -1,0 +1,76 @@
+# create own docker registry
+
+sudo su
+
+mkdir -p /opt/docker-registry/data
+cd /opt/docker-registry
+vim docker-compose.yml
+
+version: '3'
+
+services:
+  registry:
+    image: registry:2
+    ports:
+    - "5000:5000"
+    environment:
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
+    volumes:
+      - ./data:/data
+    restart: always 
+      
+vim /etc/docker/daemon.json
+{
+    "insecure-registries": ["<<IP or domain docker registry>:5000"]
+}
+systemctl restart docker
+
+docker compose up -d
+
+# check:
+curl http://<IP or domain docker registry>:5000/v2/_catalog
+
+
+----------------------------------------------------------------
+
+# Using:
+
+docker pull alpine
+docker tag alpine <<IP or domain docker registry>:5000/alpine:1.0
+docker push <IP or domain docker registry>:5000/alpine:1.0
+
+# To pull this image from own registry on the client server:
+
+vim /etc/docker/daemon.json
+{
+    "insecure-registries": ["<IP or domain docker registry>:5000"]
+}
+systemctl restart docker
+docker pull <IP or domain docker registry>:5000/alpine:1.0
+
+# место реп:
+/opt/docker-registry/data/docker/registry/v2/repositories
+
+
+
+
+{
+    "insecure-registries": ["192.168.11.20:80"]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

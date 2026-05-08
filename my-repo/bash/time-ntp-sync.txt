@@ -1,0 +1,25 @@
+## time sync
+
+sudo apt-get install ntpdate
+sudo ntpdate 1.ro.pool.ntp.org
+
+# Чтобы просто запросить сервер и не устанавливать часы, используя непривилегированный порт для отправки пакетов, чтобы обойти брандмауэры, выполните команду ntpdate со следующими флагами.
+
+$ sudo ntpdate -qu 1.ro.pool.ntp.org
+
+# В новых дистрибутивах Linux, которые поставляются с Systemd, вы также можете синхронизировать время через файл timesyncd.conf. Просто откройте файл для редактирования.
+
+$ sudo nano /etc/systemd/timesyncd.conf
+И добавьте или раскомментируйте следующие строки после оператора [Time], как показано ниже:
+
+[Time]
+NTP=0.ro.pool.ntp.org 1.ro.pool.ntp.org
+FallbackNTP=ntp.ubuntu.com 0.arch.pool.ntp.org
+
+# После редактирования файла введите команду timedatectl, чтобы активировать сборку клиента NTP в systemd.
+
+$ sudo timedatectl set-ntp true 
+$ timedatectl status
+
+
+

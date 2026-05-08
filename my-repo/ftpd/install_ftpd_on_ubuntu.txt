@@ -1,0 +1,183 @@
+Install and set up FTPD-SERVER
+
+---Initial setting up---
+
+sudo apt update
+sudo apt upgrade -y
+sudo apt install -y proftpd-basic
+ll /etc/proftpd
+cat /etc/proftpd/proftpd.conf
+sudo systemctl status proftpd.service
+
+#to know which modules you can install:
+sudo apt install proftpd--> TAB --> available modules
+proftpd-basic         proftpd-mod-autohost  proftpd-mod-dnsbl     proftpd-mod-ldap      proftpd-mod-odbc      proftpd-mod-tar
+proftpd-dev           proftpd-mod-case      proftpd-mod-fsync     proftpd-mod-msg       proftpd-mod-pgsql     proftpd-mod-vroot
+proftpd-doc           proftpd-mod-clamav    proftpd-mod-geoip     proftpd-mod-mysql     proftpd-mod-sqlite 
+
+# here conf modules:
+vim /etc/proftpd/modules.conf  
+
+# change servername:
+sudo vim /etc/proftpd/proftpd.conf   
+
+   # if run ftp-browser FileZilla or other and set up connect with ftpd -- 192.168.0.156:21
+   # we can see others dirs and files, that why
+# change permissions other dirs and files:
+sudo vim /etc/proftpd/proftpd.conf
+# and uncomment:
+DefaultRoot        ~
+sudo systemctl restart proftpd.service  
+   # after that perhaps we have to restart FileZilla
+
+
+--- Creating user with access only through FTP---
+
+sudo groupadd ftpgroup
+sudo useradd ftpuser -m -s /bin/false -g ftpgroup
+sudo passwd ftpuser
+# check
+cat /etc/passwd
+
+   (# to login as ftpuser need: sudo usermod --shell /bin/bash ftpuser
+                                su ftpuser
+                                sudo systemctl restart proftpd.service
+    # to deny enter as ftpuser: sudo usermod --shell /bin/false ftpuser
+                                    sudo systemctl restart proftpd.service)
+   # trying enter as ftpuser and get error:
+   Response:	530 Login incorrect.
+   Error:	Critical error: Could not connect to server
+   
+   
+sudo vim /etc/proftpd/proftpd.conf 
+# to fix this needed uncomment this string:
+RequireValidShell       off   # allow using valid shell
+sudo systemctl restart proftpd.service   --->  FileZilla
+
+# we can enter into ftp dirs and create new dirs and files
+    
+
+
+---Anonymous user---
+
+# to login as ftpuser need: 
+sudo usermod --shell /bin/bash ftpuser  -->  su ftpduser
+
+sudo vim /etc/proftpd/proftpd.conf
+# comment string:
+# RequireValidShell       off
+
+# ... and add configuration for anonymous user
+<Anonymous ~ftpuser>
+        User                                ftpuser
+        Group                               ftpgroup
+        UserAlias                   anonymous ftpuser
+        DirFakeUser on ftpuser
+        DirFakeGroup on ftpgroup
+        RequireValidShell           off
+        MaxClients                  10
+        Umask                       022  022
+        <Directory *>
+                <Limit WRITE>
+                        DenyAll
+                </Limit>
+        </Directory>
+</Anonymous>
+
+# обратить внимание на ПУТЬ директории!!!
+
+# we can enter onto server without user name and password
+
+# to give to anonymouse next permissions (only download files):
+	<Directory sharing/ftp-mars/foto>
+                <Limit WRITE >
+                        DenyAll
+                </Limit>
+        </Directory>
+        
+
+---Create Upload directory on ftp-server---
+cd /home/ftpuser
+sudo mkdir upload
+sudo chown ftpuser:ftpgroup upload
+
+# add into conf file (only upload, download, create files): 
+	.................
+	<Directory sharing/ftp-mars/upload>
+                <Limit WRITE>
+                        DenyAll
+                </Limit>
+                <Limit STOR>
+                        AllowAll
+                </Limit>
+       </Directory>
+        .................
+        
+
+---Root Directory---
+
+If the directive is set to ~ then they are restricted to their home folder. It is also possible to define another folder, for example:
+
+DefaultRoot /home/user/Documents
+Or whatever else you need.
+
+You can also use various directives to set each user to the default directory. For example:
+
+DefaultRoot /home/ftp user1
+DefaultRoot / user2
+
+        
+---Enable encryption in PROFTPD---
+By default, all data transmission on an FTP server is done in an insecure manner. However, PROFTPD supports TLS so we can increase security. This is vital if you think your FTP server is available from the Internet.
+
+So, it is up to us to generate a new security certificate and add it to PROFTPD.
+
+First, generate the private key by running the following command:
+
+sudo openssl genrsa -out /etc/ssl/private/proftpd.key 4096
+4096 is the number in bits of it, this you can increase if you want.
+
+And then, it generates as such the certificate using also the previously created key.
+
+sudo openssl req -new -x509 -days 1460 -key /etc/ssl/private/proftpd.key -out /etc/ssl/certs/proftpd.crt
+This certificate has an expiration date of 1460 days. This can also be changed.
+
+During the process, you will be asked some questions related to the certificate. In this case, I have typed sample data, but in your case, it should be correct data.
+
+Creating the Certificate
+Creating the Certificate
+Now it is time to add it to PROFTPD. In the configuration file, you have to enable the TLS configuration file.
+
+sudo nano /etc/proftpd/proftpd.conf
+And look for the line
+
+#Include /etc/proftpd/tls.conf
+And change it to:
+
+Include /etc/proftpd/tls.conf
+Enabling TLS on PROFTPD
+Enabling TLS on PROFTPD
+Again, save the changes and close the file.
+
+Now, make sure that the key files are protected and cannot be modified by anyone.
+
+sudo chmod 0600 /etc/ssl/private/proftpd.key
+sudo chmod 0600 /etc/ssl/certs/proftpd.crt
+Now, restart the PROFTPD service to apply the changes
+
+sudo systemctl restart proftpd
+And check the status of the service to see if everything is going well.
+
+sudo systemctl status proftpd        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+

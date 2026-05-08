@@ -1,0 +1,23 @@
+uptime
+
+nproc    --number of CPU cores in your system
+grep -c processor /proc/cpuinfo     --number of CPU cores in your system
+
+sudo yum install sysstat
+mpstat   --usage for each processor (or processor core)
+
+sudo yum epel-release
+sudo yum install nmon
+nmon        --t, 3 top process usage cpu
+
+ps -aux --sort -%cpu | head -n 5
+ps -eo pid,ppid,cmd,%cpu --sort -%cpu | head -n 5
+top -i
+----------------------------------------------------
+mpstat -P 0
+mpstat -P ALL
+mpstat 7 5
+
+top   --shift+p
+
+

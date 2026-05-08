@@ -1,0 +1,24 @@
+В директории /etc/sudoers.d создаем файл bob
+
+sudo visudo -f bob
+
+# и прописываем разрешение выполнять команду fdisk без пароля:
+bob  ALL=(ALL:ALL) NOPASSWD: /sbin/fdisk
+----------------
+# все команды без пароля:
+bill ALL = (ALL:ALL)  NOPASSWD:ALL
+----------------
+# bill in sudo:
+vim /etc/sudoers.d/bill
+bill ALL = (ALL) ALL
+
+# после изменений:
+systemctl restart sudo
+----------------
+# здесь все про алиасы:
+https://itnots.ru/linux/sudoers-pravila-vyborochno-razreshit-vypolnenie-komand-polzovatelyam-bez-root/
+
+https://itnots.ru/linux/sudoers-pravila-vyborochno-razreshit-vypolnenie-komand-polzovatelyam-bez-root/
+-----------------------------------------------
+# выполнение команды без пароля:
+user ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart nginx

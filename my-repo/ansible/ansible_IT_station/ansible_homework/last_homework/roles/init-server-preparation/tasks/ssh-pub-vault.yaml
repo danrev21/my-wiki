@@ -1,0 +1,6 @@
+---
+- name: encrypt content 
+  shell: ansible-vault encrypt ./inventory/{{ ssh_keys_dir }}/* --vault-pass-file my-pass
+  delegate_to: localhost
+
+  

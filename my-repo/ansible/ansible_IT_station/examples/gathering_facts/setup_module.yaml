@@ -1,0 +1,73 @@
+---
+- name: Gathering facts using setup module and conditionals
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    - name: Setup module1
+      setup:
+        filter:
+          - os_family
+          - distribution
+
+    - debug:
+        msg: "{{ ansible_facts }}" 
+#-------------------------------------------------------------
+    - name: Setup module2
+      setup:
+        filter:
+          - os_family
+          - distribution
+      register: my_facts  # write value of module in variable
+
+    - debug:
+        msg: "{{ my_facts }}"
+#-------------------------------------------------------------
+    - name: Setup module3
+      setup:
+        gather_subset:
+          - '!all'
+          - os_family
+      
+    - debug:
+      #  msg: "{{ ansible_facts['distribution'] }}"
+       msg: "{{ ansible_facts['selinux']['status'] }}"
+#-------------------------------------------------------------
+    - name: Setup module4
+      setup:
+        gather_subset:
+          - '!all'
+          - processor
+      
+    - debug:
+        msg: "{{ ansible_facts['distribution'] }}"
+      when: ansible_facts['os_family'] == "Debian"
+#-------------------------------------------------------------      
+    - name: Setup module4
+      setup:
+        gather_subset:
+          - '!all'
+          - processor
+      
+    - debug:
+        msg: "Hello, Debian!"
+      when: 
+        - ansible_facts['os_family'] == "Debian"
+        - ansible_facts['distribution'] == "Ubuntu" 
+#-------------------------------------------------------------
+    - name: Shut down Debian flavored systems
+      become: yes
+      ansible.builtin.command: /sbin/shutdown -t now
+      when: ansible_facts['os_family'] == "Debian" 
+#-------------------------------------------------------------
+    - name: Shut down CentOS 6 and Debian 7 systems
+      become: yes
+      ansible.builtin.command: /sbin/shutdown -t now
+      when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "7") or
+            (ansible_facts['distribution'] == "Debian" and ansible_facts['distribution_major_version'] == "18")  
+
+    - name: debug
+      debug:
+        var: ansible_facts['distribution_major_version']
+
+

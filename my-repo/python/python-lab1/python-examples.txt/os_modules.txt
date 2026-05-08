@@ -1,0 +1,71 @@
+
+os.getcwd()
+os.chdir('/path/to/directory')
+os.mkdir('/path/to/new_directory')
+os.rmdir('/path/to/directory_to_remove')
+os.listdir('/path/to/directory')
+
+for foldername, subfolders, filenames in os.walk('/path/to/directory'):
+    print('Current folder:', foldername)
+    print('Subfolders:', subfolders)
+    print('Filenames:', filenames)
+
+os.rename('old_name.txt', 'new_name.txt')
+os.remove('/path/to/file_to_remove')
+os.unlink('/path/to/file_to_remove')
+os.rmdir('/path/to/directory_to_remove')
+
+if os.path.exists('/path/to/check'):
+    print("Path exists!")
+
+if os.path.isdir('/path/to/directory'):
+    print("It's a directory!")
+
+if os.path.isfile('/path/to/file'):
+    print("It's a file!")
+
+os.path.getsize('/path/to/file')
+
+atime = os.path.getatime('/path/to/file')
+print(f"Last access time: {atime}")
+
+mtime = os.path.getmtime('/path/to/file')
+print(f"Last modification time: {mtime}")
+
+ctime = os.path.getctime('/path/to/file')
+print(f"Creation time: {ctime}")
+
+shutil.copy('source.txt', 'destination_copy.txt')
+shutil.copy2('source.txt', 'destination_copy2.txt')
+shutil.move('source.txt', 'new_location/source.txt')
+shutil.copytree('source_directory', 'destination_directory')
+
+# removes the entire directory and its contents.
+shutil.rmtree('directory_to_remove')
+
+shutil.chown('file_to_change_owner', user='new_owner', group='new_group')
+
+import shutil
+disk_usage = shutil.disk_usage('/')
+print(f"Total: {disk_usage.total} bytes")
+print(f"Used: {disk_usage.used} bytes")
+print(f"Free: {disk_usage.free} bytes")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

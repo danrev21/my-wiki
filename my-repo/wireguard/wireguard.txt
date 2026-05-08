@@ -1,0 +1,54 @@
+https://serverspace.by/support/help/kak-ustanovit-wireguard-vpn-client-na-ubuntu-linux/?utm_source=google.com&utm_medium=organic&utm_campaign=google.com&utm_referrer=google.com
+
+# set up wireguard vpn:
+
+sudo apt update
+sudo apt install wireguard-tools
+
+# Генерация закрытого и открытого ключей
+wg genkey | tee private.key | wg pubkey > public.key
+----
+[Interface]
+PrivateKey = QLbvMyiJpQyrOQjjXzVJK21CHnaxb+YbDGXLJPLeBHY=
+Address = 10.8.0.6/24
+DNS = 192.168.12.1
+
+[Peer]
+PublicKey = w+J+aH7xv/bvaTVvLm4b7bLxXcxxB4U20fYIbP3b510=
+PresharedKey = YpoV2CQhGgUW3b2F+A6+DM7vU0ryKyOwMwFGgKv84no=
+AllowedIPs = 0.0.0.0/0
+PersistentKeepalive = 12
+Endpoint = <server-public-ip>:51820
+----
+sudo cp file.conf /etc/wireguard/
+sudo wg-quick up Daniil
+ip a
+sudo wg show
+
+interface: Daniil
+  public key: <...>
+  private key: (hidden)
+  listening port: 34633
+  fwmark: 0xca6c
+
+peer: <...>
+  preshared key: (hidden)
+  endpoint: <server-public-ip>:51820
+  allowed ips: 0.0.0.0/0
+  transfer: 0 B received, 444 B sent
+  persistent keepalive: every 12 seconds
+
+-------------------------------------------------------------
+# 
+sudo wg-quick up Daniil.conf
+[#] ip link add Daniil type wireguard
+[#] wg setconf Daniil /dev/fd/63
+[#] ip -4 address add 10.8.0.6/24 dev Daniil
+[#] ip link set mtu 1420 up dev Daniil
+[#] resolvconf -a Daniil -m 0 -x
+/usr/bin/wg-quick: line 32: resolvconf: command not found
+[#] ip link delete dev Daniil
+
+whereis resolvconf
+sudo ln -s /usr/bin/resolvectl /usr/local/bin/resolvconf
+whereis resolvconf

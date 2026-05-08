@@ -1,0 +1,36 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+VAGRANTFILE_API_VERSION = "2"
+
+$ubuntu_quant = 2
+$centos_quant = 1
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  config.ssh.insert_key = false
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "512"]
+  end
+
+  (1..$ubuntu_quant).each do |i|
+    config.vm.define "ubuntu#{i}" do |app|
+      app.vm.hostname = "ubuntu#{i}"
+      app.vm.box = "ubuntu/jammy64"
+      app.vm.network :public_network, ip: "192.168.0.#{100+i}", bridge: "wlo1"
+    end
+  end
+
+  (1..$centos_quant).each do |i|
+    config.vm.define "centos#{i}" do |app|
+      app.vm.hostname = "centos#{i}"
+      app.vm.box = "generic/centos7"
+      app.vm.network :public_network, ip: "192.168.0.#{200+i}", bridge: "wlo1"
+    end
+  end
+
+  # allow password authentication to VMs
+  config.vm.provision "shell", inline: <<-SHELL
+    sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config    
+    systemctl restart sshd.service
+  SHELL
+end

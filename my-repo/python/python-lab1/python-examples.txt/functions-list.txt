@@ -1,0 +1,47 @@
+========================================================================
+
+print() function is used to display output in Python.
+input() function is used to collect user input.
+type() function is used to determine the data type of a value or variable.
+sys.argv is not a function but a list in Python. It contains the command-line arguments passed to a Python script.
+del statement is used to remove a reference to an object.
+range() function is used to generate a sequence of numbers.
+format() function is used for string formatting.
+len(): Returns the length of an iterable (e.g., string, list, tuple).
+max(): Returns the largest item in an iterable.
+min(): Returns the smallest item in an iterable.
+sum(): Returns the sum of all items in an iterable.
+sorted(): Returns a sorted list from an iterable.
+abs(): Returns the absolute value of a number.
+round(): Rounds a floating-point number to a specified number of decimal places.
+open(): Used for file input and output.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

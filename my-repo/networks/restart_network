@@ -1,0 +1,39 @@
+
+
+ #For ubuntu server 18.04, this works :
+sudo systemctl restart systemd-networkd    <----- for 22.04
+
+sudo systemctl restart systemd-networkd
+
+sudo service network-manager restart
+
+sudo service networking restart
+
+sudo systemctl restart networking.service
+
+sudo systemctl restart NetworkManager
+
+
+
+ #ПЕРЕЗАПУСК СЕТИ В NETWORKMANAGER
+sudo nmcli networking off
+sudo nmcli networking on
+
+ #отключить все интерфейсы, а затем включить обратно:
+sudo ifdown -a
+sudo ifup -a
+
+sudo ifdown --exclude=lo -a && sudo ifup --exclude=lo -a
+
+ifconfig eth0 down
+ifconfig eth0 up
+
+sudo /etc/init.d/networking restart
+
+ifdown eth0
+ifup eth0
+
+
+
+
+

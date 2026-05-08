@@ -1,0 +1,28 @@
+server {
+        listen 83;
+
+        root /var/www/83;
+        index index.html index.htm;
+        server_name localhost_83;
+
+        location / {
+                try_files $uri $uri/ =403;
+        }
+
+        location /OK {
+                return 200 'All is OK!!!';
+        }
+
+        location /check {
+                auth_basic "Restricted Content";
+                auth_basic_user_file /etc/nginx/.htpassw;
+
+                try_files $uri $uri/ =404;
+        }
+
+        error_page 403 403.txt;
+        error_page 404 404.txt;
+        error_log /var/log/nginx/83-error.log;
+        access_log off;
+        # access_log /var/log/nginx/83-access.log;
+}

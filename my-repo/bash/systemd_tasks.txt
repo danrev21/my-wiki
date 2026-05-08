@@ -1,0 +1,56 @@
+---List unit files available in your system.
+systemctl list-unit-files 
+
+---Install httpd using command yum install httpd.
+sudo yum install httpd
+
+systemctl daemon-reload
+
+---Start httpd service.
+sudo systemctl start httpd.service
+
+---Check httpd service status
+sudo systemctl status httpd.service
+
+---Restart httpd service.
+sudo systemctl restart httpd.service
+
+---Enable httpd service. Verify that it is enabled.
+sudo systemctl enable httpd.service
+
+---Create a script in your user's home directory named script.sh with the following content:
+#!/bin/bash
+sleep 1000
+
+---Make the script executable.
+chmod +x script.sh
+
+---Create unit file called test.service that will be used for starting your script and place it where systemd will be able to use it.
+sudo touch /etc/systemd/system/test.service
+sudo chmod 664 /etc/systemd/system/test.service
+------------------------------------------
+---root
+[Unit]
+Description='test'
+
+[Service]
+Type=simple
+ExecStart=/home/t.dan/script.sh
+
+
+[Install]
+WantedBy=default.target  ---убрать для выполнения static
+------------------------------------------
+systemctl daemon-reload
+
+---Start test service.
+systemctl start test.service
+
+---Verify test service status.
+systemctl status test.service
+
+
+
+
+
+

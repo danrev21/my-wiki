@@ -1,0 +1,44 @@
+sudo apt update && sudo apt upgrade
+python3 -V
+sudo apt install -y python3-pip
+pip3 install package_name
+sudo apt install -y build-essential libssl-dev libffi-dev python3-dev
+
+
+
+# setup Virtual Environment in Windows Subsystem for Linux (WSL)
+sudo apt install -y python3-venv
+mkdir environments
+cd environments
+python3 -m venv frameworkenv
+ls frameworkenv
+
+# To use this environment, you need to activate it
+source frameworkenv/bin/activate
+mkdir myproject1
+touch hello.py
+python3 hello.py
+
+
+pip install requests
+pip freeze # list installed libraries
+
+
+========================================
+Installing Python 3.8.6 on WSL Ubuntu Operating System
+
+sudo su -
+apt update 
+apt install gcc -y
+apt install make -y 
+apt install zlib1g-dev -y
+
+wget https://www.python.org/ftp/python/3.8.12/Python-3.8.12.tgz
+   # https://www.python.org/ftp/python/2.7.2/Python-2.7.2.tgz # link from site
+   # https://www.python.org/ftp/python/3.8.11/Python-3.8.11.tgz
+   # https://www.python.org/ftp/python/2.7.18/Python-2.7.18rc1.tgz   
+tar -xzvf Python-3.8.12.tgz
+cd Python-3.8.12
+./configure 
+make 
+make altinstall

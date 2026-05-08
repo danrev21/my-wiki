@@ -1,0 +1,56 @@
+stat andreyex.txt   - увидеть временные метки файла, используя команду stat
+stat -c "%a %n" file1
+
+pwd
+mkdir /dir2/homework; ls
+cd homework; touch file1 && ls
+
+touch /dir1/dir2/file1 - absolute path
+touch dir2/file1 - относительный relative path
+touch -r /dir1/dir2/file2 /dir1/dir2/file1  – allows to
+                  specify a reference file and use its timestamps
+                  instead of the current time
+touch <file1> <file2> <file3>
+touch new-file-{1..10}.txt  -автоматически генерировать имена файлов
+touch -c <filename>  -остановить создание нового файла с параметром -c если такой файл сушествует
+
+ls -l /dir1/dir2 -absolute path
+ls -l dir2       -relative path
+ls -la /<your_user_home_directory>/homework -returns two files with the same timestamp.
+ls -la /dir1/dir2
+ls -dl .[^.]* [path]   -показать только скрытые файлы
+
+cat /<your_user_home_directory>/homework/file1 -returns your name and surname.
+cat > dir1/dir2/file1
+
+rm -r homework/  – removes non-empty directories (relative path)
+rm -r <dir_name>  – removes non-empty directories
+
+find <dir> -type <d/f>
+find /path/to/uploads -maxdepth 1 -type f
+
+cp dir1/file1 dir2
+cp -r dir3/dir4 dir5
+cp -r dir2 dir5
+mv dir5 dir2/dir3
+mv file2 /homework
+
+cat very long_file.txt | less   -output long file
+
+tac <filename>  -the same cat command, but reverse output
+
+echo у | rm file.old  - delete file
+
+locate <filename>   -search files
+
+which <executable-filename>    -search executable file with output path
+
+сравнение файлов:
+cmp   -как для сравнения текстовых, так и двоичных файлов
+diff и diff3 -умеют сравнивать только текстовые файлы
+
+
+
+
+
+

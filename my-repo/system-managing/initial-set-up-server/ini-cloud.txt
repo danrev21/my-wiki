@@ -1,0 +1,47 @@
+# https://cloudinit.readthedocs.io/en/latest/reference/examples.html#including-users-and-groups
+=============================================================
+#cloud-config
+users:
+  - default
+  - name: dan
+    primary_group: dan
+    groups: sudo
+    passwd: $6$rounds=4096$TirRRcaIeML9kzNk$dc9lKXnH53wT9PxiHNo83c8xHNspTfbMzTlapAGpFjse7.opE7BOQn0nRhrqvtpWRC2wg8ba4UNCYByDxUv4O/
+package_update: true
+packages:
+  - fail2ban
+  - net-tools
+  - bash-completion
+  - curl
+  - dnsutils
+  - htop
+  - iftop
+  - pwgen
+  - screen
+  - sudo
+  - wget
+bootcmd:
+  - echo 127.0.1.1 vismi >> /etc/hosts
+  - hostnamectl set-hostname vismi
+  - echo "PS1='\[\e]0;\u@\h: \w\a\]${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;35m\]\w\[\033[00m\]\$'" >> .bashrc
+  - bash
+
+--------------------------------------------------
+
+sudo cloud-init schema --system  --> check
+cloud-init clean --reboot        --> aply config after reboot
+
+=============================================================
+passwd: The hash -- not the password itself -- of the password you want
+#           to use for this user. You can generate a hash via:
+
+sudo apt install whois
+mkpasswd --method=SHA-512 --rounds=4096
+
+
+
+
+
+
+
+

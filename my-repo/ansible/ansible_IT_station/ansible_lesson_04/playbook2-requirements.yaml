@@ -1,0 +1,25 @@
+---
+- name: Host preparation
+  hosts: nginx
+  gather_facts: no
+  become: yes
+  vars:
+    # variable to connect to remote machine after setup ssh connection
+    # instead next command: ansible-playbook playbook1.yaml -l server1 --key-file ssh_key
+    ansible_ssh_private_key_file: "{{ playbook_dir }}/{{ ssh_keys_dir }}/{{ inventory_hostname }}_ssh_key"
+    requirements:
+    - git
+    - unzip
+    - wget
+    - net-tools
+    - python3.10-venv
+  vars_files:
+  - vars.yaml
+
+  tasks:
+
+  - name: Check/Install requirements packages
+    apt:
+      name: "{{ requirements }}"
+      state: present
+      update_cache: yes

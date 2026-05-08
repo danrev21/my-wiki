@@ -1,0 +1,53 @@
+===============================================================
+    Equals: a == b
+    Not Equals: a != b
+    Less than: a < b
+    Less than or equal to: a <= b
+    Greater than: a > b
+    Greater than or equal to: a >= b
+---------------------------------------------------------------
+#!/usr/bin/env python
+---------------------------------------------------------------
+# если число четное, то умножить каждое число на 2:
+list_items = list(range(9))
+new_list = [ i*2 for i in list_items if i%2==0 ]
+    
+---------------------------------------------------------------    
+age = 18
+if age < 18:
+    print("You are a minor.")
+elif age == 18:
+    print("You just turned 18.")
+else:
+    print("You are an adult.")
+    
+----------------------------------------------------------------    
+# child  ...12
+# teenager  13...18 
+# adult     19... 
+age = float(input("Please, input your age: "))
+if 0 < age < 13:
+    print("You are a child.")
+elif 13 <= age <= 18:
+    print("You are a teenager!")
+elif age > 18:
+    print("You are an adult.")
+else:
+    print("You're about to be born!") 
+     
+-----------------------------------------------------------------
+temperature = 25
+if temperature < 0:
+    print("It's freezing outside.")
+elif temperature >= 0 and temperature < 20:
+    print("It's a bit chilly.")
+else:
+    print("It's a nice day!")
+   
+-----------------------------------------------------------------
+
+    
+    
+       
+   
+        

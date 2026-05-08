@@ -1,0 +1,321 @@
+Траблшутинг: перенос БД Zabbix на отдельный сервер
+Оглавление
+Сетевые проблемы
+
+Проблемы с MySQL/MariaDB
+Проблемы с правами доступа
+Проблемы с дампом и импортом
+Проблемы с Zabbix Server
+Проблемы с веб-интерфейсом
+Проблемы с версиями и совместимостью
+
+1. Сетевые проблемы
+1.1 nc -zv IP 3306 — Connection refused
+Симптом:
+nc: connect to 192.168.0.30 port 3306 (tcp) failed: Connection refused
+
+Возможные причины и решения:
+
+Причина 1: MySQL не запущен
+# Проверка
+sudo systemctl status mysql   # или mariadb
+# Решение
+sudo systemctl start mysql
+sudo systemctl enable mysql   # чтобы запускался автоматически
+
+Причина 2: MySQL слушает только localhost
+# Проверка
+sudo ss -tulpn | grep 3306
+# Если видите только 127.0.0.1:3306 — проблема
+# Решение — правим bind-address
+# Для MariaDB
+sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+# Для MySQL
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+# Меняем: bind-address = 0.0.0.0
+sudo systemctl restart mysql
+
+Причина 3: Брандмауэр блокирует порт
+# Проверка (с БД-сервера)
+sudo iptables -L -n | grep 3306
+sudo ufw status
+sudo firewall-cmd --list-all
+
+# Решение для разных брандмауэров
+sudo ufw allow from 192.168.0.90 to any port 3306
+# или
+sudo firewall-cmd --permanent --add-port=3306/tcp
+sudo firewall-cmd --reload
+# или временное отключение для проверки
+sudo ufw disable   # ОСТОРОЖНО! Только для проверки!
+
+Причина 4: Неправильный IP или сеть
+# Проверка базовой связности
+ping 192.168.0.30
+# Проверка маршрутизации
+traceroute 192.168.0.30
+
+1.2 nc -zv успешен, но MySQL-клиент не подключается
+Симптом:
+mysql -u zabbix -p -h 192.168.0.30
+ERROR 2003 (HY000): Can't connect to MySQL server on '192.168.0.30' (111)
+Решение:
+Проверьте, не блокирует ли порт SELinux (на CentOS/RHEL):
+# Проверка SELinux
+getenforce
+# Если Enforcing — пробуем временно отключить
+sudo setenforce 0
+# Проверяем подключение
+# Если заработало — добавляем правило
+sudo semanage port -a -t mysqld_port_t -p tcp 3306
+# Возвращаем SELinux обратно
+sudo setenforce 1
+
+2. Проблемы с MySQL/MariaDB
+2.1 Ошибка: Host '192.168.0.90' is not allowed to connect
+Симптом:
+ERROR 1130 (HY000): Host '192.168.0.90' is not allowed to connect to this MySQL server
+Причина: Пользователь zabbix не создан для подключения с этого IP.
+Решение:
+-- Проверяем существующих пользователей
+SELECT host, user FROM mysql.user WHERE user='zabbix';
+-- Если есть только 'localhost' — добавляем для нужного IP
+CREATE USER 'zabbix'@'192.168.0.90' IDENTIFIED BY 'пароль';
+GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'192.168.0.90';
+FLUSH PRIVILEGES;
+-- Или разрешаем с любого IP (менее безопасно)
+CREATE USER 'zabbix'@'%' IDENTIFIED BY 'пароль';
+GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'%';
+FLUSH PRIVILEGES;
+Пояснение: MySQL проверяет не только имя пользователя и пароль, но и хост, с которого пришло подключение. 'zabbix'@'localhost' и 'zabbix'@'192.168.0.90' — это разные пользователи с точки зрения MySQL.
+
+2.2 Ошибка: Access denied for user 'zabbix'
+Симптом:
+ERROR 1045 (28000): Access denied for user 'zabbix'@'192.168.0.90' (using password: YES)
+Причины и решения:
+
+Причина 1: Неправильный пароль
+# Сброс пароля для пользователя
+mysql -u root -p
+ALTER USER 'zabbix'@'192.168.0.90' IDENTIFIED BY 'новый_пароль';
+FLUSH PRIVILEGES;
+
+Причина 2: В конфигах Zabbix указан не тот пароль
+# Проверяем пароль в конфигах
+grep -i password /etc/zabbix/zabbix_server.conf
+grep -i password /etc/zabbix/web/zabbix.conf.php
+# Пароли должны совпадать с теми, что в MySQL
+
+2.3 Ошибка: Can't connect to local MySQL server through socket
+Симптом:
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+Причина: Попытка подключиться к localhost через сокет, когда MySQL слушает только на IP.
+Решение: При подключении с Zabbix-сервера всегда используйте -h с IP-адресом:
+# Правильно
+mysql -u zabbix -p -h 192.168.0.30 zabbix
+# Неправильно (будет пытаться через сокет)
+mysql -u zabbix -p zabbix
+
+2.4 Ошибка: Too many connections
+Симптом:
+ERROR 1040 (08004): Too many connections
+Причина: Пул соединений MySQL исчерпан.
+Решение:
+-- Проверка текущих соединений
+SHOW PROCESSLIST;
+-- Увеличение лимита (в MySQL)
+SET GLOBAL max_connections = 500;
+-- Для постоянного изменения добавьте в my.cnf (/etc/mysql/mysql.conf.d/mysqld.cnf):
+max_connections = 500
+
+3. Проблемы с правами доступа
+3.1 Ошибка: Permission denied при импорте дампа
+Симптом:
+mysql: [ERROR] failed to open file '/tmp/full_zabbix_backup.sql', error: Permission denied
+Решение:
+# Проверяем права на файл
+ls -la /tmp/full_zabbix_backup.sql
+# Если файл принадлежит root, а mysql запущен от другого пользователя
+sudo chmod 644 /tmp/full_zabbix_backup.sql
+# Или перемещаем в директорию с доступом для mysql
+sudo mv /tmp/full_zabbix_backup.sql /var/lib/mysql/
+
+3.2 Ошибка: ERROR 1419 при импорте (триггеры)
+Симптом:
+ERROR 1419 (HY000): You do not have the SUPER privilege...
+Причина: В MySQL/MariaDB по умолчанию не разрешено создавать триггера без прав SUPER.
+
+Решение:
+SET GLOBAL log_bin_trust_function_creators = 1;
+-- Импортируйте дамп
+-- После импорта верните обратно
+SET GLOBAL log_bin_trust_function_creators = 0;
+Для постоянного решения добавьте в my.cnf:
+log_bin_trust_function_creators = 1
+
+4. Проблемы с дампом и импортом
+4.1 Ошибка: ASCII '\0' или corrupted dump
+Симптом:
+ERROR: ASCII '\0' appeared in the statement
+Причина: Дамп создан с неправильной кодировкой или повреждён.
+Решение:
+# Проверяем, что дамп — текстовый файл
+file /tmp/full_zabbix_backup.sql
+# Должен быть: UTF-8 Unicode text
+# Если повреждён — создаём новый дамп с правильными параметрами
+mysqldump -u root -p \
+  --single-transaction \
+  --routines \
+  --triggers \
+  --default-character-set=utf8mb4 \
+  --all-databases > /tmp/full_zabbix_backup.sql
+
+4.2 Ошибка: Packet too large при импорте
+Симптом:
+ERROR 1153 (08S01): Got a packet bigger than 'max_allowed_packet' bytes
+Причина: Дамп содержит очень большие INSERT-запросы.
+Решение:
+-- Временно увеличиваем лимит перед импортом
+SET GLOBAL max_allowed_packet = 1073741824;  -- 1GB
+-- Импортируем
+mysql -u root -p --max_allowed_packet=1G < /tmp/full_zabbix_backup.sql
+Для постоянного решения добавьте в my.cnf:
+max_allowed_packet = 256M
+
+4.3 Долгий импорт (часы)
+Причина: Большой объём исторических данных.
+Оптимизация:
+# Отключаем проверки внешних ключей и индексы перед импортом
+mysql -u root -p -e "SET FOREIGN_KEY_CHECKS=0; SET unique_checks=0;"
+# Импортируем с отключённым логированием
+mysql -u root -p --binary-mode < /tmp/full_zabbix_backup.sql
+# Включаем обратно
+mysql -u root -p -e "SET FOREIGN_KEY_CHECKS=1; SET unique_checks=1;"
+
+5. Проблемы с Zabbix Server
+5.1 Ошибка: database is down: [2002] Connection refused
+Симптом в логах:
+ 19424:20260503:123456.789 cannot connect to database: [2002] Connection refused
+Решение:
+Проверьте сетевую доступность БД-сервера и правильность DBHost в zabbix_server.conf.
+nc -vz <IP database> <3306>
+
+5.2 Ошибка: Access denied for user 'zabbix'@'...'
+Симптом в логах:
+ 19424:20260503:123456.789 cannot connect to database: [1045] Access denied...
+Решение:
+Проверьте правильность пароля в zabbix_server.conf
+Проверьте, что пользователь zabbix существует и имеет права
+Попробуйте подключиться вручную:
+mysql -u zabbix -p -h 192.168.0.30 zabbix
+
+5.3 Ошибка: Zabbix server не стартует без ошибок
+Симптом:
+sudo systemctl start zabbix-server
+Job for zabbix-server.service failed
+Диагностика:
+# Смотрим подробный статус
+sudo systemctl status zabbix-server -l
+# Смотрим логи
+sudo journalctl -u zabbix-server -n 50
+
+# Проверяем конфиг на синтаксические ошибки
+sudo /usr/sbin/zabbix_server -T
+Типичные причины:
+Неправильный путь к PID-файлу
+Нехватка прав на запись логов
+Конфликт портов (10051 уже занят)
+
+5.4 После переноса пропали данные в веб-интерфейсе
+Причина: Веб-интерфейс смотрит на старую БД, а Zabbix Server пишет в новую.
+Решение: Перепроверьте zabbix.conf.php — скорее всего, там остался localhost.
+# Должно быть так
+grep SERVER /etc/zabbix/web/zabbix.conf.php
+$DB['SERVER']   = '192.168.0.30';   # ← не localhost!
+
+6. Проблемы с веб-интерфейсом
+6.1 Белый экран или ошибка 500
+Причина: PHP-ошибка в конфигурационном файле.
+Диагностика:
+# Проверяем PHP-синтаксис
+php -l /etc/zabbix/web/zabbix.conf.php
+# Смотрим логи PHP
+sudo tail -f /var/log/php/error.log
+# или
+sudo tail -f /var/log/apache2/error.log
+Решение: Исправьте синтаксическую ошибку в zabbix.conf.php (чаще всего пропущенная точка с запятой или кавычка).
+
+6.2 Ошибка Database error в веб-интерфейсе
+Симптом:
+Database error
+Host '192.168.0.90' is not allowed to connect to this MySQL server
+Причина: Веб-интерфейс использует другие учётные данные, чем Zabbix Server, или права в MySQL настроены не для IP веб-сервера.
+Решение:
+Если веб и Zabbix Server на одной машине — у них общий IP (192.168.0.90)
+Убедитесь, что пользователь zabbix создан для этого IP
+Проверьте zabbix.conf.php на правильность пароля
+
+6.3 Графики не отображаются (красные кресты)
+Причина: Веб-интерфейс не может получить данные из БД, но при этом на главной странице хосты видны.
+Диагностика:
+# Проверяем, что данные пишутся в БД
+mysql -u zabbix -p -h 192.168.0.30 -e "SELECT COUNT(*) FROM zabbix.history;"
+# Число должно увеличиваться со временем
+Решение: Проверьте права на запись для пользователя zabbix в БД на все таблицы.
+
+7. Проблемы с версиями и совместимостью
+7.1 Ошибка при импорте дампа из-за версий Zabbix
+Симптом:
+ERROR 1067 (42000): Invalid default value for 'nextcheck'
+Причина: Версия Zabbix на старом и новом сервере различается, и схема БД несовместима.
+Решение:
+# Проверяем версии Zabbix
+zabbix_server --version
+# На старом и новом сервере должны совпадать
+# Если версии разные — обновляем сначала до одинаковой
+# После переноса можно обновить обе машины
+
+7.2 Ошибка после переноса: Unknown column 'itemid' in 'where clause'
+Причина: Дамп создавался без ключей --routines и --triggers.
+Решение: Создайте новый дамп с правильными ключами:
+mysqldump -u root -p \
+  --single-transaction \
+  --routines \      # ← критически важно!
+  --triggers \      # ← критически важно!
+  --all-databases > /tmp/full_zabbix_backup.sql
+  
+7.3 Проблемы с партиционированием (разбиением таблиц)
+Симптом: Ошибки при импорте таблиц history, trends.
+Решение: Если на старом сервере использовалось партиционирование, убедитесь, что на новом сервере оно включено:
+-- Проверка статуса партиционирования
+SHOW PLUGINS;
+-- Должно быть: partition | ACTIVE
+Быстрый чек-лист для диагностики любой проблемы
+Если что-то пошло не так — выполняйте последовательно:
+# 1. Проверяем, что MySQL на новом сервере работает и слушает порт
+ssh root@192.168.0.30 "ss -tulpn | grep 3306"
+# 2. Проверяем сетевое соединение с Zabbix-сервера
+nc -zv 192.168.0.30 3306
+# 3. Проверяем подключение к MySQL с Zabbix-сервера
+mysql -u zabbix -p -h 192.168.0.30 -e "SELECT 1"
+# 4. Проверяем, что БД zabbix существует и имеет таблицы
+mysql -u zabbix -p -h 192.168.0.30 -e "SHOW TABLES FROM zabbix" | wc -l
+# Должно быть > 100 таблиц
+# 5. Проверяем конфиги Zabbix
+grep -E "DBHost|DBPassword" /etc/zabbix/zabbix_server.conf
+grep -E "SERVER|PASSWORD" /etc/zabbix/web/zabbix.conf.php
+
+# 6. Проверяем логи Zabbix
+sudo tail -50 /var/log/zabbix/zabbix_server.log
+
+Памятка: что нельзя делать при переносе
+❌ Не делайте					✅ Вместо этого
+Не останавливая Zabbix Server, делать дамп	Сначала systemctl stop zabbix-server
+Дамп без --routines и --triggers		Всегда используйте эти ключи
+Копировать /var/lib/mysql целиком		Используйте mysqldump для совместимости
+Менять конфиг Zabbix до проверки сети		Сначала добейтесь nc -zv SUCCESS
+Забыть про веб-конфиг				Править оба файла: zabbix_server.conf и zabbix.conf.php
+Удалять старую БД сразу				Подождите несколько дней, убедитесь в стабильности
+
+
+

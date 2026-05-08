@@ -1,0 +1,6 @@
+---
+- name: Add key to remote hosts
+  authorized_key:
+    key: "{{ lookup('file', ssh_key_location_path+'/'+ssh_key_filename+'.pub') }}"
+    state: present
+    user: "{{ ansible_user }}"

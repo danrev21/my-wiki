@@ -1,0 +1,40 @@
+# https://docs.ansible.com/ansible/latest/collections/ansible/builtin/debug_module.html
+---
+- name: debug module examples
+  hosts: all
+  gather_facts: yes
+  vars: 
+    my_variable: it is my variable
+
+  tasks:
+
+    - name: debug
+      debug:
+        msg: "{{ my_variable }}"
+
+    - name: debug
+      debug:
+        var: ansible_facts['os_family']
+
+    - debug:
+        var: ansible_env.PATH        
+
+    - name: debug
+      debug:
+        msg: "it is only message"
+
+    - name: Get uptime information
+      ansible.builtin.shell: /usr/bin/ls -la
+      register: result
+        
+    - name: Print return information from the previous task
+      ansible.builtin.debug:
+        var: result
+        verbosity: 2
+
+    - name: Display all variables/facts known for a host
+      ansible.builtin.debug:
+        var: hostvars[inventory_hostname]
+        verbosity: 4
+
+# ansible-playbook debug_module.yaml -v      

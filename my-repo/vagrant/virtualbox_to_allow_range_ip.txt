@@ -1,0 +1,14 @@
+https://www.virtualbox.org/manual/ch06.html#network_hostonly
+
+to allow 10.0.0.0/8 and 192.168.0.0/16 IPv4 ranges as well as 2001::/64 range put the following lines into /etc/vbox/networks.conf:
+
+      * 10.0.0.0/8 192.168.0.0/16
+      * 2001::/64
+      
+Lines starting with the hash # are ignored. Next example allows any addresses, effectively disabling range control:
+
+      * 0.0.0.0/0 ::/0
+      
+If the file exists, but no ranges are specified in it, no addresses will be assigned to host-only adapters. The following example effectively disables all ranges:
+
+      # No addresses are allowed for host-only adapters     

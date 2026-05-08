@@ -1,0 +1,26 @@
+# Создание простого докер образа и запуск контейнера
+mkdir sobes
+cd sobes/
+vim index.html
+vim Dockerfile
+
+  FROM nginx
+  EXPOSE 80
+  COPY index.html /usr/share/nginx/html/
+  CMD ["nginx", "-g", "daemon off"]
+
+sudo docker build -t sobes_innovise .  # ТОЧКА В КОНЦЕ!!!
+sudo docker images
+sudo docker run -d -p 4000:80 --name sobes_cont1 sobes_innovise
+sudo docker exec -it sobes_cont1 bash   
+sudo docker run -d -p 5000:80 --name sobes_cont2 sobes_innovise
+sudo docker ps  
+docker stop sobes_cont1
+sudo docker ps -a  
+sudo docker rm -f 85f41408c0e1
+sudo docker rm sobes_cont2
+
+docker rmi sobes_innovise
+sudo ls -la /var/lib/docker/  # инфа о созданных имеджах, 
+                              # сетях, контейнерах, вольюмах и т.д.
+                              

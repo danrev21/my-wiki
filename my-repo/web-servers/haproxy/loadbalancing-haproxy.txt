@@ -1,0 +1,91 @@
+========================================================================================
+
+# LOADBALANCE
+# https://www.haproxy.com/blog/how-to-run-haproxy-with-docker
+# conf file into /usr/local/etc/haproxy
+
+global
+  stats socket /var/run/api.sock user haproxy group haproxy mode 660 level admin expose-fd listeners
+  log stdout format raw local0 info
+
+defaults
+  mode http
+  timeout client 10s
+  timeout connect 5s
+  timeout server 10s
+  timeout http-request 10s
+  log global
+
+frontend stats
+  bind *:8404
+  stats enable
+  stats uri /
+  stats refresh 10s
+
+frontend myfrontend
+  bind :80
+  default_backend webservers
+
+backend webservers
+  server s1 web1
+  server s2 web2
+
+----------------------------------------
+# docker-compose file:
+
+version: '3'
+
+services:
+  haproxy:
+    image: haproxytech/haproxy-alpine:2.4
+    container_name: haproxy
+    restart: always
+    ports:
+      - "80:80"
+      - "8404:8404"
+    volumes:
+      - /opt/balance/proxy:/usr/local/etc/haproxy
+    networks:
+      - app-network
+
+  webserver1:
+    image: nginx
+    container_name: web1
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    volumes:
+      - /opt/balance/nginx1:/usr/share/nginx/html
+    networks:
+      - app-network
+
+  webserver2:
+    image: nginx
+    container_name: web2
+    restart: unless-stopped
+    ports:
+      - "8082:80"
+    volumes:
+      - /opt/balance/nginx2:/usr/share/nginx/html
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+ 
+-----------------------------------------   
+Несколько вещей, на которые следует обратить внимание:
+- В этом  global разделе  stats socket строка включает API среды выполнения HAProxy, а также обеспечивает плавную перезагрузку HAProxy.
+- Первый интерфейс прослушивает порт 8404 и включает панель HAProxy Stats, которая отображает оперативную статистику о вашем балансировщике нагрузки.
+- Другой интерфейс прослушивает порт 80 и отправляет запросы одному из двух веб-приложений, перечисленных на серверной части веб-сервера.
+- Вместо использования IP-адреса каждого веб-приложения мы используем их имена хостов web1, web2. Вы можете использовать этот тип маршрутизации на основе DNS при создании сети моста Docker, как это сделали мы.  
+
+Вы можете получить доступ к web1 web2 поочередно по адресу http://localhost. Каждый запрос будет балансироваться HAProxy. Кроме того, вы можете просмотреть страницу статистики HAProxy по адресу  http://localhost:8404.  
+    
+========================================================================================
+
+haproxy -c -f /etc/haproxy/haproxy.cfg 
+systemctl restart haproxy
+
+

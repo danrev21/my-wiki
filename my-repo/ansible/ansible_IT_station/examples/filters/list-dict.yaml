@@ -1,0 +1,39 @@
+---
+- name: Debug
+  hosts: all
+  gather_facts: no
+  vars: 
+    test:
+      test1: true
+      test2: false
+
+  tasks:
+  - debug:   # Transforming dictionaries into lists
+      msg: "{{ test | dict2items }}"
+# output:
+#             "key": "test1",
+        #     "value": true
+        # },
+        # {
+        #     "key": "test2",
+        #     "value": false   
+
+#--------------------------------------------------
+  - debug:
+      msg: "{{ test | dict2items(key_name='name', value_name='boolean_value') }}"
+# output:
+        # {
+        #     "boolean_value": true,
+        #     "name": "test1"
+        # },
+        # {
+        #     "boolean_value": false,
+        #     "name": "test2"
+        # }
+
+#--------------------------------------------------
+
+
+
+
+#--------------------------------------------------

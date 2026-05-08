@@ -1,0 +1,46 @@
+===================================================================
+# SET:
+set_data = {2, 'A', 'B', 3, 1, 2, 'C', 'B', 'A'}
+set_data
+{1, 2, 3, 'A', 'B', 'C'}
+
+------------------------------------------------------------------
+c = set(tuple_data)  # if occurs error - del set
+c
+{1, 2, 3, 'A', 'B', 'C'}
+
+-----------------------------------------------------------------
+### Set Operators:
+
+| (Union): Combines two sets to create a new set containing all unique elements from both sets.
+
+& (Intersection): Creates a new set containing elements that are common to both sets.
+
+- (Difference): Creates a new set containing elements that are in the first set but not in the second.
+
+^ (Symmetric Difference): Creates a new set containing elements that are in either of the sets but not in both.
+
+in (Membership): Checks if an element is present in the set.
+
+not in (Not Membership): Checks if an element is not present in the set.
+
+Union (|), Intersection (&), Difference (-), Symmetric Difference (^):
+
+set1 = {1, 2, 3}
+set2 = {3, 4, 5}
+union_result = set1 | set2  # Union
+intersection_result = set1 & set2  # Intersection
+difference_result = set1 - set2  # Difference
+symmetric_difference_result = set1 ^ set2  # Symmetric Difference
+
+print("Union:", union_result) # Result: {1, 2, 3, 4, 5}
+print("Intersection:", intersection_result) # Result: {3}
+print("Difference:", difference_result) #Result: {1, 2}
+print("Symmetric Difference:", symmetric_difference_result)
+
+fruits_set = {"apple", "banana", "cherry"}
+print("banana" in fruits_set)  # Output: True
+print("orange" not in fruits_set)  # Output: True
+
+
+------------------------------------------------------------------

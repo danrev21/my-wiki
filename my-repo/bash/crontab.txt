@@ -1,0 +1,111 @@
+## crontab for user
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name command to be executed
+
+названия дней от 0-6 начинаются с воскресенья
+
+0 0 * * 0       Выполнять «команду» в 00:00 [полночь] каждое воскресенье
+
+Day Name  0,6	Суббота и воскресенье
+Month	  */2	Каждый месяц, который делится на 2, месяц.
+Day Date  *	Каждый день
+Hour	  3-6	С 3 до 6 утра
+Minutes	  */5	Каждые 5 минут
+
+*/5* * * * *    каждые 5 минут	
+0 5 * * mon     Monday в 5 утра
+*/3 * * * *     с интервалом в 3 минуты
+* * * feb,jun,sep *                 в феврале, июне и сентябре
+* * * * *  sleep 15; ./script.sh    каждые 15 секунд 
+@yearly аналогична «0 0 5 1 *»      на пятой минуте каждого года
+@monthly аналогична «0 0 1 * *»     в первую минуту месяца
+@weekly похожа на «0 0 4 * sun»
+@daily аналогична «0 2 * * *»       на второй минуте каждого дня
+@hourly аналогична «0 * * * *»      в первую минуту каждого часа
+@reboot ./script.sh                 выполняется при перезагрузке системы. для автоматического запуска фоновых задач
+
+
+https://crontab.guru/examples.html
+
+# setup cronjob:
+crontab -e
+
+# m     h     dom   mon   dow    command
+
+  *     *     *     *     *      echo "Privet!" >> /home/user/mylogs.log
+  50    14    *     *     *      echo "HI" >> /home/user/mylogs.log
+  30    6,18  *     *     *
+  */2   *     *     *     *      echo "Hello" >> /home/user/mylogs.log
+  */5   *     *     *     *      /home/user/myscript.sh
+  
+
+# list cronjobs:
+crontab -l
+
+# it's save into /var/spool/cron/crontabs/name-user
+
+
+# crontab for system (root chrontab)
+sudo vim /etc/crontab
+
+
+--------------------------------------------------------------------------
+простой скрипт автоматизации cron для резервного копирования файлов.
+
+    Резервное копирование в 3 часа ночи каждую ночь
+    Резервное копирование папки /Documents в zip-файл
+
+our_backup_script.sh
+
+#! /bin/bash
+
+DATE=$(date +%d-%m-%Y)
+# Date in format DAY##-MONTH##-YEAR####
+
+mkdir -p ~/archive/$DATE
+# создайте папку для сегодняшней даты в архиве, если архив не существует, сделайте архив 
+ls -al ~/Documents > ~/archive/$DATE/contents.txt
+# создайте текстовый файл со списком содержимого папки документы
+cd ~/  && tar -cpzf $DATE.docs.backup.gz Documents/*
+# перейдите в родительский каталог в папку tar / Documents
+cp ~/$DATE.docs.backup.gz ~/archive/$DATE/documents_archive.gz
+# один файл .gz остается в домашнем каталоге, дубликат отправляется в наш архив под его датой
+
+bash our_backup_script.sh 
+
+crontab -e
+
+И добавьте туда следующее:
+
+0 3 * * * bash ~/our_backup_script.sh
+
+
+
+---------------------------------------------------------------
+
+# m    h  dom mon dow   command
+  25  *   *   *   *    play -n synth pl G2 pl B2 pl D3 pl G3 pl D4 pl G4 delay 0 .05 .1 .15 .2 .25 remix - fade 0 4 .1 norm -1
+  30  *   *   *   *    play -n synth 0.1 sine 880 vol 0.5
+  55  *   *   *   *    play -n synth pl G2 pl B2 pl D3 pl G3 pl D4 pl G4 delay 0 .05 .1 .15 .2 .25 remix - fade 0 4 .1 norm -1
+   0    *   *   *   *    play -n synth 0.1 sine 880 vol 0.5
+
+
+
+
+
+
+
+
+
+
+
+
+
+

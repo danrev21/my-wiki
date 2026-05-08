@@ -1,0 +1,13 @@
+---
+- import_playbook: playbook1-create-ssh.yaml
+- import_playbook: playbook2-sshd-config.yaml
+- import_playbook: playbook3-requirements.yaml
+- import_playbook: playbook4-nginx.yaml
+- import_playbook: playbook5-apache.yaml
+- import_playbook: playbook6-scriptj2.yaml
+
+# USED COMMANDS:
+# ssh-keygen -R 192.168.0.31
+# ansible-playbook --check playbook.yaml -l server1
+# ansible-playbook playbook1.yaml -l server1
+# ansible-playbook playbook1.yaml -l server1 --key-file ssh_admin_key   ---> after disable ssh connection   

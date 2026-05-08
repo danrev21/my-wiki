@@ -1,0 +1,6 @@
+https://eclipsys.ca/how-to-enable-nested-virtualization-in-virtualbox-new-feature/
+
+# заходим в директорию виртуальной машины, на которой надо включить поддержку KVM, т.е. 
+# вложенную виртуализацию и выполняем команду:
+vboxmanage modifyvm <vm_name> --nested-hw-virt on
+

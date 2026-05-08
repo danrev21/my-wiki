@@ -1,0 +1,55 @@
+---
+- hosts: '*'
+  vars:
+    ssh_port: 2049
+  tasks:
+    - name: Tell SELinux about SSH's New Port
+      seport:
+        ports: "{{ ssh_port }}"
+        proto: tcp
+        setype: ssh_port_t
+        state: present
+
+    - name: Harden sshd configuration
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        regexp: "{{item.regexp}}"
+        line: "{{item.line}}"
+        state: present
+        validate: 'sshd -T -f %s'
+      with_items:
+        - regexp: "^Port"
+          line: "Port {{ ssh_port }}"
+        - regexp: "^PermitRootLogin"
+          line: "PermitRootLogin no"
+        - regexp: "^AllowUsers"
+          line: "AllowUsers ansible-devops"
+        - regexp: "^PasswordAuthentication"
+          line: "PasswordAuthentication no"
+        - regexp: "^AllowAgentForwarding"
+          line: "AllowAgentForwarding no"
+        - regexp: "^AllowTcpForwarding"
+          line: "AllowTcpForwarding no"
+        - regexp: "^MaxAuthTries"
+          line: "MaxAuthTries 3"
+        - regexp: "^MaxSessions"
+          line: "MaxSessions 6"
+        - regexp: "^TCPKeepAlive"
+          line: "TCPKeepAlive no"
+        - regexp: "^UseDNS"
+          line: "UseDNS no"
+      notify: restart sshd
+    - name: add user ansible-devops
+      user:
+        name: ansible-devops
+    - name: add sudo group rights for deployment user
+      lineinfile:
+        dest: /etc/sudoers.d/ansible-devops
+        regexp: "^ansible-devops"
+        line: "ansible-devops ALL=(ALL) NOPASSWD: ALL"
+        state: present
+  handlers:
+    - name: restart sshd
+      service:
+        name: sshd
+        state: restarted

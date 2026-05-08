@@ -1,0 +1,36 @@
+-------------------------------------------------------
+print("hello", "world", sep=":")
+
+print('"Isn\'t," they said.')
+
+print(r'C:\some\name')
+
+name = "Bill"
+print("Hello", name, "!")
+print(f"Hello {name} !")
+
+text = "Hello, Python"
+lenght = len(text)
+print(lenght)                      # Out: 13
+print("the lenght is: ", lenght)   # Out: the lenght is:  13  
+print(f"the lenght is: {lenght}")  # Out: the lenght is:  13 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

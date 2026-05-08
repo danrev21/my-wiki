@@ -1,0 +1,106 @@
+file as array but no \n
+jq -R -s -c 'split("\n")' < tasks_output.txt
+-----------------------------------------------
+file as array
+jq -R -s  'split("\n")' < tasks_output.txt
+---------------------------------------------
+each line as array
+jq -R  -c 'split("\n")' < tasks_output.txt
+---------------------------------------------
+file as array
+cat tasks_output.txt  | jq  --raw-input .  | jq --slurp .
+------------------------------------------------
+    # input:
+test max min direction
+10 27.7 12.4 12
+11 26.9 13.5 18
+12 27.4 16.9 31
+13 25.1 12.7 29
+    # output
+[
+	{
+		"test": "10",
+		"max": "27.7",
+		"min": "12.4",
+		"direction": "12"
+	},
+	{
+		"test": "11",
+		"max": "26.9",
+		"min": "13.5",
+		"direction": "18"
+	},
+	{
+		"test": "12",
+		"max": "27.4",
+		"min": "16.9",
+		"direction": "31"
+	},
+	{
+		"test": "13",
+		"max": "25.1",
+		"min": "12.7",
+		"direction": "29"
+	}
+]
+----------
+introduce file as table???
+--------------------------
+awk ' BEGIN { ORS = ""; print "["; } { print "/@"$0"/@"; } END { print "]"; }' | sed "s^""^\\""^g;s^/@/@^"
+-----
+echo '[' ; ls --format=commas|sed -e 's/^/""/'|sed -e 's/,$/"
+----
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

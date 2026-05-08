@@ -1,0 +1,29 @@
+---
+- name: Debug
+  hosts: all
+  gather_facts: no
+  vars: 
+    test:
+      - 4
+
+  tasks:
+
+  - debug:
+      msg: "{{ test | default(5)}}"
+
+#--------------------------------------------------
+  - debug:
+      msg: "{{ test is undefined }}"
+    when: test is undefined
+# output:
+# ok: [ubuntu1] => {
+#     "msg": true  (or skip)
+
+#--------------------------------------------------
+  - debug:
+      msg: "{{ test is undefined | ternary('test is not defined', test) }}"
+# output:      
+# ok: [ubuntu1] => {
+#     "msg": "test is not defined"  (or ...4)
+
+#--------------------------------------------------

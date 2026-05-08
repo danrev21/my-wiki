@@ -1,0 +1,40 @@
+---------------------------------------------
+# create 84_conf:
+# /etc/nginx/sites-available/84_conf
+ 
+server {
+        listen 84;
+
+        root /var/www/html;
+        index index.html index.htm;
+        server_name localhost;
+
+        location / {
+                proxy_pass http://apache2;
+                try_files $uri $uri/ =404;
+        }
+} 
+
+# create softlink:
+ln -s /etc/nginx/sites-available/84_conf /etc/nginx/sites-enabled/
+---
+# create upstream file:
+# /etc/nginx/sites-available/upstream (CREATE LINK !)
+
+upstream apache2 {
+        # least_conn;
+        # ip_hash;
+        server localhost:8080;
+        server localhost:8081;
+        server localhost:8082;
+}
+
+# create softlink:
+ln -s /etc/nginx/sites-available/upstream /etc/nginx/sites-enabled/
+
+# restart nginx:
+systemctl reload nginx
+tree /etc/nginx
+
+# check how works upstream:
+while true; do curl localhost:84; sleep 2; done

@@ -1,0 +1,51 @@
+------------------------------------------------------
+for file in *.txt; do
+    mv -- "$file" "$(basename -- "$file" .txt).text"
+done
+------------------------------------------------------
+for f in *.txt
+do
+    [ -f "$f" ] && mv "$f" "${f%txt}text"
+done
+------------------------------------------------------
+
+#!/bin/bash
+for f in *.$1
+do
+    [ -f "$f" ] && mv -v "$f" "${f%$1}$2"
+done
+
+# Example usage (assuming the name of the script is change-ext):
+
+change-ext ext1 ext2
+
+------------------------------------------------------
+
+chext() {
+  old_ext="$1"
+  new_ext="$2"
+  for file in *.${old_ext}; do
+    mv -v -- "$file" "$(echo "$file" | sed "s/\.${old_ext}$/.${new_ext}/")"
+  done
+}
+
+Usage:
+
+chext [old_extension] [new_extension]
+
+------------------------------------------------------
+
+rename "s/oldExtension$/newExtension/" *.txt
+
+------------------------------------------------------
+
+rename 's/\.old$/.new/' *.old
+
+------------------------------------------------------
+
+find . -type f -name "*.txt" -exec rename 's/\.txt$/.newext/' '{}' \;
+
+-------------------------------------------------------
+
+
+

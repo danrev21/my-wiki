@@ -1,0 +1,5 @@
+---
+- import_tasks: make-dir-ssh.yaml
+- import_tasks: gen-ssh-keys.yaml
+- import_tasks: add-ssh-remote.yaml
+- import_tasks: modify-sshd-config.yaml

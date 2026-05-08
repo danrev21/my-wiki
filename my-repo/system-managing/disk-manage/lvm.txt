@@ -1,0 +1,39 @@
+========================================================================
+# Working with LVM
+
+# To make use of LVM, install the package LVM:
+apt-get install lvm2
+
+# to create a Physical Volume:
+pvcreate /dev/sdb
+pvdisplay
+pvs
+
+# to create a Volume Group:
+vgcreate my_vg /dev/sdb
+vgdisplay
+vgs
+
+# To create the Logical Volumes:
+lvcreate -L 1G -n vol2 my_vg
+lvdisplay
+lvs
+
+# Now to create a filesystem:
+mkfs.ext4 /dev/my_vg/vol1
+# To mount the filesystem:
+mount -t ext4 /dev/my_vg/vol1 /mnt/vol1
+
+# Now logical volume is now available for use. 
+# Lets resize the filesystem on vol1 while it is mounted. 
+# Check the free space available:
+vgs
+lvresize -L +1G -n /dev/my_vg/vol1
+df –hP /mnt/vol1
+
+# to resize the file system:
+resize2fs /dev/my_vg/vol1
+# to verify the size of the mounted filesystem:
+df –hP /mnt/vol1
+
+========================================================================

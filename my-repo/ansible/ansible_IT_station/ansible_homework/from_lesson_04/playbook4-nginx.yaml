@@ -1,0 +1,38 @@
+---
+- name: Install nginx
+  hosts: nginx
+  gather_facts: no
+  become: yes
+  vars:
+    # variable to connect to remote machine after setup ssh connection
+    # instead next command: ansible-playbook playbook1.yaml -l server1 --key-file ssh_key
+    ansible_ssh_private_key_file: "{{ playbook_dir }}/{{ ssh_keys_dir }}/{{ inventory_hostname }}_ssh_key"
+  vars_files:
+  - vars.yaml    
+
+  tasks:
+
+  - name: Check/Install nginx
+    apt:
+      name: nginx
+      state: present
+      update_cache: yes
+    notify: start nginx
+
+  - name: Check ngins working
+    uri:
+      url: "http://{{ ansible_host }}:80"
+      return_content: true
+      status_code: 200
+    register: nginx_content
+
+  - name: Nginx content
+    debug:
+      msg: "{{ nginx_content }}"
+
+  handlers:
+  - name: start nginx
+    become: yes
+    service:
+      name: nginx
+      state: started  

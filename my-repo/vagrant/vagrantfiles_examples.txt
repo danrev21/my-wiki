@@ -1,0 +1,139 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.insert_key = false
+  config.vm.provider :virtualbox do |vb|
+  config.vm.provision "shell", path: "swap-add-vagrant.sh"
+    vb.customize ["modifyvm", :id, "--memory", "4096"]
+    vb.customize ["modifyvm", :id, "--cpus", "3"]
+  end
+    
+  # Application server 1
+  config.vm.define "bitbucket1" do |bitbucket1|
+    bitbucket1.vm.hostname = "bitbucket1" 
+    bitbucket1.vm.box = "ubuntu/jammy64"
+    bitbucket1.vm.network :public_network, ip: "192.168.0.111", bridge: "wlo1" 
+  end
+
+  # Application server 2
+  config.vm.define "bitbucket2" do |bitbucket2|
+    bitbucket2.vm.hostname = "bitbucket2"
+    bitbucket2.vm.box = "ubuntu/jammy64"
+    bitbucket2.vm.network :public_network, ip: "192.168.0.112", bridge: "wlo1"
+  end
+end
+
+--------------------------------------------------------------------------------------------------------
+
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.insert_key = false
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "512"]
+  end
+
+  # Application server 1
+  config.vm.define "app1" do |app|
+    app.vm.hostname = "app1"
+    app.vm.box = "ubuntu/focal64"
+    app.vm.network :private_network, ip: "192.168.80.1"
+  end
+
+  # Application server 2
+  config.vm.define "app2" do |app|
+    app.vm.hostname = "app2"
+    app.vm.box = "ubuntu/focal64"
+    app.vm.network :private_network, ip: "192.168.80.2"
+  end
+
+  # Application server 3
+  config.vm.define "app3" do |app|
+    app.vm.hostname = "app3"
+    app.vm.box = "ubuntu/focal64"
+    app.vm.network :private_network, ip: "192.168.80.3"
+  end
+end
+
+----------------------------------------------------------------
+
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.insert_key = false
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "512"]
+  end
+    # Application server 
+  config.vm.define "myapp1" do |app|
+    app.vm.hostname = "myapp1"
+    app.vm.box = "ubuntu/focal64"
+    #Specify the interface when creating the public network
+    #app.vm.network :private_network, ip: "192.168.0.31"
+    #app.vm.network "private_network", ip: "192.168.0.31"
+    app.vm.network "public_network", ip: "192.168.0.31", bridge: "wlo1" #to find interfaces names-->ifconfig
+    #   .  .  .    :public_network , type: "dhcp", .  .  . 
+  end
+end
+
+-------------------------------------------------------------------
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-18.04"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "newapp"
+    vb.memory = "1024"
+    vb.cpus = 1
+  end
+
+  config.vm.hostname = "newapp"
+
+  config.vm.synced_folder ".", "/home/vagrant/code",  #guest folder
+    owner: "www-data", group: "www-data"
+  
+  config.vm.network "forwarded_port", guest: 80, host: 8000
+  config.vm.network "forwarded_port", guest: 3306, host: 33060
+
+  config.vm.network "public_network", ip: "192.168.0.31", bridge: "wlo1"  #to find interfaces names-->ifconfig
+
+  config.vm.provision "shell", path: "provision.sh"
+end
+
+----------------------------------------------------------------------
+
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.insert_key = false
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+    
+  end
+
+  config.vm.define "node1" do |node|
+    node.vm.hostname = "node1"
+    node.vm.box = "ubuntu/jammy64"
+    node.vm.network :public_network, ip: "192.168.0.200", bridge: "wlo1" 
+    node.vm.synced_folder ".", "/home/vagrant/share",  #guest folder
+    owner: "vagrant", group: "vagrant"
+    node.vm.provision "shell", path: "editbashrc.sh"
+    node.vm.provision "shell", path: "docker-install.sh"
+  end
+
+end
+
+#   node.vm.network "public_network", ip: "192.168.0.31", bridge: "wlo1"
+#   owner: "www-data", group: "www-data"  
+
+
+
+

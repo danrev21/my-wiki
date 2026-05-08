@@ -1,0 +1,14 @@
+# add new line in file
+---
+- name: create empty file
+  file:
+    path: ./group_vars/keys.yaml
+    state: touch
+  delegate_to: localhost  
+
+- name: line insert
+  lineinfile:
+    path: ./group_vars/keys.yaml
+    line: userpubkey="{{ lookup('file', ssh_key_location_path+'/'+ssh_key_filename+'.pub') }}"
+    insertbefore: BOF
+  delegate_to: localhost

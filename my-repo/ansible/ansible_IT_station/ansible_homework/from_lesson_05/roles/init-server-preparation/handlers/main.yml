@@ -1,0 +1,7 @@
+---
+# handlers file for init-server-preparation
+- name: restart sshd
+  become: true
+  service:
+    name: sshd
+    state: restarted

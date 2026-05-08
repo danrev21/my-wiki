@@ -1,0 +1,119 @@
+Подключение по ssh
+По умолчанию подключиться к виртуальной машине можно с помощью команды
+
+$ vagrant ssh
+При этом используются ssh-ключи, которые Vagrant добавляет на этапе создания виртуальной машины. Если по каким-то причинам это не устраивает, можно задать имя пользователя и пароль для входа. Тогда можно будет входить как с использованием логина и пароля, так и с использованием ssh-ключей.
+
+Vagrant.configure(2) do |config|
+  # образ системы Ubuntu 18/04 LTS (Bionic Beaver)
+  config.vm.box = "bento/ubuntu-18.04"
+  # не проверять репозиторий на наличие обновлений
+  config.vm.box_check_update = false
+  # имя пользователя
+  config.ssh.username = 'vagrant'
+  # пароль пользователя
+  config.ssh.password = 'vagrant'
+  # можно подключаться по паролю
+  config.ssh.keys_only = false
+
+  config.vm.provider "virtualbox" do |vb|
+    # имя виртуальной машины
+    vb.name = "ubuntu-1804-test"
+    # объем оперативной памяти
+    vb.memory = 2048
+    # количество ядер процессора
+    vb.cpus = 1
+  end
+  
+  # hostname виртуальной машины
+  config.vm.hostname = "ubuntu-1804-test"
+end
+
+Подключиться с использованием логина и пароля:
+
+$ ssh -p2222 vagrant@127.0.0.1
+The authenticity of host '[127.0.0.1]:2222 ([127.0.0.1]:2222)' can't be established.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '[127.0.0.1]:2222' (ECDSA) to the list of known hosts.
+vagrant@127.0.0.1's password: vagrant
+
+Welcome to Ubuntu 18.04.3 LTS (GNU/Linux 4.15.0-65-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sat Nov 23 10:27:52 UTC 2019
+
+  System load:  0.08              Processes:           88
+  Usage of /:   2.5% of 61.80GB   Users logged in:     0
+  Memory usage: 5%                IP address for eth0: 10.0.2.15
+  Swap usage:   0%
+
+ * Overheard at KubeCon: "microk8s.status just blew my mind".
+
+     https://microk8s.io/docs/commands#microk8s.status
+
+0 packages can be updated.
+0 updates are security updates.
+
+This system is built by the Bento project by Chef Software
+More information can be found at https://github.com/chef/bento/README.md
+Last login: Sat Nov 23 10:17:43 2019
+
+Или просто запустить виртуальную машину и ввести логин-пароль:
+
+По поводу ssh-ключей
+В более ранних версиях Vagrant для подключения к виртуальной машине использовался ключ ~/.vagrant.d/insecure_private_key. Но теперь Vagrant выдает предупреждение, что обнаружен небезопасный ключ и заменяет его:
+
+==> default: Booting VM...
+==> default: Waiting for machine to boot. This may take a few minutes...
+    default: SSH address: 127.0.0.1:2222
+    default: SSH username: vagrant
+    default: SSH auth method: private key
+    default:
+    default: Vagrant insecure key detected. Vagrant will automatically replace
+    default: this with a newly generated keypair for better security.
+    default:
+    default: Inserting generated public key within guest...
+    default: Removing insecure key from the guest if it's present...
+    default: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> default: Machine booted and ready!Копировать
+
+Этот ключ расположен в где-то в недрах директрории .vagrant (создается после первого запуска vagrant up). Посмотреть, какой ключ будет использован, можно с помощью команды:
+
+$ vagrant ssh-config
+
+Host default
+  HostName 127.0.0.1
+  User vagrant
+  Port 2222
+  UserKnownHostsFile /dev/null
+  StrictHostKeyChecking no
+  PasswordAuthentication no
+  IdentityFile D:/vagrant/www/.vagrant/machines/default/virtualbox/private_key
+  IdentitiesOnly yes
+  LogLevel FATAL
+  
+Можно отменить создание ssh-ключа, если добавить в файл конфигурации config.ssh.insert_key = false:
+
+Vagrant.configure(2) do |config|
+  # образ системы Ubuntu 18/04 LTS (Bionic Beaver)
+  config.vm.box = "bento/ubuntu-18.04"
+  # не проверять репозиторий на наличие обновлений
+  config.vm.box_check_update = false
+  # отменить создание ssh-ключа
+  config.ssh.insert_key = false
+
+  config.vm.provider "virtualbox" do |vb|
+    # имя виртуальной машины
+    vb.name = "ubuntu-1804-test"
+    # объем оперативной памяти
+    vb.memory = 2048
+    # количество ядер процессора
+    vb.cpus = 1
+  end
+  
+  # hostname виртуальной машины
+  config.vm.hostname = "ubuntu-1804-test"
+end

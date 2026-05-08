@@ -1,0 +1,50 @@
+git clone https://github.com/danrev21/pyenv.git
+cd devops_lab
+pip install -r requirements.txt
+
+pyenv install -l # list all available versions
+pyenv versions # list installed versions
+pyenv install 3.9.5
+
+pyenv virtualenv 3.9.5 myenv
+pyenv local myenv
+cat .python-version # myenv
+python -V # Python 3.9.5
+pyenv activate myenv
+python -V # Python 3.8.11
+pyenv deactivate 3.8.11
+python -V # Python 3.9.5
+pyenv uninstall myenv
+pyenv versions
+pyenv local 3.9.5 # switch python version
+
+pyenv global 3.9.5
+
+pyenv uninstall myenv
+pyenv local --unset
+
+pip install requests  # The "requests" library is a popular Python
+		      # package for making HTTP requests and 
+		      # working with APIs.
+pip freeze            # list installed libraries
+
+
+==================================
+# other way to create virtual enviroment
+
+mkdir temporary
+cd temporary
+pyenv local 3.6.8  # Set the Default Version for the Directory
+
+python --version
+python -m venv venv36
+
+python -m venv venv36          # Create the Virtual Environment
+source ./venv36/bin/activate   # Activate the Virtual Environment
+
+which python
+deactivate
+
+
+
+

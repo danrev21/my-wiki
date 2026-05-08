@@ -1,0 +1,51 @@
+---
+- name: Change sshd_config file using jinja2
+  hosts: all
+  gather_facts: no
+  become: yes
+  vars:
+    # for rerun this playbook uncomment variable because ssh connection setup already
+    # ansible_ssh_private_key_file: "{{ playbook_dir }}/{{ ssh_keys_dir }}/{{ inventory_hostname }}_ssh_key"
+    PermitRootLogin: "PermitRootLogin no"
+    PasswordAuthentication: "PasswordAuthentication no"
+    PermitEmptyPasswords: "PermitEmptyPasswords no"
+  vars_files:
+  - vars.yaml
+
+  tasks:
+  - name: Setup module1
+    setup:
+      filter:
+        - distribution
+  - debug:
+      msg: "{{ ansible_facts['distribution'] }}"
+
+  - name: Ubuntu sshd config template
+    template: 
+      src: ./templates/sshd_config.ubuntu.j2
+      dest: "{{ sshd_config_file }}"
+    when: 
+      - ansible_facts['distribution'] == "Ubuntu"
+
+  - name: Centos sshd config template
+    template: 
+      src: ./templates/sshd_config.centos.j2
+      dest: "{{ sshd_config_file }}"
+    when: 
+      - ansible_facts['distribution'] == "CentOS"   
+
+  - name: Output modified sshd_config
+    command:
+      cmd: cat "{{ sshd_config_file }}"
+    register: output
+
+  - debug:
+      var: output.stdout_lines         
+    notify: restart sshd
+
+  handlers:
+  - name: restart sshd
+    become: yes
+    service:
+      name: sshd
+      state: restarted

@@ -1,0 +1,41 @@
+~$ ping -c 4 8.8.8.8
+~$ ping -c 4 google.com
+--------------------------------------------------
+~$ traceroute 8.8.8.8
+traceroute to 8.8.8.8 (8.8.8.8), 64 hops max
+  1   192.168.0.1  3.108ms  0.847ms  4.183ms 
+  2   10.13.0.1  8.580ms  10.193ms  8.899ms 
+  3   10.1.0.113  13.064ms  8.743ms  10.007ms
+--------------------------------------------------  
+~$ host google.com
+google.com has address 142.250.181.238
+google.com has IPv6 address 2a00:1450:4001:82f::200e
+google.com mail is handled by 10 smtp.google.com.
+--------------------------------------------------
+~$ dig google.com
+
+  nslookup -type=CNAME  www.linkedin.com
+  dig www.linkedin.com CNAME
+
+  nslookup -type=MX twitter.com
+  dig +short twitter.com MX
+  
+  nslookup -type=SRV twitter.com
+  dig +short twitter.com SRV
+  
+--------------------------------------------------
+~$ netstat 
+~$ netstat | less
+--------------------------------------------------
+
+
+
+--------------------------------------------------
+
+
+
+--------------------------------------------------
+
+
+
+--------------------------------------------------

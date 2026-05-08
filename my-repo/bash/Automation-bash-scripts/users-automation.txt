@@ -1,0 +1,27 @@
+========================================
+# Positional parameters, while convenient in many cases, can’t be used when the input size is unknown.
+# $@ - is the array of all the input parameters.
+
+i=1;
+for user in "$@" 
+do
+    echo "Username - $i: $user";
+    i=$((i + 1));
+done
+
+./users-loop.sh john matt bill 'joe wicks' carol
+---------------------------------------
+i=1;
+j=$;
+while [ $i -le $j ] 
+do
+    echo "Username - $i: $1";
+    i=$((i + 1));
+    shift 1;
+done
+
+# to run: 
+./users-shift-operator.sh john matt bill 'joe wicks' carol
+---------------------------------------
+
+

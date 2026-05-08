@@ -1,0 +1,58 @@
+# Set up swap on ubuntu 22.04
+# https://www.digitalocean.com/community/tutorials/how-to-add-swap-space-on-ubuntu-22-04
+
+free -hmt
+df -h
+top
+sudo swapon --show
+
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+sudo cp /etc/fstab /etc/fstab.bak
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+sudo sysctl vm.swappiness=30
+sudo sysctl vm.vfs_cache_pressure=50
+sudo vim /etc/sysctl.conf  
+# add this two lines:
+vm.swappiness=30
+vm.vfs_cache_pressure=50
+			   
+sudo swapon --show
+free -h
+df -h
+
+----------------------------------------------------
+
+df -h
+cat /proc/swaps
+cat /proc/meminfo | grep Swap
+
+----------------------------------------------------
+# Increase Vagrant box swap memory:
+
+#!/bin/sh
+
+# size of swapfile in megabytes
+swapsize=8000
+
+# does the swap file already exist?
+grep -q "swapfile" /etc/fstab
+
+# if not then create it
+if [ $? -ne 0 ]; then
+  echo 'swapfile not found. Adding swapfile.'
+  fallocate -l ${swapsize}M /swapfile
+  chmod 600 /swapfile
+  mkswap /swapfile
+  swapon /swapfile
+  echo '/swapfile none swap defaults 0 0' >> /etc/fstab
+else
+  echo 'swapfile found. No changes made.'
+fi
+
+# output results to terminal
+df -h
+cat /proc/swaps
+cat /proc/meminfo | grep Swap

@@ -1,0 +1,65 @@
+{
+  "extensionMappings": [
+    {
+      "extension": "tex",
+      "language": ""
+    },
+    {
+      "extension": "json",
+      "language": ""
+    },
+    {
+      "extension": "yaml",
+      "language": ""
+    },
+    {
+      "extension": "bib",
+      "language": "ini"
+    },
+    {
+      "extension": "txt",
+      "language": "bash"
+    },
+    {
+      "extension": "py",
+      "language": "python"
+    },
+    {
+      "extension": "sh",
+      "language": "bash"
+    },
+    {
+      "extension": "yml",
+      "language": ""
+    },
+    {
+      "extension": "ini",
+      "language": ""
+    },
+    {
+      "extension": "conf",
+      "language": ""
+    },
+    {
+      "extension": "service",
+      "language": ""
+    },
+    {
+      "extension": "cnf",
+      "language": ""
+    },
+    {
+      "extension": "log",
+      "language": ""
+    },
+    {
+      "extension": "bat",
+      "language": ""
+    },
+    {
+      "extension": "",
+      "language": ""
+    }
+  ],
+  "autoSwitchToReading": true
+}

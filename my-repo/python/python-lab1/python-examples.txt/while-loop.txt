@@ -1,0 +1,43 @@
+=================================================================
+#!/usr/bin/env python
+
+-----------------------------------------------------------------
+count = int(input("Input any number: "))
+while count <= 5:
+    print("This is iteration", count)
+    count += 1
+
+-----------------------------------------------------------------   
+count = 1
+while count <= 5:
+    print("This is iteration", count)
+    count += 1
+    
+-------------------------------------------------------------------
+count = int(input("Input int number: "))
+while True:
+    if count > 5:
+        print("stop")
+        break
+    print("This is iteration", count)
+    count += 1
+    
+--------------------------------------------------------------------
+total = 0
+while True:
+    num = int(input("Enter a number (0 to stop): "))
+    if num == 0:
+        break
+    total += num
+print("Sum:", total)   # output: Enter a number (0 to stop): 1
+				 Enter a number (0 to stop): 2
+				 Enter a number (0 to stop): 5
+				 Enter a number (0 to stop): 0
+				 Sum: 8 
+				 
+-------------------------------------------------------------------
+
+
+
+
+				 

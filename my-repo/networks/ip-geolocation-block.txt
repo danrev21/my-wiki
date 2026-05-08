@@ -1,0 +1,84 @@
+Free IP Geolocation Database - https://lite.ip2location.com/?utm_source=blog&utm_medium=link&utm_campaign=cta&utm_term=footer
+Free IP Geolocation API      - https://www.ip2location.io/?utm_source=blog&utm_medium=link&utm_campaign=cta&utm_term=footer
+
+
+===================================================================
+How to block IP addresses from a country using IPset
+Created June 9, 2020 Last Updated December 5, 2023Author hexasoft Category Technical
+
+Introduction
+Blocking IP addresses from a specific country is a practice known as geoblocking or IP geolocation filtering. Organizations may implement geoblocking for various reasons, depending on their specific needs and circumstances.
+-------------------------------------------------------------------
+Steps to block IP address
+In this tutorial, we’ll cover how we can block large IP ranges using ipset module with iptables. IPset is a command line based utility which is used to administer the framework called IP sets inside the Linux kernel. We will use the Debian operating system for the below explanation.
+
+You can download the IP ranges for a country that you want to block by using the IP2Location Free Visitor Blocker, a free online tool to download the IP addresses of any country for a wide range of formats.
+
+Install ipset package in your Linux system.
+apt install ipset
+
+Go to https://www.ip2location.com/free/visitor-blocker.
+Pick a country you wish to block and choose the CIDR format.How to block IP addresses from a country using IPset
+Download the list and you will get a list of CIDR similar to the below:
+31.13.156.64/29
+31.13.158.236/30
+31.13.159.16/28
+34.99.130.0/23
+34.99.202.0/23
+34.103.146.0/23
+34.103.219.0/24
+41.57.120.0/22
+41.58.0.0/16
+41.67.128.0/19
+41.67.160.0/20
+41.67.176.0/23
+41.67.178.0/27
+41.67.178.32/28
+41.67.178.48/30
+Save the list as blockcountry.sh.
+
+Run the following command to convert the CIDR into ipset format.
+sed -i '/^#/d' blockcountry.sh
+sed -i 's/^/ipset add countryblocker /g' blockcountry.sh
+sed  -i '1i ipset create countryblocker nethash' blockcountry.sh
+
+The content of blockcountry.sh now should look similar to the below:
+ipset create countryblocker nethash
+ipset add countryblocker 31.13.156.64/29
+ipset add countryblocker 31.13.158.236/30
+ipset add countryblocker 31.13.159.16/28
+ipset add countryblocker 34.99.130.0/23
+ipset add countryblocker 34.99.202.0/23
+ipset add countryblocker 34.103.146.0/23
+ipset add countryblocker 34.103.219.0/24
+ipset add countryblocker 41.57.120.0/22
+ipset add countryblocker 41.58.0.0/16
+ipset add countryblocker 41.67.128.0/19
+ipset add countryblocker 41.67.160.0/20
+ipset add countryblocker 41.67.176.0/23
+ipset add countryblocker 41.67.178.0/27
+ipset add countryblocker 41.67.178.32/28
+ipset add countryblocker 41.67.178.48/30
+
+Give execution permission to blockcountry.sh and run it.
+chmod +x blockcountry.sh
+bash blockcountry.sh
+
+Now the ipset is ready, and we will need to create a iptables rule to block these IP addresses.
+iptables -A INPUT -m set --match-set countryblocker src -j DROP
+
+To make sure the iptables rule persist after a reboot, save the iptables rule.
+ipset save > /etc/countryblocker.ipset
+iptables-save > /etc/iptables/rules.iptables
+
+Add the following lines into /etc/rc.local file to make sure these rules are reloaded after a system reboot.
+ipset restore < /etc/countryblocker.ipset iptables-restore < /etc/iptables/rules.iptables
+
+-------------------------------------------------------------------
+Conclusion
+It’s important to note that while geoblocking can provide certain benefits, it also has limitations and potential drawbacks. For example, determined users may use proxy servers or virtual private networks (VPNs) to bypass geoblocking measures. Additionally, geoblocking may unintentionally block legitimate users or hinder global accessibility.
+
+Before implementing geoblocking, organizations should carefully consider their specific goals, legal obligations, and potential impacts on users. Additionally, it’s advisable to keep security measures up to date and consider alternative strategies, such as enhanced authentication and monitoring, to address security concerns without resorting to wholesale IP address blocking.
+
+
+-------------------------------------------------------------------

@@ -1,0 +1,39 @@
+--------------------------------------------------
+text = "Hello, Python"
+lenght = len(text)
+print(lenght)                      # Out: 13
+print("the lenght is: ", lenght)   # Out: the lenght is:  13  
+print(f"the lenght is: {lenght}")  # Out: the lenght is:  13 
+
+--------------------------------------------------
+mylist = ["apple", "banana", "cherry"]
+x = len(mylist) 
+
+---------------------------------------------------
+
+testList = [1, 2, 3]
+print(testList, 'length is', len(testList))
+
+testTuple = (1, 2, 3)
+print(testTuple, 'length is', len(testTuple))
+
+testRange = range(1, 10)
+print('Length of', testRange, 'is', len(testRange))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

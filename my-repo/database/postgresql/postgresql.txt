@@ -1,0 +1,40 @@
+# postgresql-16
+
+
+
+# Creating a Bamboo database:
+sudo -s -H -u postgres
+# Create the Bamboo user:
+/usr/lib/postgresql/16/bin/createuser -S -d -r -P -E bamboouser
+# Create the bamboo database:
+/usr/lib/postgresql/16/bin/createdb -O bamboouser bamboo
+exit
+
+
+
+ls /etc/postgresql/16/main/
+conf.d  
+environment  
+pg_ctl.conf  
+pg_hba.conf  
+pg_ident.conf  
+postgresql.conf  
+start.conf
+
+-----------------------------------------------------
+
+/etc/postgresql/16/main/postgresql.conf
+
+
+
+-----------------------------------------------------
+
+/etc/postgresql/16/main/pg_hba.conf
+
+
+
+
+
+
+
+=====================================================

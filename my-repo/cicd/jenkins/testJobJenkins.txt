@@ -1,0 +1,29 @@
+# joba Jenkins test
+
+
+echo "------------Build Started-----------------"
+cat << EOF > index.html
+<html>
+<body bgcolor=black>
+<center>
+<h2><font color=yellow>Hello from Minsk</font></h2>
+<font color=blue>MINSK</font>
+</center>
+</body>
+</html>
+EOF
+echo "------------Build Finished----------------"
+
+
+
+echo "------------Test Started-----------------"
+result=`grep "Hello" index.html | wc -l`
+echo $result
+if [ "$result" = "1" ]
+  then
+    echo "Test Passed"
+else    
+    echo "Test Failed"
+    exit 1
+fi    
+echo "------------Test Finished----------------"

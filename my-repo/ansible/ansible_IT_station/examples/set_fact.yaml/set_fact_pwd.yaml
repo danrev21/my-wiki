@@ -1,0 +1,35 @@
+---
+- name: Example playbook
+  hosts: all
+  gather_facts: no
+
+  tasks:
+
+  - name: Get current directory
+    command:
+      cmd: pwd
+    delegate_to: localhost
+    register: cwd
+
+  # - debug:
+  #     var: cwd.stdout
+
+  - set_fact: 
+      current_working_directory: "{{ cwd.stdout }}"
+
+  - debug:
+      var: current_working_directory
+
+##############################################################
+# or we can use magic variables to define current_working_directory,
+# for example playbook_dir:
+
+  - debug:
+      var: playbook_dir
+
+  - name: Get current directory using magic variable 'playbook_dir'
+    set_fact: 
+      current_working_directory: "{{ playbook_dir }}"
+
+  - debug:
+      var: current_working_directory      

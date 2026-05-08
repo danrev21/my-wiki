@@ -1,0 +1,75 @@
+#How to find a website’s DNS (name server) address
+
+cat /etc/resolv.conf
+grep nameserver /etc/resolv.conf
+
+
+
+ #print the current DNS servers of a domain:
+host -t ns google.com
+dig ns google.com
+
+ #show mx (mail server) info/ip for cyberciti.biz domain## 
+dig mx cyberciti.biz
+
+ #find the delegation path from the root name servers: 
+dig +trace your-domain-name
+
+ #Check the current DNS servers of a domain
+dig ns google.com
+dig +short ns google.com
+
+
+ #print actual IP address of name servers:
+dig +short a ns1.google.com
+dig +short aaaa ns1.google.com
+
+ #Display All Records
+dig +noall +answer cyberciti.biz any
+
+ #Reverse lookups — mapping addresses to dns names #
+dig -x ip
+dig -x 75.126.153.206
+
+ #How to look for the delegation path from the root DNS/name servers
+ #Tracing is disabled by default. When tracing is enabled, 
+ #dig makes iterative queries to resolve the name being looked up. 
+ #It will follow referrals from the root servers, showing the answer
+ #from each server that was used to resolve the lookup. If @server 
+ #is also specified, it affects only the initial query for the root 
+ #zone name servers. For example:
+dig +trace cyberciti.biz
+dig +trace cyberciti.biz @8.8.8.8
+
+ #Find Out TTL Value Using dig
+dig +nocmd +noall +answer {TYPE} {example.com}
+dig +nocmd +noall +answer a cyberciti.biz
+
+---
+ #IP addresses for:
+host google.com
+dig www.cyberciti.biz
+nslookup www.cyberciti.biz
+
+Find DNS address of a website using host command:
+host -t ns google.com
+ 
+ #Again use host to display IP address for ns1.google.com nameserver:
+host -t a ns1.google.com
+host -t aaaa ns1.google.com
+
+ #Get all info about cyberciti.biz ##
+host -a -v cyberciti.biz
+
+ #Use specific (Google) dns server ip # 8.8.8.8 to query www.cyberciti.biz ##
+host www.cyberciti.biz 8.8.8.8
+
+
+
+
+
+
+
+
+
+

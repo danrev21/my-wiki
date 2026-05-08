@@ -1,0 +1,21 @@
+ps -u user1     --PID TTY TIME CMD
+ps -au          --return USER PID %CPU %MEM ... TIME COMMAND
+ps -fU user1    --UID PID PPID C STIME TTY TIME CMD
+ps -fu 1000     -----
+ps -fG group1   -----
+ps -xjf         ---column + tree
+pstree          ---view as tree
+ps -x          --return executing command
+
+ps -fp 1178      --select by PID
+ps -fp 1178, 1184, 1195  --list
+ps -f --ppid 1154   --select by PPID
+
+ps -eo pid,ppid,user,cmd        --create custom
+ps -p 1154 -o pid,ppid,fgroup,ni,lstart,etime   --create custom
+
+script.sh &
+jobs   ---currently running or suspended in the background
+fg % 1   ---to bring a background job to the foreground
+bg
+

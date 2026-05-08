@@ -1,0 +1,14 @@
+---
+- name: homework_roles
+  hosts: all
+  gather_facts: false
+  become: false
+  vars_files:
+  - vars.yaml
+
+  roles:
+    - init-server-preparation
+    - install-nginx
+  
+  # to run -->  ansible-playbook playbook.yaml --vault-pass-file my-pass
+  # if obtain error: Failed to connect to the host via ssh ---> ssh-keygen -f /home/dan/.ssh/known_hosts -R 192.168.0.101

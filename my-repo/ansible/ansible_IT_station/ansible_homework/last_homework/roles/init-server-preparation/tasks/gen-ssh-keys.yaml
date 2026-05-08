@@ -1,0 +1,11 @@
+---
+- name: Generate SSH key
+  user:
+    name: "{{ local_user }}"
+    group: "{{ local_user_group }}"
+    generate_ssh_key: yes
+    ssh_key_type: rsa
+    ssh_key_bits: 4096
+    ssh_key_file: "{{ssh_key_location_path}}/{{ssh_key_filename}}"
+    force: no
+  delegate_to: localhost

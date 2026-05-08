@@ -1,0 +1,15 @@
+---
+- name: Debug
+  hosts: all
+  gather_facts: no
+  # vars: 
+  #   test:
+  #     - 4
+
+  tasks:
+  # - debug:
+  #     msg: "{{ test | default(5)}}"
+
+  - debug:
+      msg: "{{ test1 is undefined }}"
+    when: test1 is undefined

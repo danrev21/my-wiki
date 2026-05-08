@@ -1,0 +1,7 @@
+ansible_user: vagrant
+ansible_password: vagrant
+ansible_become_password: vagrant
+
+ssh_keys_dir: ssh_keys
+sshd_config_file: /etc/ssh/sshd_config
+echo_words: "Hello {{ inventory_hostname }}"

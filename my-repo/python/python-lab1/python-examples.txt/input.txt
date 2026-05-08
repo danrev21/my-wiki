@@ -1,0 +1,55 @@
+==================================================================
+user_name = input("Please enter your name: ")
+print(f"Hello, {user_name}!")
+
+-------------------------------------------------------------------
+a = input("Введите целое число: ")
+try:
+    res = int(a)
+    print("Правильно: ", res)
+except ValueError:
+    print("Неверно")
+-------------------------------------------------------------------
+???
+def example():
+    while True:
+        name = input("What is you name?: ")
+        try:
+            num = int(input("Input integer number:"))
+        except ValueError:
+            print(name, "Try again")
+        else:
+            print("Nice", name, "!", num, "is integer number")
+            break
+-------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

@@ -1,0 +1,125 @@
+Создание бекапа без шифрования каталогов /etc и /var/www полного бекапа раз в 7 дней, в остальные дни –инкрементальный бекап. Удалять бекапы старше 30 дней, заливать бекапы по SFTP в каталог /backup в корне на удаленный сервер
+
+#!/bin/bash
+
+SSHPORT="2222"
+SSHUSER="root"
+SSHPASSWORD="123456789"
+SSHSERVER="192.168.1.71"
+DESTFOLDER="/backup"
+DAYS_FULL=7
+DAYS_STORE=30
+
+
+#Authentiffication via SSH-keys
+duplicity --full-if-older-than ${DAYS_FULL}D  --no-encryption --volsize=1024  --include=/etc  --include=/var/www --exclude=/** / sftp://$SSHUSER@$SSHSERVER:$SSHPORT/$DESTFOLDER
+ 
+# Remove backup older 30 days
+duplicity remove-older-than ${DAYS_STORE}D --force sftp://$SSHUSER@$SSHSERVER:$SSHPORT/$DESTFOLDER
+
+
+#Authentification via password
+#duplicity --full-if-older-than ${DAYS_FULL}D --no-encryption --volsize=1024  --include=/etc --include=/var/www --exclude=/** / sftp://$SSHUSER:$SSHPASSWORD@$SSHSERVER:$SSHPORT/$DESTFOLDER 
+
+# Remove backup older 30 days
+# duplicity remove-older-than ${DAYS_STORE}D  --force sftp://$SSHUSER:$SSHPASSWORD@$SSHSERVER:$SSHPORT/$DESTFOLDER
+
+================================================================
+
+Аналогично, но заливка на удаленный сервер по FTP в каталог backup в домашний каталог пользователя user1
+
+#!/bin/bash
+
+FTPPORT="21"
+FTPUSER="user1"
+FTPPASSWORD="123"
+FTPSERVER="192.168.1.71"
+DESTFOLDER="backup"
+DAYS_FULL=7
+DAYS_STORE=30
+
+
+#Authentification via password
+duplicity --full-if-older-than ${DAYS_FULL}D --no-encryption --volsize=1024  --include=/etc  include=/var/www  --exclude=/** / ftp://$FTPUSER:$FTPPASSWORD@$FTPSERVER:$FTPPORT/$DEST$
+
+#Remove backup older 30 days
+duplicity remove-older-than ${DAYS_STORE}D  --force ftp://$FTPUSER:$FTPPASSWORD@$FTPSERVER:$FTPPORT/$DESTFOLDER
+
+================================================================
+
+#!/bin/sh
+test -x $(which duplicity) || exit 0
+. /root/.passphrase
+export PASSPHRASE
+$(which duplicity) full --encrypt-key 05AB3DF5 --exclude /proc --exclude /sys --exclude /tmp / sftp://root@backupHost//remotebackup/duplicityServer
+# В системе будет храниться три полных резервных копии и связанные с ними инкрементные копии.
+$(which duplicity) remove-all-but-n-full 3 --force sftp://root@backupHost//remotebackup/duplicityServer
+================================================================
+
+Автоматическое создание резервной копии с уведомлением по почте.
+Для реализации потребуется установить почтовый клиент Mutt, написать небольшой скрипт и настроить расписание его выполнение в планировщике Cron.
+
+Установка Mutt.
+apt-get install mutt
+
+vim /root/create-backup.sh
+
+#!/bin/sh
+LOG=/var/log/backup-$(date +%Y%m%d).log    # файл лога
+export FTP_PASSWORD=password 
+
+duplicity --no-encryption --full-if-older-than 2D --exclude /home/bitrix/www/bitrix/backup --exclude /home/bitrix/www/bitrix/cache --exclude /home/bitrix/www/bitrix/managed_cache /home/bitrix/www ftp://user@rc-ftp-01.activeby.net/www >> $LOG
+echo -e "\n===========\n" >> $LOG   # Разделитель для удобства чтения
+duplicity remove-older-than 4D --force ftp://user@rc-ftp-01.activeby.net/www >> $LOG # Удаляем старые копии
+ 
+unset FTP_PASSWORD
+MAIL='user@domain.com'  # Ящик, на который необходимо отправлять уведомление
+STAT=`duplicity collection-status ftp://user@rc-ftp-01.activeby.net/www`  # Статистика по имеющимся резервным копиям
+# Далее формируем письмо, в теле которого будет статистика по имеющимся резервным копия,
+# а вложением будет лог их удаления и создания
+echo -e "Backup completed. The result is attached to the letter. \n Current status: \n $STAT" | mutt $MAIL -a $LOG -s "Backup site - $(date +%Y%m%d)"
+exit 0
+ 
+Настройка расписания выполнения.
+
+crontab -e
+Добавляем строку:
+
+0 2 * * * /bin/bash /root/create-backup.sh
+
+где, 0 - минуты;
+     2 - часы;
+
+/root/create-backup.sh - путь к созданному скрипту .
+
+После сохранения проверим, чтобы изменения в расписание записались:
+
+crontab -l
+ 
+Восстановление из резервной копии.
+Для начала инициализируем служебные переменные:
+
+export FTP_PASSWORD=password
+В переменной FTP_PASSWORD сохраняется пароль FTP-пользователя. В нашей слочае - это password.
+
+Далее необходимо запустить приложение duplicity с нужными ключами:
+
+duplicity restore --no-encryption -t4D ftp://user@rc-ftp-01.activeby.net/www /home/bitrix/www
+где,
+
+restore - команда на восстановление;
+
+--no-encryption - не использовать шифрование;
+
+-t - аргумент для указания даты резервной копии;
+
+4D - значение аргумента -t , означающее, что необходимо восстановть копию четырёх-дневной давности;
+
+ftp://user@rc-ftp-01.activeby.net/www - откуда необходимо восстановить;
+
+/home/bitrix/www - куда необходимо восстановить (с заменой существующих данных).
+
+================================================================
+
+================================================================
+

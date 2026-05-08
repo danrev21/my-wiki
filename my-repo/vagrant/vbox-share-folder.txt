@@ -1,0 +1,29 @@
+https://www.debugpoint.com/share-folder-between-host-guest-virtualbox/
+
+
+The following steps require the VirtualBox guest additions installation. If you have not done it, install the guest additions in your guest system.
+
+From the VirtualBox menu, select Device > Shared Folders > Shared Folders Settings.
+
+In Folder Path, select the folder you want to share from your host to the guest system. In this example, I have used the Pictures folder, i.e. /home/debugpoint/Pictures from the host system.
+
+Give any meaningful name you want in the Folder Name field. VirtualBox will create a folder in your guest system with sf_ prefix in /media path. For this example, the shared folder in the guest system will be in /media/sf_Pictures.
+
+Select Auto-mount and make it permanent. Press OK.
+
+you can see the folder is created in /media (see below). Also, note that its group is vboxsf which is different from your current user group. This is the VirtualBox group created by the guest additions.
+---
+If you try to access this path, you can’t. Hence add your current user id to the vboxsf group. And change the ownership to yourself for all the subdirectories using the following two commands. Replace the bold items with your system configs.
+
+sudo usermod -a -G vboxsf debugpoint
+sudo chown -R debugpoint:users /media/sf_Pictures/
+Once you are done, restart your virtual machine.
+
+And you should see the folder in your guest’s virtual machine. You should have the modify access to it.
+
+!!!---
+For any error, if you see an empty folder, then try to force mount the folder. And try to browse using the following command. The “Pictures” parameter should match the “name “Folder Name” in the above image in VirtualBox shared folder settings.
+
+sudo mount -t vboxsf Pictures /media/sf_Pictures
+
+

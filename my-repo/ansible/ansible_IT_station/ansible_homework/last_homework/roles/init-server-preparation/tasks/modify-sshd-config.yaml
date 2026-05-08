@@ -1,0 +1,33 @@
+---
+- name: Distribution hosts
+  become: true
+  setup:
+    filter:
+      - distribution
+- debug:
+    msg: "{{ ansible_facts['distribution'] }}"
+
+- name: Modify Ubuntu sshd config (template)
+  become: true
+  template: 
+    src: sshd_config.ubuntu.j2
+    dest: "{{ sshd_config_file }}"
+  when: 
+    - ansible_facts['distribution']|lower == "ubuntu"
+
+- name: Modify Centos sshd config (template)
+  become: true
+  template: 
+    src: sshd_config.centos.j2
+    dest: "{{ sshd_config_file }}"
+  when: 
+    - ansible_facts['distribution']|lower == "centos" 
+  
+- name: Output modified sshd_config
+  become: true
+  command:
+    cmd: cat "{{ sshd_config_file }}"
+  register: output
+ 
+- debug:
+    var: output.stdout_lines

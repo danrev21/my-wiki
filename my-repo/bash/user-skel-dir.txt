@@ -1,0 +1,5 @@
+cd /etc/skel   # all create here wil be into homedir new user
+sudo mkdir dir1
+sudo useradd -m user1
+ll /home/user1   
+   dir1

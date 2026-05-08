@@ -1,0 +1,110 @@
+for i in `cat list`; do cp "$i" "$i".bak ; done
+ls *.xml*
+file1.xml  file1.xml.bak  file2.xml  file2.xml.bak  file3.xml  file3.xml.bak
+------------------------------------------------
+LIMIT=10
+for ((a=1; a <= LIMIT ; a++))  # Double parentheses, and naked "LIMIT"
+do
+  echo -n "$a "
+done                           # A construct borrowed from ksh93.
+echo; echo
+---------------------------------------------
+for ((a=1, b=1; a <= LIMIT ; a++, b++))
+do  # The comma concatenates operations.
+  echo -n "$a-$b "
+done
+echo; echo
+--------------------------------------
+for alphabet in {a..z}; do
+   mkdir $alphabet
+done
+----------------------------------------
+for i in $(seq 5)
+do
+  echo "Welcome $i times"
+done
+-----------------------------------------------
+max=${ar[0]}
+for n in "${ar[@]}" ; do
+    ((n > max)) && max=$n
+done
+echo $max
+------------------------------------------------
+max=0
+for v in ${a[@]}; do
+    if (( $v > $max )); then max=$v; fi; 
+done
+echo $max
+----------------------------------------------
+for i in $(echo {80..100});                     # from i to 0
+do
+   o="$i $o"
+done
+echo "$o"
+-----------------------------------------------------
+for num in {0..50}; do                      #not print кратные 4
+  if (( num % 4 )); then 
+    echo $num
+  fi
+done
+------------------------------------------------------
+
+#!/bin/bash
+leanYearMonths=(31 28 31 30 31 30 31 31 30 31 30 31)
+N=$(date +%m)
+for n in ${!leanYearMonths[@]}; 
+do
+  if [ $N -eq $n ];
+   then echo ${leanYearMonths[$n-1]};
+  fi
+done
+--------------------------------------------------------
+#!/bin/bash
+p=$(ps -ef | grep bash)
+# p=($(ps -ef))
+case "$p" in
+   *bash*) echo "This machine is running a web server."
+ ;;
+esac
+
+ps -ef | grep bash | awk '{ print $8 }'| cut -d- -f2 | cut -dg -f1
+-----------------------------------------------------------
+#!/bin/bash
+p=$(ps -ef | grep [h]ttpd)
+# p=($(ps -ef))
+case "$p" in
+   *[h]ttpd*) echo "This machine is running a web server."
+ ;;
+esac
+-------------------------------------------------------------
+#!/bin/bash
+function rand() {
+    echo $(($RANDOM % ${1}))
+}
+for item in `seq 1 10`; do
+  value="$(rand 100)"
+  echo "[$item] => ${value}"
+done > result
+cat result
+echo "min=$(cat result | awk '{ print $3 }' | sort -rn | tail -n1)"
+echo "max=$(cat result | awk '{ print $3 }' | sort -rn | head -n1)"
+r=($(cat result | awk '{ print $3 }'))
+t=0
+for i in ${r[@]}; do
+  let t+=$i
+done
+ echo "sum=$t"
+------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+

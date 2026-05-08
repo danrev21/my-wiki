@@ -1,0 +1,58 @@
+# create user 'dan' on localhost if doesn't exists, and generate SSH key "{{ ssh_key_filename }}" on localhost.
+# add key to remote host using ssh-copy-id. 
+# copying custom ssh config file with owner and permissions.
+
+---
+- name: First server preparation
+  hosts: all
+  gather_facts: no
+  become: no
+  vars:
+    ssh_key_location_path: /home/dan/Workdir/it_station_lab/HW/ansible/homework/1
+    ssh_key_filename: ssh_admin_key
+    local_user: dan
+    custom_ssh_config_file: /home/dan/Workdir/it_station_lab/HW/ansible/homework/1/disable-passw.conf
+    custom_ssh_config_path: /etc/ssh/ssh_config.d/
+    
+
+  tasks:
+
+  - name: create user 'dan' on localhost if doesn't exists, and generate SSH key "{{ ssh_key_filename }}" on localhost
+    user:
+      name: "{{ local_user }}"
+      generate_ssh_key: yes
+      ssh_key_type: rsa
+      ssh_key_bits: 4096
+      ssh_key_file: "{{ ssh_key_location_path }}/{{ ssh_key_filename }}"
+      force: no
+    delegate_to: localhost
+    run_once: yes
+
+  # When use ssh-copy-id and in this case "host_key_checking = False" in ansible.cfg don't works,
+  # that's why we use sshpass -p and -o StrictHostKeyChecking=no to avoid fingerprint.
+  - name: add key to remote host
+    command: "sshpass -p {{ ansible_password }} ssh-copy-id -i {{ ssh_key_location_path+'/'+ssh_key_filename+'.pub' }} -o StrictHostKeyChecking=no {{ ansible_user }}@{{ ansible_host }}"
+    delegate_to: localhost
+
+  - name: copying custom ssh config file with owner and permissions
+    become: yes
+    copy:
+      src: "{{ custom_ssh_config_file }}"     # from local 
+      dest: "{{ custom_ssh_config_path }}"    # to remote
+      owner: root
+      group: root
+      mode: 0644
+    notify: restart sshd
+
+  handlers:
+  - name: restart sshd
+    become: yes
+    service:
+      name: sshd
+      state: restarted
+
+# USED COMMANDS:
+# ssh-keygen -R 192.168.0.31...
+# ansible-playbook --check playbook1.yaml -l app1
+# ansible-playbook playbook1.yaml -l app1
+# ansible-playbook playbook1.yaml -l app1 --key-file ssh_admin_key   - after disable ssh connection

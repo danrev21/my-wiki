@@ -1,0 +1,31 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.insert_key = false
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "512"]
+  end
+
+  # Application server 1
+  config.vm.define "app1" do |app|
+    app.vm.hostname = "app1"
+    app.vm.box = "ubuntu/focal64"
+    app.vm.network :private_network, ip: "192.168.80.1"
+  end
+
+  # Application server 2
+  config.vm.define "app2" do |app|
+    app.vm.hostname = "app2"
+    app.vm.box = "ubuntu/focal64"
+    app.vm.network :private_network, ip: "192.168.80.2"
+  end
+
+  # Application server 3
+  config.vm.define "app3" do |app|
+    app.vm.hostname = "app3"
+    app.vm.box = "ubuntu/focal64"
+    app.vm.network :private_network, ip: "192.168.80.3"
+  end
+end

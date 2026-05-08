@@ -1,0 +1,13 @@
+## ClamAV – Antivirus Software Toolkit ## 
+
+sudo apt install clamav
+
+sudo service clamav-freshclam stop
+sudo freshclam
+sudo service clamav-freshclam start
+
+I find that an alternate way to get the database is to download from https://database.clamav.net/daily.cvd, then manually copy it into /var/lib/clamav
+
+sudo clamscan -r -i DIRECTORY
+
+Where DIRECTORY is the location to scan. The options -r, mean recursively scanning and the -i means to only show infected files.

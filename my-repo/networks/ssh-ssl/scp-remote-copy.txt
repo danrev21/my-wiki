@@ -1,0 +1,55 @@
+# To copy a file from a local to a remote system:
+scp file.txt remote_username@10.10.0.2:/remote/directory
+scp file.txt remote_username@10.10.0.2:/remote/directory/newfilename.txt
+scp -P 2322 file.txt remote_username@10.10.0.2:/remote/directory
+
+# To copy a directory from a local to remote system:
+scp -r /local/directory remote_username@10.10.0.2:/remote/directory
+
+# Copy a Remote File to a Local System:
+scp remote_username@10.10.0.2:/remote/file.txt /local/directory
+
+# Copy a File Between Two Remote Systems:
+scp user1@host1.com:/files/file.txt user2@host2.com:/files
+
+# To route the traffic through the machine on which the command is issued, use the -3 option:
+
+scp -3 user1@host1.com:/files/file.txt user2@host2.com:/files
+
+
+# to copy directories!!!
+scp -r ... 
+
+# to copy with sudo on the remote between dirs:
+ssh 'dan@92.53.124.92' sudo -S cp -r /var/lib/docker/volumes/wordpress-ssl_wordpress /home/dan/backup_site/
+
+------------------------------------
+sudo apt-get install sshpass
+
+1. sequrity unwise method: 
+sshpass -p your_password ssh user@hostname
+
+2. using variable:
+export SSHPASS='my_secret_password'
+sshpass -e ssh user@host
+sshpass -e ssh vismi sudo -S cp -r /var/lib/docker/volumes/wordpress-ssl_wordpress /home/dan/backup_site/
+sshpass -e ssh vismi sudo -S cp -r /var/lib/docker/volumes/wordpress-ssl_dbdata /home/dan/backup_site/
+sshpass -e ssh vismi sudo -S cp -r /var/lib/docker/volumes/wordpress-ssl_certbot-etc /home/dan/backup_site/
+sshpass -e ssh vismi sudo -S chown -R dan:dan /home/dan/backup_site/*
+sshpass -e ssh vismi
+
+3. using flag -f:
+echo 'my_secret_password' > ~/host_passw
+sshpass -f ~/host_passw ssh user@hostname
+sshpass -f ~/vismi_passw ssh vismi sudo -S cp -r /var/lib/docker/volumes/wordpress-ssl_wordpress /home/dan/backup_site/
+sshpass -f ~/vismi_passw ssh vismi sudo -S cp -r /var/lib/docker/volumes/wordpress-ssl_dbdata /home/dan/backup_site/
+sshpass -f ~/vismi_passw ssh vismi sudo -S cp -r /var/lib/docker/volumes/wordpress-ssl_certbot-etc /home/dan/backup_site/
+sshpass -f ~/vismi_passw ssh vismi sudo -S chown -R dan:dan /home/dan/backup_site/*
+scp -r vismi:///home/dan/backup_site/ /home/dan/
+sshpass -f ~/vismi_passw ssh vismi
+
+
+
+
+
+

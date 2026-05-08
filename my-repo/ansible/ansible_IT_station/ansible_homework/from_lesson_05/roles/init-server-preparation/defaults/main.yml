@@ -1,0 +1,7 @@
+---
+# defaults file for init-server-preparation
+ssh_key_filename: "{{inventory_hostname}}_ssh_key"
+sshd_config_file: /etc/ssh/sshd_config
+ssh_keys_dir: ssh_keys
+
+

@@ -1,0 +1,22 @@
+apk update
+apk update && apk upgrade
+apk add pkgName
+apk add pkgName1 pkgName2
+apk add apache2 php7-apache2 php7-gd php7-mysqli
+
+apk del pkgName
+apk del pkgName1 pkgName2
+
+apk cache clean
+## or ##
+apk -v cache clean
+
+
+
+
+
+
+
+
+
+

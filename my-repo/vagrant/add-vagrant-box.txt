@@ -1,0 +1,38 @@
+# download needed vagrant box
+# in our case it is 'ubuntu/focal64'
+
+# you can not copy Vagrantfile to work directory
+
+vagrant box add ubuntu/focal64 file:///D:\vagrantVM\vagrant-data\ubuntu-focal-vagrantbox\focal-server-cloudimg-amd64-vagrant.box
+vagrant box add xenial-server file:///home/dan/Workdir/vagrant/ubuntu-xenial64-Vagrantbox/xenial-server-cloudimg-amd64-vagrant.box
+vagrant box add ubuntu/jammy64 /home/dan/Downloads/images/ubuntu-jammy64/jammy-server-cloudimg-amd64-vagrant.box
+
+
+vagrant box list
+vagrant init ubuntu/focal64
+vagrant up
+
+
+# Vagrantfile:
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/focal64"
+end
+
+ubuntu/focal64
+focal-server-cloudimg-amd64-vagrant.box
+
+ubuntu/jammy64
+jammy-server-cloudimg-amd64-vagrant.box
+
+eurolinux-vagrant/centos-stream-9
+a6c01964-9353-453f-866f-e5300f0380de
+
+generic/centos9s
+280b637d-377b-4a5b-8814-92801b59286a
+
+generic/alpine318
+7b055041-b7a2-441d-b1d2-dbde919cd8c6
+
+ubuntu/bionic64
+bionic-server-cloudimg-amd64-vagrant.box
+

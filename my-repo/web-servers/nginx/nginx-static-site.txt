@@ -1,0 +1,81 @@
+Nginx конфиг статического сайта
+
+Статическим сайтом называется сайт в котором используются только HTML страницы, файлы CSS и Javascript. В статических сайтах PHP НЕ используется.
+
+server {
+  listen 80;
+  listen [::]:80 ipv6only=on;
+  server_name httpstatus.dieg.info;
+  root /var/www/httpstatus;
+  index index.html index.htm;
+  access_log  /var/log/nginx/httpstatus.access.log;
+  error_log  /var/log/nginx/httpstatus.error.log;
+ 
+  location / {
+    # Сначала попытка обслужить запрос как файл, затем как каталог, в случае неудачи вернет 404 ошибку.
+    try_files $uri $uri/ =404;
+   }
+}
+
+Nginx SSL настройка .well-known
+
+server {
+    listen       80;
+    server_name  localhost;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen       443 ssl;
+    server_name  localhost;
+
+    ssl_certificate      /etc/nginx/ssl/nginx.crt;
+    ssl_certificate_key  /etc/nginx/ssl/nginx.key;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}
+
+В общем случае для получения SSL сертификата Lets Encrypt необходимо во всех блоках server добавить следующий блок до других блоков location:
+
+location ~ /.well-known {
+       root /usr/share/nginx/;
+       allow all;
+}
+
+mkdir -p /usr/share/nginx/.well-known/acme-challenge
+echo Success > /usr/share/nginx/.well-known/acme-challenge/example.html
+
+Обратный прокси для SSL well-known
+
+Бывает нужно хранить SSL сертификаты в одном месте или вы превысили количество попыток получить SSL сертификат, а ждать времени нет. Очень удобно настроить на одном сервере автоматическое получение всех необходимых сертификатов. В этом случае выручит модуль ngx_http_proxy_module и функция proxy_pass. Создаем локешйн, обязательно на 80 порту, так как оп нему выдаются SSL сертификаты:
+
+server {
+  listen 80;
+...
+location ~ /.well-known {
+proxy_pass  http://xxx.xxx.xxx.xxx:80;
+}
+...
+
+На nginx куда проксируем, создавать домен для которого нужно получить SSL не нужно. Будем использовать домен по умолчанию, то есть server_name ip _; и опишем в нем локейшен
+
+server_name ip _;
+location ~ /.well-known {
+       root /usr/share/nginx/;
+       allow all;
+}
+...
+
+Всё, прокси настроено. Мы можем запустить выдачу SSL сертификата на сервере который указан в proxy_pass. Не забываем использовать post-hook для перевыдачи SSL сертификата в Nginx при использовании cron.
+
+15 1 * * * /usr/bin/certbot renew --post-hook "systemctl reload nginx"
+
+

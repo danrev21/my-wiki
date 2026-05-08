@@ -1,0 +1,3 @@
+ansible_user: den
+ansible_password: 4563
+ansible_become_password: 4563

@@ -1,0 +1,85 @@
+# https://goteleport.com/docs/
+
+# local setup:
+
+sudo apt update && sudo apt upgrade -y
+sudo curl https://goteleport.com/static/install.sh | bash -s 15.1.9
+sudo openssl req -x509 -nodes -newkey rsa:4096 -keyout /var/lib/teleport/teleport.key -out /var/lib/teleport/teleport.pem -sha256 -days 3650
+sudo teleport configure -o /etc/teleport.yaml --cluster-name=192.168.0.100 --public-addr=192.168.0.100:443 --cert-file=/var/lib/teleport/teleport.pem --key-file=/var/lib/teleport/teleport.key
+
+sudo systemctl enable teleport
+sudo systemctl start teleport
+sudo systemctl status teleport
+
+# disable 2F:
+sudo vim /etc/teleport.yaml
+
+auth_service:
+  authentication:
+    type: local
+    second_factor: off
+
+sudo systemctl restart teleport
+sudo tctl users add admin --roles=editor,access --logins=root,ubuntu,vagrant
+
+# go to link from terminal like this:
+https://192.168.0.100:443/web/invite/2cf54f2085bc5d0958ddf84ee147d814
+
+journalctl -fu teleport
+----------------------------------------------------
+
+# to restart teleport with new settings you need remove teleport.yaml or specify another file for yaml:
+sudo systemctl stop teleport
+rm -rf /etc/teleport.yaml
+sudo teleport configure -o /etc/teleport.yaml --cluster-name=teleport --public-addr=test.teleport:443
+
+===============================================
+
+apt-get install libnss3-tools
+apt install mkcert
+cd /var/lib/teleport
+mkcert teleport
+
+
+===============================================
+version: v3
+teleport:
+  nodename: teleport
+  data_dir: /var/lib/teleport
+  log:
+    output: stderr
+    severity: INFO
+    format:
+      output: text
+  ca_pin: ""
+  diag_addr: ""
+auth_service:
+  enabled: "yes"
+  listen_addr: 0.0.0.0:3025
+  cluster_name: 192.168.0.100
+  proxy_listener_mode: multiplex
+ssh_service:
+  enabled: "yes"
+  commands:
+  - name: hostname
+    command: [hostname]
+    period: 1m0s
+proxy_service:
+  enabled: "yes"
+  web_listen_addr: 0.0.0.0:443
+  public_addr: 192.168.0.100:443
+  https_keypairs: []
+  https_keypairs_reload_interval: 0s
+  acme: {}
+
+
+
+sudo apt update
+sudo curl https://goteleport.com/static/install.sh | bash -s 15.1.9
+sudo openssl req -x509 -nodes -newkey rsa:4096 -keyout /var/lib/teleport/teleport.key -out /var/lib/teleport/teleport.pem -sha256 -days 3650
+sudo ls /var/lib/teleport/
+sudo teleport configure -o /etc/teleport.yaml --cluster-name=teleport --public-addr=test.teleport:443 --cert-file=/var/lib/teleport/teleport.pem --key-file=/var/lib/teleport/teleport.key
+sudo systemctl enable --now teleport
+sudo systemctl status teleport
+
+

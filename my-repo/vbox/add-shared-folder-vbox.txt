@@ -1,0 +1,19 @@
+How to Set Up a Shared VirtualBox Folder on a Linux VM
+
+Create Host Folder
+
+Create Guest Folder
+
+Insert-Guest-Additions-CD-Image
+After installing the software, go to VirtualBox and configure the guest machine by going to Settings > Shared Folders. There you click on the add folder icon located on the right side of the window and input the Folder Path, Folder Name, and Mount Point, then click OK.
+
+To make the shared folder a permanent feature on your guest machine, you'll want to tick the Auto-mount and Make Permanent options. 
+
+Systems Configuration Menu
+Now, If you go to your VM, you'll see that there is a shared folder mounted in your home directory. If you try to open the mounted shared folder, you'll notice that it is locked. This is because you haven't added the user in the vboxsf group, which is the owner of the shared folders. To add the user to the group, open a terminal and use:
+sudo usermod -aG vboxsf username
+  or
+sudo adduser (username) vboxsf
+After adding the user to the group, reboot your system by running:
+sudo reboot
+After the reboot, you should now be able to open and access all files within the shared files folder. If you wish, you can also eject the mounted shared folder icon and still have access to the shared folder you created earlier.

@@ -1,0 +1,90 @@
+# Create tar Archive File in Linux
+tar -cvf tecmint-14-09-12.tar /home/tecmint/
+
+# Untar tar Archive File in Linux
+# Untar files in Current Directory ##
+tar -xvf public_html-14-09-12.tar
+
+# Untar files in specified Directory ##
+tar -xvf public_html-14-09-12.tar -C /home/public_html/videos/
+
+# List Content of tar Archive File in Linux
+tar -tvf uploadprogress.tar
+
+# Untar Single file from tar File in Linux
+tar -xvf cleanfiles.sh.tar cleanfiles.sh
+OR
+tar --extract --file=cleanfiles.sh.tar cleanfiles.sh
+
+-----------
+
+# Create tar.gz Archive File in Linux
+tar cvzf MyImages-14-09-12.tar.gz /home/MyImages
+OR
+tar cvzf MyImages-14-09-12.tgz /home/MyImages
+
+# Uncompress tar.gz Archive File in Linux
+tar -xvf thumbnails-14-09-12.tar.gz
+
+# List Content tar.gz Archive File in Linux
+tar -tvf staging.tecmint.com.tar.gz
+
+# Untar Single file from tar.gz File in Linux
+tar -zxvf tecmintbackup.tar.gz tecmintbackup.xml
+OR
+tar --extract --file=tecmintbackup.tar.gz tecmintbackup.xml
+
+------------
+
+The bz2 feature compresses and creates an archive file less than the size of the gzip.
+The bz2 compression takes more time to compress and decompress files than gzip, which takes less time.
+
+# Create tar.bz2 Archive File in Linux
+tar cvfj Phpfiles-org.tar.bz2 /home/php
+OR
+tar cvfj Phpfiles-org.tar.tbz /home/php
+OR 
+tar cvfj Phpfiles-org.tar.tb2 /home/php
+
+# Uncompress tar.bz2 Archive File in Linux
+tar -xvf videos-14-09-12.tar.bz2
+
+# List Content tar.bz2 Archive File in Linux
+tar -tvf Phpfiles-org.tar.bz2
+
+# Untar Single file from tar.bz2 File in Linux
+tar -jxvf Phpfiles-org.tar.bz2 home/php/index.php
+OR
+tar --extract --file=Phpfiles-org.tar.bz2 /home/php/index.php
+
+------------
+
+# Untar Multiple files from tar, tar.gz, and tar.bz2 File
+tar -xvf tecmint-14-09-12.tar "file1" "file2" 
+
+tar -zxvf MyImages-14-09-12.tar.gz "file1" "file2" 
+
+tar -jxvf Phpfiles-org.tar.bz2 "file1" "file2"
+
+-----------
+
+you can also extract group files, add files or dirs, verify, check size
+
+c – create an archive file.
+x – extract an archive file.
+v – show the progress of the archive file.
+f – filename of the archive file.
+t – viewing the content of the archive file.
+j – filter archive through bzip2.
+z – filter archive through gzip.
+r – append or update files or directories to the existing archive files.
+W – Verify an archive file.
+wildcards – Specify patterns in UNIX tar command.
+
+
+
+
+
+
+
+

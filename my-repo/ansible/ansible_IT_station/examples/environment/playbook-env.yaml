@@ -1,0 +1,19 @@
+---
+- name: Example playbook
+  hosts: all
+  gather_facts: yes
+  vars:
+    custom_bin_path: /home/vagrant/example
+  environment:
+    PATH: "{{ custom_bin_path }}:{{ ansible_env.PATH }}"
+
+  tasks:
+
+  - name: command
+    command:
+      cmd: example.sh
+    register: output
+
+  - debug:
+      var: output.stdout_lines
+  

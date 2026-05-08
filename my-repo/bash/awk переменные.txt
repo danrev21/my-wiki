@@ -1,0 +1,30 @@
+Вам нужно указать переменную в кавычках, чтобы предотвратить преобразование новых строк в пробелы:
+echo "$var" | awk 'regex'
+---------------------
+$ awk -v awkvar="$var" 'BEGIN{if (awkvar ~ "foobar"){print var}}'
+foobar
+--------------------------------------
+awk 'regex' <<< "$var"
+---------------------------------------
+Если вы хотите /grep/ с вашей переменной, у вас есть 2 варианта :
+interface=eth0
+awk "/$interface/{print}"
+или
+awk -v interface=eth0 '$0 ~ interface{print}'
+---------------------------------------------
+printf "Enter search pattern: "
+read pattern
+awk "/$pattern/ "'{ nmatches++ }
+     END { print nmatches, "found" }' /path/to/data
+------
+printf "Enter search pattern: "
+read pattern
+awk -v pat="$pattern" '$0 ~ pat { nmatches++ }
+       END { print nmatches, "found" }' /path/to/data
+---------------------------------------------
+Вы должны использовать его вне двойных кавычек. awk объединяет его без каких-либо других символов:
+awk -v value="${index}" 'BEGIN{}{print $9 >> "example_" value ".txt";}END{}'
+-----------------
+Или вы могли бы просто использовать что-то вроде :
+awk 'BEGIN{}{print $9 >> "example_'"$index"'.txt";}END{}'
+---------------------------------------------------------------

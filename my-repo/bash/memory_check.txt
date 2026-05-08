@@ -1,0 +1,15 @@
+free
+free -h
+free --mega --kilo --giga......
+free -h -t   --sum of the memory and swap in the total, used and free columns
+free -s 5    --print the memory information every five seconds
+free -s 5 -c 10   -- --- 10 раз
+ps -aux --sort -rss | head -n 10  --sorting
+ps -aux --sort -%mem | head -n 10
+
+ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head
+--------------------
+TASK10
+free -h -w -t
+ps -aux --sort -%mem | head -n 5
+ps -eo pid,ppid,cmd,%mem --sort -%mem | head -n 5

@@ -1,0 +1,47 @@
+# set up firewall
+
+sudo ufw status
+sudo ufw enable
+sudo ufw disable
+sudo ufw reset
+
+
+vim /etc/default/ufw
+
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo systemctl stop ufw
+sudo ufw allow ssh
+sudo ufw allow http
+sudo ufw allow https
+sudo ufw allow ftp
+sudo ufw allow from 192.168.0.10
+sudo ufw allow from 192.168.0.9 to any port 22
+sudo ufw allow from 192.168.0.0/24 to any port 22
+sudo systemctl start ufw
+sudo ufw enable
+sudo ufw status
+
+sudo ufw status numbered
+sudo ufw delete 5
+
+sudo ufw reset
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

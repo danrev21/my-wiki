@@ -1,0 +1,108 @@
+{
+  "testName": "Asserts Samples",
+  "tests": [
+    {
+      "name": "expecting command finishes successfully (bash way)",
+      "status": false,
+      "duration": "7ms"
+    },
+    {
+      "name": "expecting command finishes successfully (the same as above, bats way)",
+      "status": false,
+      "duration": "27ms"
+    },
+    {
+      "name": "expecting command fails (the same as above, bats way)",
+      "status": true,
+      "duration": "23ms"
+    },
+    {
+      "name": "expecting command prints exact value (bash way)",
+      "status": true,
+      "duration": "10ms"
+    },
+    {
+      "name": "expecting command prints exact value (the same as above, bats way)",
+      "status": true,
+      "duration": "27ms"
+    },
+    {
+      "name": "expecting command prints some message (bash way)",
+      "status": true,
+      "duration": "12ms"
+    },
+    {
+      "name": "expecting command prints some message (the same as above, bats way)",
+      "status": true,
+      "duration": "26ms"
+    }
+  ],
+  "summary": {
+    "success": 5,
+    "failed": 2,
+    "rating": 71.42,
+    "duration": "132ms"
+  }
+}
+{
+  "testName": "Second Test",
+  "tests": [
+    {
+      "name": "expecting command finishes successfully (the same as above, bats way)",
+      "status": false,
+      "duration": "27ms"
+    },
+    {
+      "name": "expecting command fails (the same as above, bats way)",
+      "status": true,
+      "duration": "23ms"
+    },
+    {
+      "name": "expecting command prints exact value (bash way)",
+      "status": true,
+      "duration": "10ms"
+    }
+  ],
+  "summary": {
+    "success": 2,
+    "failed": 1,
+    "rating": 66.66,
+    "duration": "60ms"
+  }
+}
+{
+  "testName": "Last Test",
+  "tests": [
+    {
+      "name": "expecting command fails (the same as above, bats way)",
+      "status": true,
+      "duration": "23ms"
+    },
+    {
+      "name": "expecting command prints exact value (bash way)",
+      "status": true,
+      "duration": "10ms"
+    },
+    {
+      "name": "expecting command prints exact value (the same as above, bats way)",
+      "status": true,
+      "duration": "27ms"
+    },
+    {
+      "name": "expecting command prints some message (bash way)",
+      "status": true,
+      "duration": "12ms"
+    },
+    {
+      "name": "expecting command prints some message (the same as above, bats way)",
+      "status": true,
+      "duration": "26ms"
+    }
+  ],
+  "summary": {
+    "success": 5,
+    "failed": 0,
+    "rating": 100,
+    "duration": "98ms"
+  }
+}

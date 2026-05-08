@@ -1,0 +1,13 @@
+total 52K
+drwxrwxr-x  2 dan dan 4.0K Dec 23 17:10 .
+drwxrwxr-x 11 dan dan 4.0K Dec 22 19:03 ..
+-rwxrwxr-x  1 dan dan  448 Dec 22 19:41 checksum.py
+-rw-rw-r--  1 dan dan  773 Dec 23 16:49 fnmatch.md
+-rw-rw-r--  1 dan dan  992 Dec 23 17:00 glob.md
+-rw-rw-r--  1 dan dan  330 Dec 23 16:49 hashlib.md
+-rw-rw-r--  1 dan dan 1.7K Dec 23 17:24 subprocess.md
+-rw-rw-r--  1 dan dan 1.9K Dec 23 17:06 tarfile.md
+-rw-rw-r--  1 dan dan   13 Dec 22 22:30 test1.txt
+-rw-rw-r--  1 dan dan   31 Dec 22 22:31 test2.txt
+-rw-rw-r--  1 dan dan    0 Dec 23 17:25 test3.txt
+-rw-rw-r--  1 dan dan  10K Dec 22 22:31 test.tar

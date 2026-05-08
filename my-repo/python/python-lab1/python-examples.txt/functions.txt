@@ -1,0 +1,204 @@
+=================================================================
+Понимание различия между параметрами и аргументами имеет основополагающее значение при работе с функциями. Эти термины часто используются как взаимозаменяемые, но они имеют разные значения: 
+    Параметры — это переменные, объявленные в определении функции. Они служат заполнителями для значений, которые будут переданы функции при ее вызове. Параметры определяются в сигнатуре функции и действуют как локальные переменные внутри функции. 
+    Аргументы — это фактические значения, предоставляемые функции при ее вызове. Они соответствуют параметрам, определенным в сигнатуре функции. Аргументы передаются при вызове функции и могут иметь различные типы данных.
+    
+-----------------------------------------------------------------    
+#!/usr/bin/env python
+
+-----------------------------------------------------------------
+def helloworld():
+    print("Hello, World!")
+
+helloworld()            
+
+------------------------------------------------------------------
+def mysum(x, y):
+    return x+y
+
+def mysum2(x, y, z):
+    return z + mysum(x, y)
+
+a = mysum(2, 3)    
+print(f"First function: {a}")   # output: 5
+
+b = mysum2(5, 1, 6)
+print(f"Second function: {b}")  # output: 12
+
+-----------------------------------------------------------------
+def mysum(x, y):
+    return x+y
+
+a = mysum          # ссылка на функцию
+print(a(2, 3))     # output: 5
+
+------------------------------------------------------------------
+def mysum(x, y):
+    return x+y
+
+def mysum2(f, x, y):
+    return f(x, y)
+
+print( mysum2(mysum, 2, 3) )    # output: 5
+
+------------------------------------------------------------------
+# Passing a List as an Argument
+def calculate_average(numbers):
+    """
+    Calculate the average of a list of numbers.
+    :param numbers: A list of numbers.
+    :return: The average of the numbers.
+    """
+    total = sum(numbers)
+    count = len(numbers)
+    return total / count
+data = [10, 20, 30, 40, 50]
+avg = calculate_average(data)
+print(avg)
+
+------------------------------------------------------------------
+ARBITRARY ARGUMENTS, *args
+------------------------------------------------------------------
+
+# output sum of values
+def add(*values):
+    sum = 0
+    for i in values:
+        sum += i
+    return sum
+
+print(add(1, 5, 2))             # output: 8
+
+-----------------------------------------------------------------
+# output sum of lists values (список как отдельный аргумент):
+def add(*values):
+    sum = 0
+    for i in values:
+        for j in i:
+            sum += j
+    return sum
+
+print(add([1,2,3],[1,2,3]))      # output: 12
+
+-----------------------------------------------------------------
+def concatenate_strings(*args):
+    """
+    Concatenate a list of strings.
+    :param args: Strings to concatenate.
+    :return: The concatenated string.
+    """
+    result = ""
+    for s in args:
+        result += s
+    return result
+
+combined = concatenate_strings("Hello, ", "world", "!")
+print(combined)               # output: Hello, world!
+
+-----------------------------------------------------------------
+# обязательный параметр first и любое кол-во *args:
+def concatenate_strings(first, *args):
+    result = first
+    for s in args:
+        result += s
+    return result
+combined = concatenate_strings("Hello, ", "great ", "world", "!")
+print(combined)           # output: Hello, great world!
+
+-----------------------------------------------------------------
+KEYWORD ARGUMENTS
+-----------------------------------------------------------------
+def greet(name, age):
+    message = f"Hello, {name}! You are {age} years old."
+    return message
+result = greet("Alice", 30)
+print(result)
+
+-----------------------------------------------------------------
+#!/usr/bin/env python
+
+def create_person_info(name, age, city):
+    """
+    Create a person's information string.
+    :param name: The person's name.
+    :param age: The person's age.
+    :param city: The person's city.
+    :return: A string containing the person's information.
+    """
+    info = f"Name: {name}, Age: {age}, City: {city}"
+    return info
+person_info = create_person_info(30, "Alice", "New York")
+# or person_info = create_person_info(age=30, name="Alice", city="New York")
+print(person_info)    # output: Name: 30, Age: Alice, City: New York
+
+-----------------------------------------------------------------
+ARBITRARY KEYWORD ARGUMENTS, **kwargs
+-----------------------------------------------------------------
+def display_info(**kwargs):
+    """
+    Display information about a person.
+    :param kwargs: Keyword arguments representing person's attributes.
+    """
+    for key, value in kwargs.items():
+        print(f"{key}: {value}")
+display_info(name="Alice", age=30, country="USA")
+# output: name: Alice
+#         age: 30
+#         country: USA
+
+-----------------------------------------------------------------
+DEFAULT PARAMETER VALUE
+-----------------------------------------------------------------
+#!/usr/bin/env python
+
+def greet(name="Stranger"):
+    """
+    Greet a person with an optional name.
+    :param name: The name of the person to greet (default is "Stranger").
+    """
+    print(f"Hello, {name}!")
+
+# Calling the function without an argument, using the default value
+greet()        # output: Hello Stranger!
+
+# Calling the function with an argument
+greet("Alice")  # output: Hello Alice!
+
+-----------------------------------------------------------------
+DOCSTRINGS
+-----------------------------------------------------------------
+"""
+text
+"""
+
+import script_name
+
+script_name.function_name?
+
+Signature: script_name.function_name(args)
+Docstring:
+Calculate the average of a list of numbers.
+:param numbers: A list of numbers.
+:return: The average of the numbers.
+File:      ~/Workdir/it_station_lab/HW/python_lessons/python_lesson_03/script_name.py
+Type:      function
+-----------------------------------------------------------------
+
+-----------------------------------------------------------------
+
+-----------------------------------------------------------------
+
+-----------------------------------------------------------------
+
+-----------------------------------------------------------------
+
+-----------------------------------------------------------------
+
+
+
+
+
+
+
+
+

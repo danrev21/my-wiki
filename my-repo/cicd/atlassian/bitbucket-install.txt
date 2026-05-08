@@ -1,0 +1,94 @@
+https://www.atlassian.com/software/stash/downloads/binary/atlassian-bitbucket-8.19.0-x64.bin
+
+su root
+
+apt install git
+perl --version
+
+# install postgre on Ubuntu:
+sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+apt-get update
+apt-get -y install postgresql-16
+
+# install postgre on Debian:
+apt install -y postgresql-common
+/usr/share/postgresql-common/pgdg/apt.postgresql.org.sh
+apt update
+apt -y install postgresql-16
+
+# Creating a bitbucket database:
+sudo -s -H -u postgres
+# Create the bitbucket user:
+/usr/lib/postgresql/16/bin/createuser -S -d -r -P -E bitbucketuser
+# Create the bitbucket database:
+/usr/lib/postgresql/16/bin/createdb -O bitbucketuser bitbucketdb
+exit
+
+# install java (jdk, not jre!):
+apt install -y openjdk-17-jdk
+
+# set java variables:
+vim /etc/environment
+PATH="$PATH:/usr/lib/jvm/java-17-openjdk-amd64/bin"
+JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64"
+source /etc/environment
+
+# create bitbucket user:
+useradd --create-home --home-dir /usr/local/bitbucket -p $(perl -e 'print crypt($ARGV[0], "password")' 09051945) --shell /bin/bash atlbitbucket
+
+# download bitbucket bin file:
+
+mkdir -p /opt/bitbucket-install
+
+wget -c https://www.atlassian.com/software/stash/downloads/binary/atlassian-bitbucket-7.10.0-x64.bin -P /opt/bitbucket-install
+
+chmod +x /opt/bitbucket-install/atlassian-bitbucket-7.10.0-x64.bin 
+
+bash /opt/bitbucket-install/atlassian-bitbucket-8.19.0-x64.bin
+
+systemctl status atlbitbucket.service
+
+============================================================
+2. CRACK KEYGEN
+
+# stop you bitbucket (!)
+systemctl stop atlbitbucket.service
+
+mkdir -p /opt/bitbucket-install/license && cd /opt/bitbucket-install/license
+
+git clone https://github.com/IAlexEgorov/AtlassianCrack.git
+
+cd AtlassianCrack/ && cp atlassian-extras-decoder-v2-3.4.1.jar /opt/atlassian/bitbucket/7.10.0/app/WEB-INF/lib
+
+Копируем Server ID сервера нужного продукта и заменяем его в license_key_bitbucket.txt
+vim license_key_bitbucket.txt
+
+Генерим ключ командой: 
+apt -y install php
+php atlassian-keygen.php -e license_key_bitbucket.txt
+
+Copy key generate in console
+Скопированный ключ используем для активации продукта
+
+systemctl start atlbitbucket.service
+
+================================================================
+
+
+============================================================
+
+# Bitbucket installation settings
+
+Installation Directory: /opt/atlassian/bitbucket/7.10.0
+Home Directory: /var/atlassian/application-data/bitbucket
+HTTP Port: 7990
+
+-------------------------------------------------------------
+
+# access to postgresql:
+192.168.11.15:5434
+
+
+
+

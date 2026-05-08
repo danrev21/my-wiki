@@ -1,0 +1,66 @@
+# Создание пользователя с дом папкой, правами рут, паролем 1563:
+sudo useradd -mG sudo -p $(perl -e 'print crypt($ARGV[0], "password")' 1563) -s /bin/bash user
+
+# Создание Imitation Root:
+sudo useradd -o -u 0 -g 0 -s /bin/bash newroot 
+Удаление Imitation Root происходит по команде sudo userdel --force newroot
+
+# аккаунт пользователя будет отключен автоматически:
+sudo useradd -G adm,cdrom,wheel -p password -s /bin/bash -e 01:01:2018 test2
+
+-------------------
+
+touch /opt/usradd
+vim /opt/usradd
+user1
+user2
+user3
+
+for i in `cat /opt/usradd` ; do useradd $i ; done
+
+# To view the created users simply type “id” in place of useradd
+for i in `cat /opt/usradd` ; do id $i ; done
+
+# OR
+awk - F: '{print $1}' /etc/passwd
+
+# To give different passwords to each user, interactively use “passwd”
+# in place of useradd.
+for i in `cat /opt/usradd` ; do passwd $i ; done
+
+----------------------------------------------------------------------
+
+vim /tmp/userlist
+vim /usr/sbin/createuser.sh
+---------
+/execute the Script using a bash shell
+#!/bin/bash
+
+//location of the txt file of usernames
+userfile=/tmp/userlist 
+
+//extracting usernames from the file one-by-one
+username=$(cat /tmp/userlist | tr 'A-Z'  'a-z')
+
+//defining the default password 
+password=$username@123
+
+//running loop  to add users
+for user in $username
+do
+       //adding users '$user' is a variable that changes
+       // usernames accordingly in txt file.
+       useradd $user
+       echo $password | passwd --stdin $user
+done
+
+//echo is used to display the total numbers of 
+//users created, counting the names in the txt 
+//file, tail to display the final details of 
+//the process on both lines(optional)
+echo "$(wc -l /tmp/userlist) users have been created" 
+tail -n$(wc -l /tmp userlist) /etc/passwd
+-------
+chmod u+x /usr/sbin/createuser.sh
+
+

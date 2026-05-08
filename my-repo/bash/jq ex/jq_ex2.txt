@@ -1,0 +1,40 @@
+$ cat json.txt
+{
+        "name": "disnetern.ru",
+        "location":
+                {
+                        "street": "Block 1",
+                        "city": "Innopolis",
+                        "country": "RU"
+                },
+        "employees":
+                [
+                        {
+                                "name": "Eugene",
+                                "division": "Network Engineer"
+                        },
+                        {
+                                "name": "Aurora",
+                                "division": "Programmer"
+                        }
+                ]
+}
+Получим простое поле:
+
+$ cat json.txt | jq '.name'
+"disnetern.ru"
+Теперь чуть сложнее, со вложенностью:
+
+$ cat json.txt | jq '.location.city'
+"Innopolis"
+Для массивов:
+
+$ cat json.txt | jq '.employees[0].name'
+"Eugene"
+Выборка конкретного списка полей:
+
+$ cat json.txt | jq '.location | {street, city}'
+{
+  "city": "Innopolis",
+  "street": "Block 1"
+}

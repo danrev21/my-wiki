@@ -1,0 +1,52 @@
+find / -type d -name 'marks' поиск папки по имени начиная с /
+find . -name "homework.txt"  поиск файла по имени
+grep -r "5tr0ng_p4ssw0rd" /data/  поиск файла с содержимым в папке
+
+find
+To find files or directories you can use find command. Use the find command followed by the directory under which you want to search. To search file by a name use the -name option followed by the name of the file.
+
+root@web-server ~ $ find /data/world/ -name berlin.txt
+/data/world/Europe/Germany/Berlin/berlin.txt
+You could use -type flag to search for files/directories. d stands for directory, f for files.
+
+root@web-server ~ $ find /data/world/ -type d -name Berlin
+/data/world/Europe/Germany/Berlin
+find also allows you to search file by modify time. Following command will find files modified in one hour.
+
+root@web-server ~ $ find /data/world/ -mtime -1
+grep
+To search within files, the most popular command in linux is grep. grep is commonly used to print lines of a file matching a pattern but it also offers a variety of other options as well.
+
+root@web-server ~ $ cat /data/files/grep.txt
+This is a first line.
+One more line.
+There are 4 lines in this file.
+And this is the last line.
+To search for the word first from the /data/files/grep.txt
+
+root@web-server ~ $ grep first /data/files/grep.txt
+This is a first line.
+To search for a pattern recursively in folder.
+
+root@web-server ~ $ grep -r "line" /data/files
+/data/files/grep.txt:This is a first line.
+/data/files/grep.txt:One more line.
+/data/files/grep.txt:There are 4 lines in this file.
+/data/files/grep.txt:And this is the last line.
+To search for the whole word called line. Use grep followed by -w flag
+
+root@web-server ~ $ grep -w line /data/files/grep.txt
+This is a first line.
+One more line.
+And this is the last line.
+grep also supports regex expressions. Following command will search for all lines that end on line.
+
+root@web-server ~ $ grep "line.$" /data/files/grep.txt
+This is a first line.
+One more line.
+And this is the last line.
+
+
+
+
+

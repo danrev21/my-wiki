@@ -1,0 +1,35 @@
+sudo su
+apt update && apt install nginx -y
+
+# investigation nginx:
+systemctl status nginx
+netstat -tlpn
+tree /etc/nginx
+cat /etc/nginx/nginx.conf
+cat /etc/nginx/nginx.conf | grep -v "#"
+cat /etc/nginx/sites-available/default
+cat /etc/nginx/sites-available/default | grep -v "#"
+
+# creating configs backups:
+cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
+
+# creating site settings:
+ll /var/www
+mkdir /var/www/83
+echo "Custom 403 error text!!!" > /var/www/83/403.txt
+mkdir /var/www/83/check
+echo "This is root location port 83!" > /var/www/83/index.html
+echo "This is port 83 /check location." > /var/www/83/check/index.html
+echo "CUSTOM ERROR 404!!!" > /var/www/83/check/404.txt
+tree /var/www/
+
+# adding conf file for our site:
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/83_config
+vim /etc/nginx/sites-available/83_config
+ll /etc/nginx/sites-available/
+ln -s /etc/nginx/sites-available/83_config /etc/nginx/sites-enabled/83_config
+ll /etc/nginx/sites-enabled/
+
+# 
+htpasswd -c /etc/nginx/.htpassw user

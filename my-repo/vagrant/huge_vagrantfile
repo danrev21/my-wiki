@@ -1,0 +1,121 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # set to false, if you do NOT want to check the correct VirtualBox Guest Additions version when booting this box
+#if defined?(VagrantVbguest::Middleware)
+#config.vbguest.auto_update = true
+#end
+  config.vm.box = "Vagrant"
+  config.vm.box_url = "https://github.com/CommanderK5/packer-centos-template/releases/download/0.7.2/vagrant-centos-7.2.box"
+  config.vm.boot_timeout = 300
+  #################################################################
+  # NETWORK
+  # https://www.vagrantup.com/docs/networking/public_network.html        
+  #################################################################
+  config.vm.network "public_network", type: "dhcp", bridge: "en0: Wi-Fi (AirPort)"
+                                       #STATIC: ip: "192.168.0.17"    
+                                       #DHCP: use_dhcp_assigned_default_route: true    
+                                       #DEFAULT NETWORK INTERFACE: public_network: "wlan0"
+  config.vm.network 'private_network', ip: "192.168.130.10", auto_config: "false"
+                                                                                    # Static IP: ip: "192.168.50.4"                   
+                                                                                    #name: "VirtualBox Host-Only Ethernet Adapter"  
+                                                                                    #virtualbox__intnet: "mynetwork"
+                                                                                    #nic_type: "virtio"
+                                                                                    #virtualbox__intnet: "mynetwork"
+                                                                                    #auto_config: false
+  config.vm.network 'private_network', ip: "192.168.130.20", auto_config: "false"
+  config.vm.network 'private_network', ip: "192.168.130.30", auto_config: "false"
+  config.vm.network 'private_network', ip: "192.168.130.40", auto_config: "false"
+  #config.vm.network :forwarded_port, guest: 5601, host: 5601
+  #config.ssh.port = 2222
+  #config.ssh.host = "192.168.130.10"
+  #config.vm.network :forwarded_port, guest: 22, host: 2222, id: "ssh", auto_correct: true
+  config.vm.provision :shell, :inline => 'sudo service network restart'
+  #################################################################
+  # SSH
+  ################################################################# 
+  config.ssh.forward_agent = true
+  config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'" # avoids 'stdin: is not a tty' error.
+  config.vm.hostname = "vagrant-ansible"
+  #config.ssh.username = "vagrant"
+  #confg.ssh.password = "vagrant"
+  #config.ssh.private_key_path = ["~/.vagrant.d/insecure_private_key"]
+   #config.ssh.private_key_path = './keys/ansible.rsa'
+  #config.ssh.insert_key = false
+  #config.vm.provision "file", source: "./keys", destination: "~/.ssh/"
+   #config.vm.provision :shell, :inline => 'sed -i -e "s/PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config'
+   #config.vm.provision :shell, :inline => 'sudo service sshd restart'
+   #config.vm.provision "shell", inline: <<-EOC
+   #    sudo sed -i -e "\\#PasswordAuthentication no# s#PasswordAuthentication no#PasswordAuthentication yes#g" /etc/ssh/sshd_config
+   #    sudo service ssh restart
+   #  EOC
+   #
+  ##################################################################
+  # VIRTUALBOX conficurations
+  ##################################################################
+config.vm.provider :virtualbox do |vb|
+  # Don't boot with headless mode
+   vb.gui = false
+   vb.name = "vagrant-ansible"
+   #v.linked_clone = true
+    #v.linked_clone = true if Vagrant::VERSION =~ /^1.8/
+   vb.customize ["modifyvm", :id, "--memory", "1024"]
+   vb.customize ["modifyvm", :id, "--vram", "128"]
+   vb.customize ["modifyvm", :id, "--cpus", "2"]
+   vb.customize ["modifyvm", :id, "--cpuexecutioncap", "75"]
+   vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+   vb.customize ["modifyvm", :id, "--ioapic", "on"]
+   vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    #unless File.exist?(disk)
+     #vb.customize ['createhd', '--filename', disk, '--variant', 'Fixed', '--size', 1 * 1024]
+      ##vb.customize ['createhd', '--filename', disk, '--size', 500 * 1024]
+     #end
+    #vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
+  end
+  ##################################################################
+  # RSYNCd
+  ##################################################################
+  #  config.vm.synced_folder ".", "/home/vagrant/test", create: "./test", owner:"captain", group:"staff", mount_options:["dmode=776", "fmode=775"], disabled: true
+  #
+  #config.vm.synced_folder ".", "/home/vagrant", type: "rsync", rsync__exclude: ["Vagrantfile", ".vagrant", "keys"], dest_port: 2222
+  #config.vm.synced_folder ".", "/home/vagrant", type: "rsync",
+  # rsync__args: [
+  #           "--verbose", "--archive", "-z", "--copy-links", # defaults
+  #            "--ignore-existing", "--include=test2.txt", "--exclude='*'"
+  #                     ]
+  ##################################################################    
+  #                     ANSIBLE
+  ################################################################## 
+  config.vm.provision "shell", inline: <<-SHELL
+   yum --disablerepo=* --enablerepo=epel list
+   yum update -y && yum upgrade -y 
+   yum install epel-release htop net-tools -y &> /dev/null
+   yum install ansible -y
+  SHELL
+  config.vm.provision "ansible" do |ansible|
+   ansible.sudo = true
+   ansible.verbose = "vvv"
+   ansible.playbook = "./ansible/setup.yml"
+   ansible.inventory_path = "./ansible/inventory"
+   ansible.host_key_checking = "false"
+   ansible.limit = "all"
+  end
+  ##################################################################
+  # SHELL scripts
+  ##################################################################
+   config.vm.provision "shell", inline: <<-SHELL
+      echo "HELLO";
+      #service network restart
+     SHELL
+   config.vm.provision :shell, :path => "shell/test.sh"   
+ #################################################################  
+ # another VM
+ ################################################################# 
+ #config.vm.define "web" do |web|
+ # web.vm.box = "apache"
+ #end
+ #################################################################  
+end

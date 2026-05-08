@@ -1,0 +1,62 @@
+===============================================================
+
+# prepare partition for backup using URBackup tool:
+
+df -h
+
+fdisk -l
+
+# creating new partition:
+fdisk /dev/sda1       # (n t L 83)
+
+fdisk -l
+
+# creating filesystem:
+mkfs.btrfs /dev/sda1  # ( -f )
+
+cd / && mkdir backup
+
+mount /dev/sda1 /backup
+# or for automount:
+vim /etc/fstab
+# add:   /dev/sda1 /backup btrfs defaults 0  0
+# to apply changes:
+mount -a
+
+mount
+df -h
+
+# install URBackup as shown on official site
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

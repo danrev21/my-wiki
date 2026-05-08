@@ -1,0 +1,66 @@
+Operator	Description			Example					Result
+-gt		Greater Than			if [ 5 -gt 3 ]; then			True
+-lt		Less Than			if [ 3 -lt 5 ]; then			True
+-eq 		Equal (numerical)		if [ $num1 -eq $num2 ]; then		True
+-ne 		Not Equal (numerical)		if [ $num1 -ne $num2 ]; then		True
+== 		Equal (string)			if [ "$str1" == "$str2" ]; then		True
+!= 		Not Equal (string)		if [ "$str1" != "$str2" ]; then		True
+-ge 		Greater Than or Equal To 	if [ 5 -ge 5 ]; then			True
+-le 		Less Than or Equal To		if [ 3 -le 5 ]; then			True
+<		String Comparison (alphabet)	if [ "$str1" \< "$str2" ]; then		True
+>		String Comparison (alphabet)	if [ "$str1" \> "$str2" ]; then		True
+
+if [ $a -eq $b ]; then echo "conditional is right"; fi
+if [[ $a -eq $b ]]; then echo "conditional is right"; fi
+if [[ $a == $b ]]; then echo "conditional is right"; fi
+if [ "asd" \> "zxcv" ]; then echo "conditional is right"; else echo "not right"; fi
+
+[ -f "data.txt" ] && echo "File data.txt found!"
+cp data.txt backup.txt 2> /dev/null
+[ -f "data.txt" ] || echo "File data.txt not found!"
+
+# if [ ! -f data.txt ]
+# then
+#     echo "File does not exist in Bash"
+# else
+#     echo "File data.txt found!"
+#     cp data.txt backup.txt 2> /dev/null
+# fi
+---------------------------------------------------
+WEEKOFFSET=$[ $(date +"%V") % 2 ]
+# Test if we have a remainder.  If not, this is an even week so send a message.
+# Else, do nothing.
+if [ $WEEKOFFSET -eq "0" ]; then
+  echo "Sunday evening, put out the garbage cans." | mail -s "Garbage cans out" your@your_domain.org
+fi
+---------------------------------------------------
+if (("$SCORE" < "0"))  || (("$SCORE" > "100")); then
+    echo "Be serious.  Common, try again: "
+----------------------------------------------------
+#!/bin/bash
+magicNumber=$(( $RANDOM % 100 ))
+echo "Guess the number from 1 to 100:"
+while true; do
+   read x
+   if [ "$x" -lt "$magicNumber" ]; then echo "greater"
+   elif [ "$x" -gt "$magicNumber" ]; then echo "less"
+   else echo "You win!"; break; fi
+done
+-----------------------------------------------------
+
+while true; do
+   read name
+   if [ "$name" == stop ]; then break
+   else echo "Hello, $name"; fi
+done
+-------------------------------------------------
+#!/bin/bash
+magicNumber=$(( $RANDOM % 100 ))
+echo "Guess the number from 1 to 100:"
+while true; do
+   read x
+   if [ "$x" -lt "$magicNumber" ]; then echo "greater"
+   elif [ "$x" -gt "$magicNumber" ]; then echo "less"
+   else echo "You win!"; break; fi
+done
+~

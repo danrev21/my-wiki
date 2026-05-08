@@ -1,0 +1,9 @@
+---
+# tasks file for test1
+- name: debug1
+  debug:
+    msg: "{{ echo }}"
+
+- name: debug2
+  debug:
+    msg: "{{ echo }}"

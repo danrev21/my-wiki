@@ -1,0 +1,39 @@
+# Бэкап только конфигурации (быстрый и лёгкий)
+# Когда использовать
+# Ежедневное резервное копирование
+# Когда нужно быстро восстановить мониторинг после сбоя
+# При ограниченном дисковом пространстве для бэкапов
+
+mysqldump -u zabbix -p \
+  --single-transaction \
+  --skip-lock-tables \
+  --ignore-table=zabbix.history \
+  --ignore-table=zabbix.history_uint \
+  --ignore-table=zabbix.history_str \
+  --ignore-table=zabbix.history_text \
+  --ignore-table=zabbix.history_log \
+  --ignore-table=zabbix.trends \
+  --ignore-table=zabbix.trends_uint \
+  --ignore-table=zabbix.events \
+  --ignore-table=zabbix.auditlog \
+  zabbix > /backup/zabbix_config_$(date +%Y%m%d).sql
+
+
+
+# Полный бэкап БД (для миграций и disaster recovery)
+# Когда использовать
+# Перед крупными обновлениями Zabbix
+# При переносе на новый сервер (как в вашем случае)
+# Для долгосрочного архивирования
+
+mysqldump -u root -p \
+  --single-transaction \
+  --routines \
+  --triggers \
+  --all-databases \
+  --events \
+  --log-error=/tmp/mysqldump_error.log \
+  > /backup/zabbix_full_$(date +%Y%m%d_%H%M%S).sql
+
+# восстановлени дампа
+mysql -u root -p < /tmp/full_zabbix_backup.sql

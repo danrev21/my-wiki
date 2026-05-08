@@ -1,0 +1,310 @@
+curl cheat.sh/tcpdump
+ cheat.sheets:tcpdump 
+# tcpdump
+# Network packet analyzer that captures and displays packet headers.
+
+# Capture packets from a specific network interface
+tcpdump -i eth0 
+
+# Capture only a certain number of packets
+tcpdump -c 10
+
+# Capture and write packets to a file for later analysis
+tcpdump -w capture.pcap
+
+# Read packets from a file
+tcpdump -r capture.pcap
+
+# Capture packets from a specific host
+tcpdump host 192.168.1.1
+
+# Capture packets from a specific port
+tcpdump port 80
+
+# Capture packets based on a specific protocol (e.g., TCP)
+tcpdump tcp
+
+# Capture packets and filter for HTTP traffic
+tcpdump 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)'
+
+# Capture packets from a specific source IP
+tcpdump src 192.168.1.1
+
+# Capture packets to a specific destination IP
+tcpdump dst 192.168.1.2
+
+# Display captured packets with timestamp
+tcpdump -tttt
+
+# Capture packets and display with verbose output
+tcpdump -v
+
+# Capture packets and display with extra verbose output
+tcpdump -vv
+
+# Capture packets and resolve hostnames
+tcpdump -n
+
+# Capture packets and disable resolving hostnames
+tcpdump -nn
+
+# Capture packets and show link-layer headers
+tcpdump -e
+
+# Capture IPv6 packets
+tcpdump ip6
+
+# Capture packets larger than a specific size
+tcpdump greater 1024
+
+ cheat:tcpdump 
+# TCPDump is a packet analyzer. It allows the user to intercept and display TCP/IP
+# and other packets being transmitted or received over a network. (cf Wikipedia).
+# Note: 173.194.40.120 => google.com
+
+# Intercepts all packets on eth0
+tcpdump -i eth0
+
+# Intercepts all packets from/to 173.194.40.120
+tcpdump host 173.194.40.120
+
+# Intercepts all packets on all interfaces from / to 173.194.40.120 port 80
+# -nn => Disables name resolution for IP addresses and port numbers.
+tcpdump -nn -i any host 173.194.40.120 and port 80
+
+# Make a grep on tcpdump (ASCII)
+# -A  => Show only ASCII in packets.
+# -s snaplen => Capture only snaplen bytes of data from each packet.
+#    By default, tcpdump captures 262144 bytes.
+#    Packets truncated because of a limited snapshot are indicated in the
+#    output with '[|protocol]'.
+tcpdump -i any -A host 173.194.40.120 and port 80 | grep 'User-Agent'
+
+# With ngrep
+# -d eth0 => To force eth0 (else ngrep work on all interfaces)
+# -s0 => force ngrep to look at the entire packet. (Default snaplen: 65536 bytes)
+ngrep 'User-Agent' host 173.194.40.120 and port 80
+
+# Intercepts all packets on all interfaces from / to 8.8.8.8 or 173.194.40.127 on port 80
+tcpdump 'host ( 8.8.8.8 or 173.194.40.127 ) and port 80' -i any
+
+# Intercepts all packets SYN and FIN of each TCP session.
+tcpdump 'tcp[tcpflags] & (tcp-syn|tcp-fin) != 0'
+
+# To display SYN and FIN packets of each TCP session to a host that is not on our network
+tcpdump 'tcp[tcpflags] & (tcp-syn|tcp-fin) != 0 and not src and dst net local_addr'
+
+# To display all IPv4 HTTP packets that come or arrive on port 80 and that contain only data (no SYN, FIN no, no packet containing an ACK)
+tcpdump 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)'
+
+# Saving captured data
+tcpdump -w file.cap
+
+# Reading from capture file
+tcpdump -r file.cap
+
+# Show content in hexa
+# Change -x to -xx => show extra header (ethernet).
+tcpdump -x
+
+# Show content in hexa and ASCII
+# Change -X to -XX => show extra header (ethernet).
+tcpdump -X
+
+# Note on packet maching:
+# Port matching:
+# - portrange 22-23
+# - not port 22
+# - port ssh
+# - dst port 22
+# - src port 22
+#
+# Host matching:
+# - dst host 8.8.8.8
+# - not dst host 8.8.8.8
+# - src net 67.207.148.0 mask 255.255.255.0
+# - src net 67.207.148.0/24
+
+ tldr:tcpdump 
+# tcpdump
+# Dump traffic on a network.
+# More information: <https://www.tcpdump.org>.
+
+# List available network interfaces:
+tcpdump -D
+
+# Capture the traffic of a specific interface:
+tcpdump -i eth0
+
+# Capture all TCP traffic showing contents (ASCII) in console:
+tcpdump -A tcp
+
+# Capture the traffic from or to a host:
+tcpdump host www.example.com
+
+# Capture the traffic from a specific interface, source, destination and destination port:
+tcpdump -i eth0 src 192.168.1.1 and dst 192.168.1.2 and dst port 80
+
+# Capture the traffic of a network:
+tcpdump net 192.168.1.0/24
+
+# Capture all traffic except traffic over port 22 and save to a dump file:
+tcpdump -w dumpfile.pcap port not 22
+
+# Read from a given dump file:
+tcpdump -r dumpfile.pcap
+root@sadaron:~# curl cheat.sh/tcpdump
+ cheat.sheets:tcpdump 
+# tcpdump
+# Network packet analyzer that captures and displays packet headers.
+
+# Capture packets from a specific network interface
+tcpdump -i eth0 
+
+# Capture only a certain number of packets
+tcpdump -c 10
+
+# Capture and write packets to a file for later analysis
+tcpdump -w capture.pcap
+
+# Read packets from a file
+tcpdump -r capture.pcap
+
+# Capture packets from a specific host
+tcpdump host 192.168.1.1
+
+# Capture packets from a specific port
+tcpdump port 80
+
+# Capture packets based on a specific protocol (e.g., TCP)
+tcpdump tcp
+
+# Capture packets and filter for HTTP traffic
+tcpdump 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)'
+
+# Capture packets from a specific source IP
+tcpdump src 192.168.1.1
+
+# Capture packets to a specific destination IP
+tcpdump dst 192.168.1.2
+
+# Display captured packets with timestamp
+tcpdump -tttt
+
+# Capture packets and display with verbose output
+tcpdump -v
+
+# Capture packets and display with extra verbose output
+tcpdump -vv
+
+# Capture packets and resolve hostnames
+tcpdump -n
+
+# Capture packets and disable resolving hostnames
+tcpdump -nn
+
+# Capture packets and show link-layer headers
+tcpdump -e
+
+# Capture IPv6 packets
+tcpdump ip6
+
+# Capture packets larger than a specific size
+tcpdump greater 1024
+
+ cheat:tcpdump 
+# TCPDump is a packet analyzer. It allows the user to intercept and display TCP/IP
+# and other packets being transmitted or received over a network. (cf Wikipedia).
+# Note: 173.194.40.120 => google.com
+
+# Intercepts all packets on eth0
+tcpdump -i eth0
+
+# Intercepts all packets from/to 173.194.40.120
+tcpdump host 173.194.40.120
+
+# Intercepts all packets on all interfaces from / to 173.194.40.120 port 80
+# -nn => Disables name resolution for IP addresses and port numbers.
+tcpdump -nn -i any host 173.194.40.120 and port 80
+
+# Make a grep on tcpdump (ASCII)
+# -A  => Show only ASCII in packets.
+# -s snaplen => Capture only snaplen bytes of data from each packet.
+#    By default, tcpdump captures 262144 bytes.
+#    Packets truncated because of a limited snapshot are indicated in the
+#    output with '[|protocol]'.
+tcpdump -i any -A host 173.194.40.120 and port 80 | grep 'User-Agent'
+
+# With ngrep
+# -d eth0 => To force eth0 (else ngrep work on all interfaces)
+# -s0 => force ngrep to look at the entire packet. (Default snaplen: 65536 bytes)
+ngrep 'User-Agent' host 173.194.40.120 and port 80
+
+# Intercepts all packets on all interfaces from / to 8.8.8.8 or 173.194.40.127 on port 80
+tcpdump 'host ( 8.8.8.8 or 173.194.40.127 ) and port 80' -i any
+
+# Intercepts all packets SYN and FIN of each TCP session.
+tcpdump 'tcp[tcpflags] & (tcp-syn|tcp-fin) != 0'
+
+# To display SYN and FIN packets of each TCP session to a host that is not on our network
+tcpdump 'tcp[tcpflags] & (tcp-syn|tcp-fin) != 0 and not src and dst net local_addr'
+
+# To display all IPv4 HTTP packets that come or arrive on port 80 and that contain only data (no SYN, FIN no, no packet containing an ACK)
+tcpdump 'tcp port 80 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)'
+
+# Saving captured data
+tcpdump -w file.cap
+
+# Reading from capture file
+tcpdump -r file.cap
+
+# Show content in hexa
+# Change -x to -xx => show extra header (ethernet).
+tcpdump -x
+
+# Show content in hexa and ASCII
+# Change -X to -XX => show extra header (ethernet).
+tcpdump -X
+
+# Note on packet maching:
+# Port matching:
+# - portrange 22-23
+# - not port 22
+# - port ssh
+# - dst port 22
+# - src port 22
+#
+# Host matching:
+# - dst host 8.8.8.8
+# - not dst host 8.8.8.8
+# - src net 67.207.148.0 mask 255.255.255.0
+# - src net 67.207.148.0/24
+
+ tldr:tcpdump 
+# tcpdump
+# Dump traffic on a network.
+# More information: <https://www.tcpdump.org>.
+
+# List available network interfaces:
+tcpdump -D
+
+# Capture the traffic of a specific interface:
+tcpdump -i eth0
+
+# Capture all TCP traffic showing contents (ASCII) in console:
+tcpdump -A tcp
+
+# Capture the traffic from or to a host:
+tcpdump host www.example.com
+
+# Capture the traffic from a specific interface, source, destination and destination port:
+tcpdump -i eth0 src 192.168.1.1 and dst 192.168.1.2 and dst port 80
+
+# Capture the traffic of a network:
+tcpdump net 192.168.1.0/24
+
+# Capture all traffic except traffic over port 22 and save to a dump file:
+tcpdump -w dumpfile.pcap port not 22
+
+# Read from a given dump file:
+tcpdump -r dumpfile.pcap

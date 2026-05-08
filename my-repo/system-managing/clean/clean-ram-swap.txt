@@ -1,0 +1,24 @@
+# https://losst.pro/kak-osvobodit-pamyat-linux
+ 
+# скрипт очистки оперативной памяти каждую ночь:
+ 
+ sudo vim /usr/local/bin/clearcache.sh
+ 
+#!/bin/bash
+sync ; echo 1 > /proc/sys/vm/drop_caches
+ 
+ 
+ sudo chmod 755 /usr/local/bin/clearcache.sh
+ sudo crontab -e
+
+0 2 * * * /usr/local/bin/clearcache.sh
+
+# clear swap:
+ swapoff -a && swapon -a
+
+# clear process from mem:
+ ps -e -o pid,user,%mem,command --sort %mem 
+ kill -TERM 5363 
+ 
+ echo 1000 > /proc/sys/vm/vfs_cache_pressure
+ Если его уменьшить ядро будет реже удалять страницы и это приведет к очень быстрому увеличению кэша. При нуле страницы вообще не будут удаляться. Если значение больше 100, размер кэша будет увеличиваться медленнее и неиспользуемые страницы будут сразу удаляться.

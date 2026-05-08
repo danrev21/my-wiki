@@ -1,0 +1,131 @@
+stages:
+    - homework1
+    - homework2
+    - homework3
+    - homework4
+    - homework5_1
+#  - homework5_2
+#  - homework5_3
+#  - homework6
+
+homework1:
+    stage: homework1
+    image: python:3.8
+    script:
+        - cd homework1
+        - pip install -r requirements.txt
+        - echo "Start testing..."
+        - tox
+        - echo "Verify screenshot"
+        - if file screenshot | grep -qE "image|bitmap"; then echo "screenshot is OK"; else echo "Please add screenshot"; exit 1; fi
+        - if grep -q termcolor apple.py; then echo "termcolor is imported"; else echo "Please use termcolor to highlight caption"; exit 1; fi
+        - echo "Done"
+
+homework2:
+    stage: homework2
+    image: python:3.8
+    script:
+        - cd homework2
+        - pip install -r requirements.txt
+        - echo "Start testing..."
+        - tox
+        - echo "Done"
+
+homework3:
+    stage: homework3
+    image: python:3.8
+    script:
+        - cd homework3
+        - echo "Check class presence..."
+        - if grep -q class snapshot/snapshot.py; then echo "class is implemented"; else echo "Please implement at least one class"; exit 1; fi
+        - if grep -q pass snapshot/snapshot.py; then echo "Don't use ''pass'"; exit 1; fi
+        - echo "Check package..."
+        - pip install .
+        - snapshot --help
+        - pip uninstall -y snapshot
+        - if grep -q snapshot README.md; then echo "README.md is updated"; else echo "Please add README.md and provide description of snapshot util"; exit 1; fi
+        - pip install -r requirements.txt
+        - echo "Start testing..."
+        - tox
+        - echo "Done"
+
+homework4:
+    stage: homework4
+    image: python:3.8
+    script:
+        - cd homework4
+        - pip install -r requirements.txt
+        - echo "Start testing..."
+        - tox
+        - echo "Check output..."
+        - if grep -q "{% endfor %}" vhosts.j2; then echo "for-loop is here"; else echo "Please add for-loop"; exit 1; fi
+        - if grep -q "{% endif %}" vhosts.j2; then echo "if-statement is here"; else echo "Please add if-statement"; exit 1; fi
+        - cp vhosts.conf vhosts_copy.conf
+        - python conf.py
+        - if diff -q vhosts.conf vhosts_copy.conf; then echo "OK"; else  echo "generated vhosts.conf differs from the provided vhosts.conf"; exit 1; fi
+        - echo "Done"
+
+homework5_1:
+    stage: homework5_1
+    image: python:3.8
+    script:
+        - cd homework5
+        - pip install -r requirements.txt
+        - echo "Start testing..."
+        - tox
+        - echo "Start integration tests..."
+        - cp $INTEGRATION_TEST tests/integration/check_requests.py
+        - python -m tests.integration.check_requests
+        - echo "Done"
+
+#homework5_2:
+#    stage: homework5_2
+#    image: python:3.8
+#    script:
+#        - cd homework5
+#        - pip install -r requirements.txt
+#        - echo "Check code coverage presence..."
+#        - if grep -q "with-coverage" tox.ini; then echo "coverage is checked"; else echo "Please add coverage check"; exit 1; fi
+#        - if grep -q "cover-min-percentage=70" tox.ini; then echo "coverage is checked"; else echo "Please add coverage check"; exit 1; fi
+#        - if grep -q -E "[\"'][-a-zA-Z0-9\._~\+/]{20}[\"']" handlers/merge_requests.py; then echo "TOKEN has to be read from env"; exit 1; fi
+#        - if grep -q -E "Bearer [-a-zA-Z0-9\._~\+/]{20}[\"']" handlers/merge_requests.py; then echo "TOKEN has to be read from env"; exit 1; fi
+#        - if grep -q -E "[\"'][-a-zA-Z0-9\._~\+/]{20}[\"']" tests/units/*.py; then echo "TOKEN hasn't be used in tests. External calls are not allowed."; exit 1; fi
+#        - if grep -q -E "Bearer [-a-zA-Z0-9\._~\+/]{20}[\"']" tests/units/*.py; then echo "TOKEN hasn't be used in tests. External calls are not allowed."; exit 1; fi
+#        - echo "127.0.0.1 git.epam.com" >> /etc/hosts
+#        - echo "Start testing..."
+#        - tox
+#        - echo "Done"
+#
+#homework5_3:
+#    stage: homework5_3
+#    services:
+#        - docker:dind
+#    variables:
+#        DOCKER_HOST: tcp://localhost:2375/
+#    image: docker/compose
+#    script:
+#        - cd homework5
+#        - while ! nc -z localhost 2375 ; do sleep 1 ; done
+#        - echo "Verify build.sh"
+#        - sh build.sh
+#        - docker-compose up -d
+#        - apk add curl
+#        - if curl localhost:5000 | grep "Hello, World!"; then echo "Container is running"; else echo "Container doesn't respond"; exit 1; fi
+#        - docker-compose down
+#        - echo "Done"
+#
+#homework6:
+#    stage: homework6
+#    image: python:3.8
+#    before_script:
+#        - apt-get update
+#        - apt-get -y install zip unzip
+#        - pip install tox==3.23.1
+#    script:
+#        - cd homework6
+#        - echo "Start testing..."
+#        - tox
+#        - if grep -q "logging" clean_app.py; then echo "logging is added"; else echo "Please add logging"; exit 1; fi
+#        - echo "Start integration tests..."
+#        - sh tests/data/check.sh
+#        - echo "Done"

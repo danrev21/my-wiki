@@ -1,0 +1,51 @@
+=============================================================
+name = "Alice"
+age = 30
+string = "My name is {} and I am {} years old.".format(name, age)
+
+string = "My name is {name} and I am {age} years old.".format(age=30, name="Alice")
+
+string = "My name is {0} and I am {1} years old.".format(name, age)
+
+print(string)
+Out: 'My name is Alice and I am 30 years old.'
+
+------------------------------------------------------------
+string = "My name is {} and I am {} years old."
+name = "Alice"
+age = 30
+string.format(name, age)
+Out: 'My name is Alice and I am 30 years old.'
+
+-------------------------------------------------------------
+def greet(name, age):
+    message = f"Hello, {name}! You are {age} years old."
+    return message
+
+result = greet("Alice", 30)
+print(result)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

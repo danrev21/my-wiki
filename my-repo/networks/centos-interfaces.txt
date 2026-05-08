@@ -1,0 +1,30 @@
+ifconfig
+nmcli d
+nmcli connection show
+nmcli device show
+
+cat /etc/sysconfig/network-scripts/ifcfg-enp0s8
+
+# static IP conf:
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=none
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+NAME=enp0s8
+UUID=8d211ea5-4886-441e-87a4-aef816189b19
+DEVICE=enp0s8
+ONBOOT=yes
+IPADDR=192.168.0.50
+NETMASK=255.255.255.0
+GATEWAY=192.168.0.1
+DNS=213.184.238.6
+DNS=8.8.8.8
+
+
+sudo systemctl restart network
+
+ifup enp0s8
+ifdown enp0s8
+

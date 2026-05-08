@@ -1,0 +1,45 @@
+Конфигурационный файл nginx, который выполняет редирект 
+из интернета на сервис jira в локальной сети, без шифрования ssl.
+
+server {
+    listen 80;
+    server_name jira.example.com;
+
+    access_log /var/log/nginx/jira_access.log;
+    error_log /var/log/nginx/jira_error.log;
+
+    location / {
+        proxy_pass http://192.168.1.100:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        
+        proxy_connect_timeout 5s; // Время ожидания соединения с бэкенд сервером
+        proxy_read_timeout 30s; // Время ожидания ответа от бэкенд сервера
+        proxy_send_timeout 10s; // Время ожидания отправки данных на бэкенд сервер
+        proxy_buffering on; // Включение буферизации ответа от бэкенд сервера
+    }
+}
+
+Этот файл следует поместить в директорию /etc/nginx/sites-available/ на вашем сервере. 
+После этого, создайте символическую ссылку на этот файл в директорию /etc/nginx/sites-enabled/, 
+чтобы активировать его. После внесения изменений, перезапустите службу Nginx для применения конфигурации.
+Выполните следующие команды для перемещения и активации файла конфигурации:
+1. Переместите файл конфигурации в директорию sites-available:
+sudo mv /путь_к_вашему_файлу/jira.conf /etc/nginx/sites-available/jira.conf
+2. Создайте символическую ссылку в директорию sites-enabled:
+sudo ln -s /etc/nginx/sites-available/jira.conf /etc/nginx/sites-enabled/jira.conf
+3. Перезапустите службу Nginx:
+sudo systemctl restart nginx
+После выполнения этих шагов, ваш файл конфигурации для Jira будет активирован и применен к серверу Nginx.
+	
+Вы можете разместить файл конфигурации Nginx в любой директории на вашем сервере. Однако, для обеспечения удобства управления конфигурациями и соблюдения стандартной практики, рекомендуется использовать стандартные директории sites-available и sites-enabled.
+
+Если вы хотите разместить файл конфигурации в другой директории, вам нужно будет указать этот путь в основном конфигурационном файле Nginx (nginx.conf). Вы можете использовать директиву include внутри блока http, чтобы указать путь к вашему файлу конфигурации.
+
+Пример использования директивы include в файле nginx.conf:
+http {
+    include /путь_к_вашему_файлу/jira.conf;
+    ...
+}

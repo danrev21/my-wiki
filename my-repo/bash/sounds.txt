@@ -1,0 +1,80 @@
+# beep sound to a speaker:
+echo -e '\a'
+echo -e '\007'
+printf '\a'
+printf '\007'
+tput bel
+
+# using examples:
+wget https://www.tweetails.com/result.php?taskid={3900000..3900002} && echo -e '\a'
+
+ssh user@remote-machine
+sudo sh -c "echo -e '\a' > /dev/console"
+
+
+# for playing back audio files:
+paplay /usr/share/sounds/freedesktop/stereo/bell.oga
+paplay /usr/share/sounds/gnome/default/alerts/drip.ogg
+paplay /usr/share/sounds/mate/default/alerts/drip.ogg
+
+# Using play Command:
+apt install sox
+
+play -n synth 0.1 sine 880 vol 0.5
+play -n synth pl G2 pl B2 pl D3 pl G3 pl D4 pl G4 \
+    delay 0 .05 .1 .15 .2 .25 remix - fade 0 4 .1 norm -1
+play -n synth \
+pl F4  pl A4  pl C5  pl F5  pl C4  pl G4  pl C5  pl E5  pl D4  pl F4  \
+pl A4  pl D5  pl A3  pl F4  pl A4  pl C5  pl F5  pl C4  pl G4  pl C5  \
+pl E5  pl D4  pl F4  pl A4  pl D5  pl A3  pl E4  pl A4  pl C5  pl Bb3 \
+pl D4  pl F4  pl Bb4 pl F3  pl C4  pl F4  pl A4  pl Bb3 pl D4  pl F4  \
+pl Bb4 pl C4  pl E4  pl G4  pl C5  pl F4  pl A4  pl C5  pl F5  pl C4  \
+pl G4  pl C5  pl E5  pl D4  pl F4  pl A4  pl D5  pl A3  pl E4  pl A4  \
+pl C5  pl Bb3 pl D4  pl F4  pl Bb4 pl F3  pl C4  pl F4  pl A4  pl Bb3 \
+pl D4  pl F4  pl Bb4 pl C4  pl E4  pl G4  pl C5 \
+pl A4  pl G4  pl F4  pl E4  pl D4  pl C4  pl D4  pl E4 \
+delay \
+0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 \
++0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 \
++0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 \
++0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 \
++0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 \
++0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 \
++0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 \
++0.175 +0.175 +0.175 +0.175 +0.175 +0.175 +0.175 \
++0.700 +0.700 +0.700 +0.700 +0.700 +0.700 +0.700 +0.700 \
+\
+remix - fade 0 20 .1 norm -1
+
+# save the melody above into a file by using sox command:
+sox -n pachelbelcanon.wav synth \
+pl F4 pl A4 pl C5 pl F5 pl C4 pl G4 pl C5 pl E5 pl D4 pl F4 \
+pl A4 pl D5 pl A3 pl F4 pl A4 pl C5 pl F5 pl C4 pl G4 pl C5 \
+...
+remix - fade 0 20 .1 norm -1
+
+# for playing back audio MP3 files:
+apt install sox
+sudo apt-get install sox libsox-fmt-all
+play "/home/dan/Downloads/Metallica - Fade To Black.mp3"
+
+# script random playing back audiolist MP3:
+
+#!/bin/bash
+
+ls /home/dan/Music | sort -R | tail -$N | while read file; do
+    # Something involving $file, or you can leave
+    # off the while to just get the filenames
+    play "/home/dan/Music/$file"
+    #echo $file
+done
+
+----------------------------------------------------
+# using plaers:
+vlc -Z --play-and-stop /home/dan/Music 2> /dev/null
+mplayer ...
+smplayer ...
+
+
+
+

@@ -1,0 +1,39 @@
+mkdir empty full final
+touch full/file1
+cp -r empty final
+mv empty final/empty_moved
+mkdir full/nested
+cp full/file1 final && cp -r full/nested final
+cp -r full final
+mv full final/full_moved
+
+yum install tree -y command  -Install tree utility using 
+Output:
+tree /<your_user_home_directory> command should look like this:
+
+---------------------------------------------------------------
+# Move all files except one:
+
+# way to do is with backticks:
+mv `ls -1 ~/Linux/Old/ | grep -v Tux.png` ~/Linux/New/
+
+# Use backslash with ls instead to prevent using it with alias, 
+i.e. mostly ls is aliased as ls --color:
+mv `\ls -1 ~/Linux/Old/ | grep -v Tux.png` ~/Linux/New/
+
+mv ~/Linux/Old/!(Tux.png) ~/Linux/New/
+
+mv $(ls ~/folder | grep -v ~/folder/exclude.png) ~/destination
+
+# modify the tux filename so that your move command will not match:
+mv Tux.png .Tux.png
+mv * ~/somefolder
+mv .Tux.png Tux.png
+
+# xargs way:
+find ~/Linux/Old -maxdepth 1 -mindepth 1 -not -name Tux.png -print0 | xargs -0 mv -t ~/Linux/New
+
+# simple moves that exclude certain files or directories:
+ls -1 | grep -v ^$EXCLUDE | xargs -I{} mv {} $TARGET
+
+

@@ -1,0 +1,115 @@
+===================================================================
+https://github.com/Nyr
+
+sudo apt install nginx
+sudo vim /etc/nginx/sites-available/mysite.ru.conf
+
+server {
+  listen 80;
+  server_name mysite.ru;
+  
+  location / {
+    proxy_set_header        Host $host;
+    proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header        X-Forwarded-Proto $scheme;
+    
+    client_max_body_size 0;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
+    add_header Referrer-Policy "same-origin";
+  
+    proxy_pass              http://10.8.0.2:80;
+    }
+}
+
+cd /etc/nginx/sites-enabled
+rm default.conf
+ln -s ../sites-available/mysite.ru.conf
+sudo certbot --nginx
+sudo nginx -t
+sudo nginx -s reload
+
+# troubleshooting nginx: 
+# (https://linuxhostsupport.com/blog/how-to-fix-502-bad-gateway-error-in-nginx/)
+sudo lsof -i :80
+sudo netstat -pltn | grep 80
+sudo grep -rl 80 /etc
+
+
+====conf after let's encrypt
+server {
+  server_name your-domain.com;
+
+  location / {
+    proxy_set_header        Host $host;
+    proxy_set_header        X-Real-IP $remote_addr;
+    proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header        X-Forwarded-Proto $scheme;
+
+    client_max_body_size 0;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
+    add_header Referrer-Policy "same-origin";
+
+    proxy_pass              http://10.8.0.3:80;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/your-domain.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/your-domain.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = your-domain.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+  listen 80;
+  server_name marsfine.ru;
+    return 404; # managed by Certbot
+
+
+}
+===========================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+server {
+listen 443;
+ssl on;
+ssl_certificate /etc/letsencrypt/live/marso.myftp.org/fullchain.pem;
+ssl_certificate_key /etc/letsencrypt/live/marso.myftp.org/privkey.pem;
+# root /path/to/webroot;
+server_name marso.myftp.org;
+}
+access_log /var/log/nginx/nginx.vhost.access.log;
+error_log /var/log/nginx/nginx.vhost.error.log;
+location / {
+root /var/www/;
+root  /home/www/public_html/marso.myftp.org/public/;
+index index.html;
+}
+}
+
+
+/etc/letsencrypt/keys/0000_key-certbot.pem
+
+
+
+

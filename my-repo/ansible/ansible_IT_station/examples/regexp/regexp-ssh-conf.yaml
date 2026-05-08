@@ -1,0 +1,26 @@
+---
+- name: First server preparation
+  hosts: localhost
+  gather_facts: no
+  become: no
+  vars:
+    sshd_config_file: ./sshd_config
+
+  tasks:
+
+  - name: Disable root login
+    lineinfile:
+      path: "{{ sshd_config_file }}"
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+    loop:
+      - { regexp: '^#?PermitRootLogin', line: 'PermitRootLogin no' }
+      - { regexp: '^#?PermitEmptyPasswords', line: 'PermitEmptyPasswords no' } 
+      - { regexp: '^#?PasswordAuthentication', line: 'PasswordAuthentication no' } 
+
+
+# localhost ansible_host=127.0.0.1 ansible_user=... ansible_password: ... ansible_become_password: ...
+
+#PermitRootLogin yes
+#PermitEmptyPasswords yes
+#PasswordAuthentication yes      

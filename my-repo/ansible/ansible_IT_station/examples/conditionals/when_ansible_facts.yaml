@@ -1,0 +1,45 @@
+---
+- name: Gathering facts and conditionals
+  hosts: all
+  gather_facts: no
+
+  tasks:
+    
+    - name: Setup module4
+      setup:
+        gather_subset:
+          - '!all'
+          - processor
+      
+    - debug:
+        msg: "{{ ansible_facts['distribution'] }}"
+      when: ansible_facts['os_family'] == "Debian"
+#-------------------------------------------------------------      
+    - name: Setup module4
+      setup:
+        gather_subset:
+          - '!all'
+          - processor
+      
+    - debug:
+        msg: "Hello, Debian!"
+      when: 
+        - ansible_facts['os_family'] == "Debian"
+        - ansible_facts['distribution'] == "Ubuntu" 
+#-------------------------------------------------------------
+    - name: Shut down Debian flavored systems
+      become: yes
+      ansible.builtin.command: /sbin/shutdown -t now
+      when: ansible_facts['os_family'] == "Debian" 
+#-------------------------------------------------------------
+    - name: Shut down CentOS 6 and Debian 7 systems
+      become: yes
+      ansible.builtin.command: /sbin/shutdown -t now
+      when: (ansible_facts['distribution'] == "CentOS" and ansible_facts['distribution_major_version'] == "7") or
+            (ansible_facts['distribution'] == "Debian" and ansible_facts['distribution_major_version'] == "18")  
+
+    - name: debug
+      debug:
+        var: ansible_facts['distribution_major_version']
+
+

@@ -1,0 +1,75 @@
+$ echo | awk '{ for (counter = 10; counter >= 5; counter--)
+print "Running for ",counter, " times.","\n"; }'
+------------------------------------------------------
+$ echo | awk 'BEGIN {Customer["4587"] = "Neil Johnson";
+Customer["8953"] = "Ella binte Nazir";
+Customer["3455"] = "Bruce Hyslop";
+Customer["6335"] = "Isabella";
+ 
+}END { for (i in Customer)
+print  "The name of ", i, " is " ,Customer[i]
+}'
+------------------------------------------------------------------
+$ echo | awk 'END{ for (i=1; i<=2; i++)
+for (j=1; j<=3; j++)
+print  "Iterating row ", i," and column ", j,"\n";}'
+---------------------------------------------------------------
+$ echo | awk 'BEGIN{ num=7; }END{ for (i=3; i<=20; i++) {
+if( i == num) break;
+else
+print  "Current value of i =",i ,"\n";}}'
+---------------------------------------------------------------------
+$ echo | awk 'BEGIN{product["1001"]="Antivirus";
+product["1002"]="Office Software";
+product["1003"]="Drawing Software";
+product["1004"]="HDD";
+product["1005"]="DVD";} END{ for (i in product) {
+if(product[i] == "Office Software") {
+print product[i]," is not available\n";
+continue;
+}
+print product[i], " is available"  ,"\n";}}'
+------------------------------------------------------------------------
+{
+sales[i++]=$2;
+sum=0;
+}
+END{
+for (i in sales)
+{
+sum=sum+sales[i];
+}
+print "Total sales amount=" sum;
+}
+Run the following command to execute the script of cal_sal.awk file.
+$ awk -f cal_sal.awk sales.txt
+--------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

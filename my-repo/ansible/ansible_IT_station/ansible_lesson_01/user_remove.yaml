@@ -1,0 +1,10 @@
+---
+- hosts: node1
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: remove user
+    ansible.builtin.user:
+      name: jsmith
+      state: absent
+      remove: yes

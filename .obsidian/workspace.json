@@ -1,0 +1,233 @@
+{
+  "main": {
+    "id": "55b4bf38a5f4ac3f",
+    "type": "split",
+    "children": [
+      {
+        "id": "75cf09e7e8e74f0b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ec630a663275ec09",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "Новая вкладка"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "43525ecd1566c66a",
+    "type": "split",
+    "children": [
+      {
+        "id": "984dce5a07b3edb1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c5b79f5a333312b2",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Файловый менеджер"
+            }
+          },
+          {
+            "id": "1241dd7e90830387",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Поиск"
+            }
+          },
+          {
+            "id": "be03f9ff7c6533a9",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Закладки"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "44acafdf6bf8a69e",
+    "type": "split",
+    "children": [
+      {
+        "id": "018c1c679b42bdf3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "2ae6a9ae3f6242cf",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Без названия.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Обратные ссылки для Без названия"
+            }
+          },
+          {
+            "id": "7e810d2b56898c67",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Без названия.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Исходящие ссылки из Без названия"
+            }
+          },
+          {
+            "id": "c47248f147708735",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Теги"
+            }
+          },
+          {
+            "id": "45adef9310f7c681",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Все свойства"
+            }
+          },
+          {
+            "id": "3ab3aeea3456171c",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Без названия.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Структура Без названия"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "obsidian-git:Open Git source control": false,
+      "switcher:Меню быстрого перехода": false,
+      "graph:Граф": false,
+      "canvas:Создать новый холст": false,
+      "daily-notes:Сегодняшняя заметка": false,
+      "templates:Вставить шаблон": false,
+      "command-palette:Открыть палитру команд": false,
+      "bases:Создать новую базу": false,
+      "audio-recorder:Начать/остановить запись": false
+    }
+  },
+  "active": "ec630a663275ec09",
+  "lastOpenFiles": [
+    "my-repo/python/python_lessons_IT_station/python_lesson_logs/venv_log/lib/python3.10/site-packages/pip/_vendor/urllib3/packages/backports/__pycache__/makefile.cpython-310.pyc",
+    "my-repo/python/python_lessons_IT_station/python_lesson_logs/venv_log/lib/python3.10/site-packages/pip/_vendor/urllib3/packages/backports/__pycache__/__init__.cpython-310.pyc",
+    "my-repo/python/python_lessons_IT_station/python_lesson_logs/venv_log/lib/python3.10/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__/low_level.cpython-310.pyc",
+    "my-repo/python/python_lessons_IT_station/python_lesson_logs/venv_log/lib/python3.10/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__/bindings.cpython-310.pyc",
+    "my-repo/python/python_lessons_IT_station/python_lesson_logs/venv_log/lib/python3.10/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__/__init__.cpython-310.pyc",
+    "my-repo/python/python_lessons_IT_station/python_lesson_01/my_env_02/lib/python3.10/site-packages/pip/_vendor/urllib3/packages/backports/__pycache__/makefile.cpython-310.pyc",
+    "my-repo/python/python_lessons_IT_station/python_lesson_01/my_env_02/lib/python3.10/site-packages/pip/_vendor/urllib3/packages/backports/__pycache__/__init__.cpython-310.pyc",
+    "my-repo/python/python_lessons_IT_station/python_lesson_01/my_env_02/lib/python3.10/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__/low_level.cpython-310.pyc",
+    "my-repo/python/python_lessons_IT_station/python_lesson_01/my_env_02/lib/python3.10/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__/bindings.cpython-310.pyc",
+    "my-repo/python/python_lessons_IT_station/python_lesson_01/my_env_02/lib/python3.10/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__/__init__.cpython-310.pyc",
+    "my-repo/python/python_lessons_IT_station/python_lesson_01/my_env_01/lib/python3.10/site-packages/pip/_vendor/urllib3/packages/backports/__pycache__/makefile.cpython-310.pyc",
+    "my-repo/ansible/ansible_IT_station/ansible_homework/last_homework/roles/install-nginx/README.md",
+    "my-repo/ansible/ansible_IT_station/ansible_homework/last_homework/roles/init-server-preparation/README.md",
+    "my-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_05/roles/init-server-preparation/README.md",
+    "my-repo/docker/docker-theory-IT-station-lab/practice/projects/wordpress_certbot/README_short.md",
+    "my-repo/docker/docker-theory-IT-station-lab/practice/projects/wordpress_certbot/README_full.md",
+    "my-repo/docker/docker-theory-IT-station-lab/practice/projects/nginx_cerbot/readme.md",
+    "my-repo/docker/docker-theory-IT-station-lab/practice/projects/cms/readme.md",
+    "my-repo/docker/docker-theory-IT-station-lab/practice/projects/cloud/readme.md",
+    "my-repo/ansible/ansible_IT_station/ansible_lesson_05/roles/test3/README.md",
+    "my-repo/ansible/ansible_IT_station/ansible_lesson_05/roles/test2/README.md",
+    "my-repo/ansible/ansible_IT_station/ansible_lesson_05/roles/test1/README.md",
+    "my-repo/ansible/ansible_IT_station/ansible_lesson_05/roles/nginx/README.md",
+    "my-repo/python/python-lab1/home-tasks/devops_lab(clear)/README.md",
+    "my-repo/ansible/ansible_IT_station/examples/environment/path-explain.md",
+    "my-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_04/README.md",
+    "my-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_03/Screenshot_hw_2.png",
+    "my-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_03/README.md",
+    "my-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_02/Screenshot_hw_1.png",
+    "my-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_02/README.md",
+    "my-repo/python/python_lessons_IT_station/python_lesson_08/yaml.md",
+    "my-repo/python/python_lessons_IT_station/python_lesson_08/requests.md",
+    "my-repo/python/python_lessons_IT_station/python_lesson_08/json.md",
+    "my-repo/python/python_lessons_IT_station/python_lesson_06/tarfile.md",
+    "my-repo/python/python_lessons_IT_station/python_lesson_06/subprocess.md",
+    "my-repo/python/python_lessons_IT_station/python_lesson_06/hashlib.md",
+    "my-repo/python/python_lessons_IT_station/python_lesson_06/glob.md",
+    "my-repo/python/python_lessons_IT_station/python_lesson_06/fnmatch.md",
+    "my-repo/python/python-lab1/home-tasks/screenshot.png",
+    "my-repo/python/python-lab1/home-tasks/Screenshot_1.png",
+    "my-repo/ftpd/ftp-mars/upload/125168.jpg",
+    "my-repo/ftpd/ftp-mars/upload/1152660.jpg",
+    "my-repo/ftpd/ftp-mars/foto/795666.jpg",
+    "my-repo/ftpd/ftp-mars/foto/480640.jpg",
+    "my-repo/ftpd/ftp-mars/foto/34977.jpg",
+    "my-repo/ftpd/ftp-mars/foto/338475.jpg"
+  ]
+}

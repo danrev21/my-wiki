@@ -1,0 +1,7 @@
+---
+- name: Add key to remote hosts
+  authorized_key:
+    key: "{{ userpubkey }}"
+    state: present
+    user: "{{ ansible_user }}"
+  notify: restart sshd

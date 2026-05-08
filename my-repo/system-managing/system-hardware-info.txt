@@ -1,0 +1,46 @@
+# system info:
+uname -a
+uname -r   # Linux kernel version
+cat /etc/issue
+
+# Hardware Information:
+cat /proc/cpuinfo
+lscpu
+lspci   # List PCI
+lsscsi  # List sci devices
+lsblk   # List block devices
+lsb-release -a
+sudo dmidecode -q   
+hwinfo
+inxi -F  
+
+# конфигурации RAM, версии прошивки, конфигурации материнской платы,
+# информацию о процессоре, конфигурации кэша, скорости шины и т.д.:
+sudo lshw -short
+
+# nice output:
+sudo apt install neofetch
+neofetch
+
+# with UI:
+sudo apt install hardinfo
+hardinfo
+ 
+# посмотреть информацию о жёстких дисках в Linux, а также протестировать их
+# на наличие проблем:
+sudo apt install smartmontools
+smartctl --scan
+smartctl -a /dev/nvme0
+smartctl --help
+
+# увидеть свободное/занятое пространство на HDD и флэшках, файловые системы
+# и партиции
+df -h
+# Что бы посмотреть информацию с типом файловой системы (ext3, ext4, и т.д.):
+df -T
+
+free
+
+lsusb – перечень всех usb устройств (в том числе встроенных, таких как веб-камеры и т.д.)
+
+

@@ -1,0 +1,23 @@
+Все логи DHCP по умолчанию пишутся в файл /var/log/messages. Для фильтрации событий dhcp можно использовать команду:
+
+# cat /var/log/messages | grep dhcp
+
+Или перенастроить сохранение журнала в отдельный файл, через rsyslog. В файл /etc/rsyslog.conf добавьте строку:
+
+local6.* /var/log/dhcp.log
+
+А в файл /etc/dhcp/dhcpd.conf строку:
+
+log-facility local6;
+
+Перезапустите оба сервиса:
+
+# systemctl restart rsyslog
+# systemctl restart dhcpd
+
+Теперь все события DHCP сервера пишутся в отдельный лог-файл.
+
+# cat /var/log/dhcp.log 
+
+или в реальном времени:
+tail -f /var/log/dhcp.log 

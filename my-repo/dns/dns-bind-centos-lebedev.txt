@@ -1,0 +1,256 @@
+sudo yum update
+
+# смотрим пакеты:
+yum search bind
+
+# установка:
+sudo yum install bind bind-utils
+
+# перезагрузка демона:
+sudo systemctl daemon-reload
+
+# смотрим статус сервиса:
+sudo systemctl status named.service
+
+# добавляем в автозагрузку:
+sudo systemctl enable named.service --now
+
+# смотрим статус:
+sudo systemctl status named.service
+
+# меняем конфигурационный файл:
+sudo vim /etc/named.conf
+
+# смотрим зоны из "пакета", их трогать не надо:
+sudo less /etc/named.rfc1912.zones 
+
+# 
+sudo ls /var/named
+
+# смотрим здесь корневые сервера 
+sudo less /var/named/named.ca
+
+
+# проверка конфигурационного файла:
+sudo named-checkconf
+echo $?
+
+# чтобы изменения вступили в силу, перезапускаем службу:
+sudo systemctl restart named.service
+sudo systemctl status named.service
+
+# чтобы запросы извне приходили в нашу сеть проверяем правила фаервола:
+sudo firewall-cmd --list-all
+
+# добавим в services службу dns:
+sudo firewall-cmd --add-service=dns
+
+# ... на постоянной основе:
+sudo firewall-cmd --add-service=dns --permanent
+sudo firewall-cmd --list-all
+
+# на второй вм в файле /etc/hosts добавляем:
+<IP вм с BIND>  <и ее днс имя>  <имя сети>
+192.168.0.11        app1          mynet
+
+# проверяем настроенный сервер имен app1:
+nslookup www.centos.org app1
+# и видим вывод, сервер app1 на 53м порту IP адреса 192.168.0.11
+# нашел и кэширует все IPv4 IPv6 для сайта:
+Server:		app1
+Address:	192.168.0.11#53
+
+Non-authoritative answer:
+Name:	www.centos.org
+Address: 81.171.33.202
+Name:	www.centos.org
+Address: 81.171.33.201
+Name:	www.centos.org
+Address: 52.56.83.118
+Name:	www.centos.org
+Address: 2001:4de0:aaae::202
+Name:	www.centos.org
+Address: 2a05:d01c:c6a:cc02:225e:ab54:d58c:8b14
+Name:	www.centos.org
+Address: 2001:4de0:aaae::201
+
+# можно проверить и с app1:
+nslookup oz.by localhost
+
+
+# посмотреть запросы которые обраб-ет BIND:
+sudo less /var/named/data/named.run
+-------------------------------------------------------
+конфигурационный файл named.conf
+-------------------------------------------------------
+
+//
+// named.conf
+//
+// Provided by Red Hat bind package to configure the ISC BIND named(8) DNS
+// server as a caching only nameserver (as a localhost DNS resolver only).
+//
+// See /usr/share/doc/bind*/sample/ for example named configuration files.
+//
+acl mynet { 192.168.0.0/24; };   ## все запросы из этой сети будут обработаны
+
+options {
+##      listen-on port 53 { 127.0.0.1; };
+        listen-on port 53 { any; };  ## слушать все IPv4
+##      listen-on-v6 port 53 { ::1; };
+        listen-on-v6 port 53 { any; };   ## слушать все IPv6
+        directory       "/var/named";   ## здесь лежат файлы зон, определенные в файле /etc/named.rfc1912.zones
+        dump-file       "/var/named/data/cache_dump.db";
+        statistics-file "/var/named/data/named_stats.txt";
+        memstatistics-file "/var/named/data/named_mem_stats.txt";
+        secroots-file   "/var/named/data/named.secroots";
+        recursing-file  "/var/named/data/named.recursing";
+        allow-query     { localhost; mynet; };   ## разрешить запросы с локалхост и mynet, остальные нет
+
+        /* 
+         - If you are building an AUTHORITATIVE DNS server, do NOT enable recursion.
+         - If you are building a RECURSIVE (caching) DNS server, you need to enable 
+           recursion. 
+         - If your recursive DNS server has a public IP address, you MUST enable access 
+           control to limit queries to your legitimate users. Failing to do so will
+           cause your server to become part of large scale DNS amplification 
+           attacks. Implementing BCP38 within your network would greatly
+           reduce such attack surface 
+        */
+        recursion yes;
+
+        dnssec-validation yes;
+
+        managed-keys-directory "/var/named/dynamic";
+        geoip-directory "/usr/share/GeoIP";
+
+        pid-file "/run/named/named.pid";
+        session-keyfile "/run/named/session.key";
+
+        /* https://fedoraproject.org/wiki/Changes/CryptoPolicy */
+        include "/etc/crypto-policies/back-ends/bind.config";
+};
+
+logging {
+        channel default_debug {
+                file "data/named.run";
+                severity dynamic;
+        };
+};
+
+zone "." IN {
+        type hint;
+        file "named.ca";
+};
+
+include "/etc/named.rfc1912.zones";
+include "/etc/named.root.key";
+
+~                                                                     
+-----------------------------------------------------------------
+-----------------------------------------------------------------
+Настройка зон просмотра
+1. зона прямого просмотра - имена в адреса
+2. зона обратного просмотра - адреса в имена
+
+-----------------------------------------------------------------
+# настройка зоны прямого просмотра:
+vim /etc/named.conf
+# добавляем в файл зону:
+
+zone "nerv.jp" IN {
+	type master;
+	file "nerv.jp.zone";
+};
+
+
+# проверяем
+sudo named-checkconf
+echo $?
+
+# создание файла зоны прямого просмотра:
+cd /var/named
+cp named.localhost nerv.jp.zone
+vim nerv.jp.zone
+
+$TTL 1D
+@       IN SOA  nerv.jp. app1 (
+                                        2021081001      ; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H )    ; minimum
+        IN	NS	app1
+app1	IN	A	192.168.0.11
+app2	IN	A	192.168.0.12
+
+dns	IN	CNAME	app1
+client	IN	CNAME	app2
+
+
+# меняем группу файла nerv.jp.zone:
+chgrp named nerv.jp.zone
+ls -la /var/named/nerv.jp.zone
+
+# проверка правильности настройки зоны и файла:
+named-checkzone nerv.jp.zone
+
+systemctl restart named.service
+systemctl status named.service
+
+# на машине app2:
+nslookup app1.nerv.jp app1
+nslookup app2.nerv.jp app1
+------------------------------------------------------
+# настройка зоны обратного просмотра
+vim /etc/named.conf
+
+zone "0.168.192.in-addr.arpa" IN {
+	type master;
+	file "nerv.jp.rzone";
+};
+
+named-checkconf
+echo $?
+
+# создаем файл зоны:
+cd /var/named
+cp nerv.jp.zone nerv.jp.rzone
+vim nerv.jp.zone
+
+$TTL 1D
+@       IN SOA  nerv.jp. app1.nerv.jp. (
+                                        2021081002      ; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H )    ; minimum
+        IN	NS	app1.nerv.jp.
+11	IN	PTR	app1.nerv.jp.
+12	IN	PTR	app2.nerv.jp.
+ 
+# указали во 2й строке днс имя первой вм, в 3й серийный номер и 
+# записи PTR.
+
+chgrp named nerv.jp.rzone
+ls -la /var/named/nerv.jp.rzone
+
+# проверяем зону и файл зоны:
+named-checkzone 0.168.192.in-addr.arpa nerv.jp.rzone
+
+systemctl restart named.service
+systemctl status named.service
+
+# на app1:
+nslookup 192.168.0.12 localhost
+
+# на машине app2:
+nslookup 192.168.0.11 app1
+nslookup 192.168.0.12 app1
+
+
+
+
+
+
+

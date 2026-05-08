@@ -1,0 +1,67 @@
+# Create 3 pages that will shown at ports : 8080, 8081, 8082
+# To do this: create 3 html pages            in /var/www/8080..8082/
+#             change ports                   in ../ports.conf 
+#             create 3 conf file for 3 sites in ../sites-available/
+#             apply changes                  a2dissite 000-default.conf & a2ensite 8080..8082.conf 
+
+# install apache:
+sudo su
+apt update && sudo apt install apache2 -y
+systemctl status apache2
+
+# investigating apache:
+tree /etc/apache2
+ll /etc/apache2
+cat /etc/apache2/apache2.conf
+cat /etc/apache2/apache2.conf | grep -v "^#" | grep -v "^$"
+
+ll /etc/apache2/sites-enabled/
+cat /etc/apache2/sites-enabled/000-default.conf
+cat /etc/apache2/sites-enabled/000-default.conf | grep -v "#" 
+
+ll /var/www/html/
+cat /var/www/html/index.html 
+cat /etc/apache2/ports.conf
+
+# creating 3 pages:
+cp /etc/apache2/apache2.conf /etc/apache2/apache2.conf.backup
+cp /etc/apache2/ports.conf /etc/apache2/ports.conf.backup
+echo "This is port 8080!" > 8080.html
+echo "This is port 8081!" > 8081.html
+echo "This is port 8082!" > 8082.html
+mkdir /var/www/{8080..8082}
+cp 8080.html /var/www/8080/index.html
+cp 8081.html /var/www/8081/index.html
+cp 8082.html /var/www/8082/index.html
+tree /var/www
+
+# change ports:
+vim /etc/apache2/ports.conf
+  Listen 8080
+  Listen 8081
+  Listen 8082
+
+# create 3 conf file for 3 sites:
+cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/8080.conf
+vim /etc/apache2/sites-available/8080.conf
+  <VirtualHost *:8080>
+  DocumentRoot /var/www/8080
+# the same actions for 8081 8082
+
+# delete link default site:
+rm /etc/apache2/sites-enabled/000-default.conf
+
+# apply new configs (creating links in ../sites-enabled):
+a2ensite 8080
+a2ensite 8081
+a2ensite 8082
+systemctl reload apache2
+
+# check:
+systemctl status apache2
+netstat -tlnp
+curl localhost:8080
+curl localhost:8081
+curl localhost:8082
+
+

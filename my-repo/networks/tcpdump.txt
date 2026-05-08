@@ -1,0 +1,48 @@
+# https://tcpdump101.com/#
+
+# show all interfaces:
+tcpdump -D
+ip a
+ifconfig
+
+# traffic on the interface:
+tcpdump -i 1   # (1 - interface number from above example)
+tcpdump -i any # (cath traffic from all interfaces)
+tcpdump -i enp3s0
+tcpdump -ni enp3s0   # without resolve, only IP
+tcpdump -vvni enp3s0 # более подробный вывод
+tcpdump -nXi enp3s0  # содержимое пакетов
+tcpdump -ni enp3s0 -с 10  # сбор траффика завершится после 10 пакетов
+tcpdump -ei enp3s0   # отображение MAC-адресов
+
+# с указанием хоста:
+tcpdump -i wlo1 host 192.168.0.30
+tcpdump -ni enp0s8 dst 192.168.0.30 # входящий (destination) траффик
+tcpdump -ni enp0s8 src 192.168.0.30 # исходящий (source) траффик 
+
+# траффик в сети:
+tcpdump -ni enp0s8 net 192.168.0.0/24
+tcpdump -ni enp0s8 dst net 192.168.0.0/24 # входящий траффик в сети 
+tcpdump -ni enp0s8 src net 192.168.0.0/24 # исходящий траффик в сети
+
+# port filtering:
+tcpdump -nXi wlo1 port 80
+tcpdump -ni wlo1 portrange 50-53
+
+# protocol filtering:
+tcpdump -ni wlo1 udp (icmp, arp, ip, tcp, udp, ip6, ether, ppp, tr, 
+                      link, wlan, radio, fddi)
+                      
+# output into the file:
+sudo tcpdump -ni wlo1 dst 192.168.0.30 -w mydump.txt
+                      
+tcpdump -ni wlo1 udp port 53
+tcpdump -ni wlo1 src 192.168.0.30 and not udp
+tcpdump -ni wlo1 src 192.168.0.30 and dst not 239.255.255.250
+tcpdump -ni wlo1 src 192.168.0.30 and dst port not 1900
+tcpdump -i wlo1 dst 192.168.0.6 and src ns1.cosmostv.by               
+tcpdump -ni wlo1 '(src 192.168.0.30 or 192.168.0.6) and (dst 192.168.0.30 or 192.168.0.6) and (port 80 or 443 or 53)'
+
+
+
+

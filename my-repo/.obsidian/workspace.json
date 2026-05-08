@@ -1,0 +1,227 @@
+{
+  "main": {
+    "id": "c4f2158a147e8b64",
+    "type": "split",
+    "children": [
+      {
+        "id": "ea7de242629753e9",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "45e3ff41fa00ee38",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "database/postgresql/pg_hba.conf.png"
+              },
+              "icon": "lucide-image",
+              "title": "pg_hba.conf"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "1ee878449839fda7",
+    "type": "split",
+    "children": [
+      {
+        "id": "b307b1116e20f7e0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d45cfb8867109276",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Файловый менеджер"
+            }
+          },
+          {
+            "id": "c7b49c9feaf96396",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Поиск"
+            }
+          },
+          {
+            "id": "fbf3b6ff8fe65a35",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Закладки"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 350.5
+  },
+  "right": {
+    "id": "b8ab1c4b0ef3284e",
+    "type": "split",
+    "children": [
+      {
+        "id": "48a0ef67647d6ffb",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "a0182b4f9d0df313",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "ansible/ansible.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Обратные ссылки для ansible"
+            }
+          },
+          {
+            "id": "6e6ff7a238f11e6c",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "ansible/ansible.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Исходящие ссылки из ansible"
+            }
+          },
+          {
+            "id": "5c1586044b32a7c6",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Теги"
+            }
+          },
+          {
+            "id": "44eeed9f2bc1b310",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Все свойства"
+            }
+          },
+          {
+            "id": "1275dd1434369822",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "ansible/ansible.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Структура ansible"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Меню быстрого перехода": false,
+      "graph:Граф": false,
+      "canvas:Создать новый холст": false,
+      "daily-notes:Сегодняшняя заметка": false,
+      "templates:Вставить шаблон": false,
+      "command-palette:Открыть палитру команд": false,
+      "bases:Создать новую базу": false
+    }
+  },
+  "active": "45e3ff41fa00ee38",
+  "lastOpenFiles": [
+    "database/mongodb/install-set-mongodb-centos.txt",
+    "cicd/jenkins/testJobJenkins.txt",
+    "cicd/atlassian/bitbucket-install.txt",
+    "cicd/atlassian/bitbucket.txt",
+    "cicd/atlassian/bamboo-install.txt",
+    "bash/убрать добавить заголовок.txt",
+    "bash/строки.txt",
+    "bash/регистр.txt",
+    "bash/разделение строк.txt",
+    "bash/поиск повтор строк.txt",
+    "bash/переменные.txt",
+    "vagrant/vagrant-proxy.png",
+    "ftpd/ftp-mars/foto/13652.jpg",
+    "wireguard/tunnel-managing.md",
+    "git/git_cheatsheet.png",
+    "python/python-lab1/visualize code execution.png",
+    "python/python-lab1/string2.png",
+    "python/python-lab1/string.png",
+    "python/python-lab1/home-tasks/screenshot.png",
+    "python-lab1/home-tasks/devops_lab222/README.md",
+    "python/python-lab1/home-tasks/Screenshot_1.png",
+    "python/python-lab1/home-tasks/devops_lab(clear)/README.md",
+    "ftpd/ftp-mars/upload/1152660.jpg",
+    "ftpd/ftp-mars/upload/125168.jpg",
+    "docker/docker-files/wordpress-latest/readme.md",
+    "docker/docker-files/wordpress_certbot/README_short.md",
+    "docker/docker-files/wordpress_certbot/README_full.md",
+    "docker/docker-files/nginx_cerbot/readme.md",
+    "docker/docker-files/nextcloud/readme.md",
+    "bash/bash_lessons_IT_station/bash_lesson_01/README.md",
+    "ansible/ansible_IT_station/examples/vars_magic.md",
+    "ansible/ansible_IT_station/examples/vars_connection_inventory.md",
+    "ansible/ansible_IT_station/examples/roles.md",
+    "ansible/ansible_IT_station/examples/playbook_descr.md",
+    "ansible/ansible_IT_station/examples/ansible_commands.md",
+    "ansible/ansible_IT_station/examples/ad-hoc_commands.md",
+    "ansible/ansible.md",
+    "python/python_lessons_IT_station/python_lesson_06/fnmatch.md",
+    "ansible/inventory_description.md",
+    "python/python_lessons_IT_station/python_lesson_01/install_python.md"
+  ]
+}

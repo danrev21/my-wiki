@@ -1,0 +1,26 @@
+# при обновлении убунта лезла в hashicorp и выдавало ошибку, т.к. hashicorp
+# для нас недоступна, поэтому я удалил репозиторий hashicorp:
+
+dan@pulse:~$ ll /etc/apt/sources.list.d
+total 36
+drwxr-xr-x 2 root root 4096 Aug  7 21:06 ./
+drwxr-xr-x 8 root root 4096 Aug 14 15:09 ../
+-rw-r--r-- 1 root root  112 Jun  2  2022 docker.list
+-rw-r--r-- 1 root root  190 Jun  2  2022 google-chrome.list
+-rw-r--r-- 1 root root  190 Jun  2  2022 google-chrome.list.save
+-rw-r--r-- 1 root root  112 Aug  7 21:06 hashicorp.list          <------
+-rw-r--r-- 1 root root  193 May 11 14:08 microsoft-edge.list
+-rw-r--r-- 1 root root  203 Jun  2  2022 vscode.list
+-rw-r--r-- 1 root root  203 Jun  2  2022 vscode.list.save
+dan@pulse:~$
+dan@pulse:~$ cat /etc/apt/sources.list.d/hashicorp.list
+deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com jammy main
+
+
+
+-rw-r--r-- 1 root root  112 Aug  7 21:06 hashicorp.list
+
+вот содержимое
+
+deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com jammy main
+

@@ -1,0 +1,66 @@
+---
+- name: First server preparation
+  hosts: all
+  gather_facts: no
+  become: no
+  vars:
+    ssh_key_location_path: /home/dan/Workdir/it_station_lab/HW/ansible/practice
+    ssh_key_filename: ssh_admin_key
+    local_user: dan
+    sshd_config_file: /etc/ssh/sshd_config
+
+  tasks:
+
+  - name: create user 'dan' on localhost if doesn't exists, and generate SSH key "{{ ssh_key_filename }}" on localhost
+    user:
+      name: "{{ local_user }}"
+      generate_ssh_key: yes
+      ssh_key_type: rsa
+      ssh_key_bits: 4096
+      ssh_key_file: "{{ ssh_key_location_path }}/{{ ssh_key_filename }}"
+      force: no
+    delegate_to: localhost
+    run_once: yes
+
+  - name: add key to remote host
+    authorized_key:
+      key: "{{ lookup('file', ssh_key_location_path+'/'+ssh_key_filename+'.pub') }}"
+      state: present
+      user: "{{ ansible_user }}"
+
+  - name: Disable root login
+    become: yes
+    lineinfile:
+      path: "{{ sshd_config_file }}"
+      regexp: "^#PermitRootLogin"
+      line: "PermitRootLogin no"
+
+  - name: Disable empty password
+    become: yes
+    lineinfile:
+      path: "{{ sshd_config_file }}"
+      regexp: "^#PermitEmptyPasswords" 
+      line: "PermitEmptyPasswords no"
+
+  - name: Disable password ssh connection
+    become: yes
+    lineinfile:
+      path: "{{ sshd_config_file }}"
+      regexp: "^#?PasswordAuthentication yes" # #? - может закоменчено, а может и нет (см. Vagrantfile)
+      line: "PasswordAuthentication no"
+    notify: restart sshd
+
+  handlers:
+  - name: restart sshd
+    become: yes
+    service:
+      name: sshd
+      state: restarted
+
+# USED COMMANDS:
+# ssh-keygen -R 192.168.0.31
+# ansible-playbook --check playbook1.yaml -l app1
+# ansible-playbook playbook1.yaml -l app1
+# ansible-playbook playbook1.yaml -l app1 --key-file ssh_admin_key   - after disable ssh connection   
+      
+

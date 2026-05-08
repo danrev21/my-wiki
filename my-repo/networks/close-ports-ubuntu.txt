@@ -1,0 +1,23 @@
+# investigate listen ports:
+sudo ss -tulpn
+lsof -i:111
+lsof -t -i:111
+nmap 0.0.0.0
+
+# to know what is the port:
+less /etc/services
+
+
+# disable rpcbind (port 111)
+
+systemctl disable rpcbind.target
+systemctl disable rpcbind.socket
+systemctl disable rpcbind.service
+systemctl stop rpcbind.target
+systemctl stop rpcbind.socket
+systemctl stop rpcbind.service
+
+#close port 631 network printer:
+
+sudo systemctl disable cups
+sudo systemctl stop cups

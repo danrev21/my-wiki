@@ -1,0 +1,17 @@
+---
+- name: homework_roles
+  hosts: all
+  gather_facts: false
+  become: false
+  # ignore_errors: true
+  vars:
+    local_user: dan
+    tasks: 
+      - make-dir-ssh.yaml
+      - gen-ssh-keys.yaml
+  vars_files:
+  - vars.yaml
+
+  roles:
+    - init-server-preparation
+  

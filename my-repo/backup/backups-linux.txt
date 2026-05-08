@@ -1,0 +1,107 @@
+# бэкап списка установленных пакетов:
+dpkg --get-selections | grep -v deinstall > backup.txt
+
+# для восстановления:
+sudo dpkg --set-selections < backup.txt
+sudo apt -y update
+sudo apt-get dselect-upgrade
+----------------------------------------------------------
+# создание архива:
+sudo tar czf /backup.tar.gz --exclude=/backup.tar.gz --exclude=/home --exclude=/media --exclude=/dev --exclude=/mnt --exclude=/proc --exclude=/sys --exclude=/tmp /
+
+sudo tar -cvpzf /share/Recovery/Snapshots/$(hostname)_$(date +%Y%m%d).tar.gz \
+    --exclude=/proc \
+    --exclude=/lost+found \
+    --exclude=/sys \
+    --exclude=/mnt \
+    --exclude=/media \ 
+    --exclude=/dev \
+    --exclude=/share/Archive \
+    /
+# для восстановления:
+sudo tar xf /run/media/имя_носителя/backup.tar.gz -C /mnt
+
+
+
+---------------------------------------------------
+# Резервное копирование в rsync. Этот способ очень похож на второй, 
+# но здесь архив не создается, а данные просто переносятся в другую папку:
+rsync -aAXv --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} / /папка/назначения
+
+# Набор опций -aAX включают передачу в режиме архива, что гарантирует 
+# полное копирование символических ссылок, устройств, разрешений и
+# расширенных атрибутов, при условии, что их поддерживает целевая 
+# файловая система. Опция --exclude, как и раньше, исключает из копии 
+# виртуальные файловые системы.
+# После завершения копирования вам останется отредактировать /etc/fstab
+# и заменить в нем адрес корневого раздела на новый. А также создать 
+# новый конфигурационный файл для загрузчика, автоматически или вручную.
+------------------------------------------------------------
+# Создание образа раздела
+sudo dd if=/dev/sda4 of=~/backup.img
+# Здесь /dev/sda4 - это ваш корневой раздел. После завершения выполнения
+# команды вы получите готовый образ, затем, чтобы восстановить систему 
+# из этой копии достаточно поменять опции местами и указать путь к файлу
+# копии:
+sudo dd if=~/backup.img of=/dev/sda4
+------------------------------------------------------------
+
+What you need to backup?
+
+/cdrom, /media, and /mnt are mount points so don't need backup.
+
+/dev, /lost+found, /proc, /run, /sys and /tmp get auto re-created on reboot. [I'm guessing the links: /initrd.img@, /initrd.img.old@, /vmlinuz@, /vmlinuz.old@ get re-created on boot ubuntu reinstall (I'm not sure which).]
+
+On my system /root is empty (use sudo -s to open a shell as root user to view it ... be careful to exit immediately after you inspect /root.)
+
+/snap is also empty. Perhaps it's a mount point.
+
+/var contains variable data like system logging files, mail and printer spool directories, and transient and temporary files." I now back it up, except for /var/log. ref: http://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/var.html)
+
+/bin, /boot, /lib, /lib64, and /sbin presumably will get reloaded via a reinstall of Ubuntu unless you are doing system development work or something like that. You can either back these up or rely on a fresh install to recover them.
+
+/home should be in it's own backup. There will be times when you will want to restore just /home.
+
+That leaves other changes you've made to your system in /etc, /opt, /srv, and /usr which you will want to also backup, either together or individually.
+
+Here are a couple of pages that might help understand these directories:
+
+http://www.tldp.org/LDP/Linux-Filesystem-Hierarchy/html/the-root-directory.html http://www.tldp.org/LDP/intro-linux/html/sect_03_01.html#sect_03_01_03
+
+
+--exclude=/backup-duplicity/  \
+--exclude=/home/dan/'VirtualBox VMs'  \
+--exclude=/home/dan/Documents/Education  \
+--exclude=/home/dan/Workdir  \
+--exclude=/home/dan/Downloads  \
+--exclude=/home/dan/Music  \
+--exclude=/home/dan/PortProton  \ 
+--exclude=/timeshift   \
+--exclude=/cdrom  \
+--exclude=/mnt  \
+--exclude=/media  \
+--exclude=/lost+found  \
+--exclude=/run  \
+--exclude=/dev  \
+--exclude=/proc  \
+--exclude=/sys  \
+--exclude=/tmp  \
+--exclude=/root  \
+--exclude=/bin  \
+--exclude=/boot  \
+--exclude=/lib  \
+--exclude=/lib64  \
+--exclude=/sbin  \
+
+
+#
+
+#
+
+#
+
+#
+
+#
+
+#

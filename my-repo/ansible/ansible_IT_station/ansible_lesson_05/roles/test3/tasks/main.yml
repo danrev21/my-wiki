@@ -1,0 +1,4 @@
+---
+# tasks file for test3
+- debug:
+    msg: "{{ echo }}"

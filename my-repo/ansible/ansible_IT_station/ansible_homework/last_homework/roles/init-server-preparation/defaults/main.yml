@@ -1,0 +1,16 @@
+---
+# defaults file for init-server-preparation
+local_user: dan
+local_user_group: dan
+
+ssh_key_filename: "{{inventory_hostname}}_ssh_key"
+sshd_config_file: /etc/ssh/sshd_config
+ssh_keys_dir: vault_keys
+
+userpubkey: "{{ lookup('file', ssh_key_location_path+'/'+ssh_key_filename+'.pub') }}"
+
+PermitRootLogin: "PermitRootLogin no"
+PasswordAuthentication: "PasswordAuthentication no"
+PermitEmptyPasswords: "PermitEmptyPasswords no"
+
+

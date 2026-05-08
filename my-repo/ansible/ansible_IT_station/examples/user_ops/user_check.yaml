@@ -1,0 +1,21 @@
+---
+- name: Verify user in Linux
+  hosts: ubuntu
+  become: true
+
+  tasks:
+  - name: Check if user exists
+    command: id john2
+    register: user_check
+    ignore_errors: true
+
+  - name: Display user information
+    when: user_check.rc == 0
+    debug:
+      msg: "User john2 exists."
+      
+  - name: Display error message if user doesn't exist
+    when: user_check.rc != 0
+    debug:
+      msg: "User john2 does not exist."
+      

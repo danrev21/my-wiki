@@ -1,0 +1,116 @@
+# Initial setting up server:
+
+sudo apt update
+sudo apt upgrade -y
+
+timedatectl set-timezone Europe/Minsk
+
+sudo apt install -y fail2ban vim net-tools tree ncdu bash-completion curl dnsutils htop iftop pwgen screen sudo wget
+
+# setup fail2ban - https://denshub.com/ru/fail2ban-server-protection/
+sudo vim /etc/fail2ban/jail.local
+
+[sshd]
+enabled = true
+filter = sshd
+# To use more aggressive sshd modes set filter parameter "mode" in jail.local:
+# normal (default), ddos, extra or aggressive (combines all).
+# See "tests/files/logs/sshd" or "filter.d/sshd.conf" for usage example and details.
+mode   = aggressive
+port    = ssh
+logpath = %(sshd_log)s
+backend = %(sshd_backend)s
+banaction = iptables-multiport
+bantime = -1
+maxretry = 3
+findtime = 24h  
+
+# bantime = -1 - get banned indefinitely 
+
+sudo systemctl status sshd.service
+sudo systemctl restart sshd.service
+sudo fail2ban-client status sshd
+sudo service rsyslog restart
+sudo fail2ban-client status sshd
+
+# create new user:
+sudo useradd -mG sudo -p $(perl -e 'print crypt($ARGV[0], "password")' password) -s /bin/bash user-name
+
+# firewall setup:
+sudo ufw allow OpenSSH
+sudo ufw enable
+
+# login with new user and:
+sudo vim /etc/ssh/sshd_config
+. . .
+PasswordAuthentication no
+PermitRootLogin no
+SSHPort other   
+AllowUsers dan
+. . .
+
+sudo systemctl restart ssh
+
+# Setting timezone:
+# https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+sudo rm -f /etc/localtime ; sudo ln -s /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
+
+------------------------------------------------------------
+# можно настроить port knocking когда ssh порт не откроется пока на определенные вами
+# порты не поступят запросы
+
+# setup port knocking:
+sudo apt install -y knockd
+sudo vim /etc/knockd.conf
+
+[options]
+        logfile = /var/log/knockd.log  
+        # or UseSyslog
+        interface = your_interface
+
+[opencloseSSH]
+        sequence      = 7000,8000,9000        # knocking ports
+        # or sequence    = 7000:udp,7007:tcp,7777:udp
+        seq_timeout   = 5                     # knocking time in sec
+        tcpflags      = syn
+        start_command = /sbin/iptables -I INPUT -s %IP% -p tcp --dport 22 -j ACCEPT
+        stop_command  = /sbin/iptables -D INPUT -s %IP% -p tcp --dport 22 -j ACCEPT
+        cmd_timeout   = 60                    # after this time will run stop_command
+        
+        # после knocking ports выполняется start_command и через 60 секунд порт 
+        # tcp/22 закрывается (stop_command), но действующее ssh сессия не завершается   
+        
+sudo vim /etc/default/knockd
+START_KNOCKD=1                    # insert '1'
+KNOCKD_OPTS="-i your_interface"   # uncomment this string  
+
+# run knockd:        
+sudo systemctl start knockd
+sudo systemctl enable knockd
+sudo systemctl status knockd   
+
+sudo iptables -L --line-numbers
+
+# add rule to current ssh session not will disconnect:  
+sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT   # extension of iptables "conntrack"
+sudo iptables -L --line-numbers   
+        
+# add rule to drop custom ssh port:        
+sudo iptables -A INPUT -p tcp --dport 45916 -j REJECT      # 45916 - custom ssh port  
+sudo iptables -L --line-numbers
+
+# save iptables rules:
+sudo apt install -y iptables-persistent
+sudo service netfilter-persistent save
+
+# стучимся:
+for x in 7000 8000 9000; do nmap -Pn --max-retries 0 -p $x 45.658.12.45; done
+
+# login:
+ssh user@45.658.12.45 -p 45916
+        
+---------------------------------------------------------------------
+# drop icmp requests:
+sudo iptables -A INPUT -p icmp --icmp-type 8 -j DROP        
+============================================================
+      

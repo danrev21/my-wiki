@@ -1,0 +1,22 @@
+---
+- name: Install NGINX
+  hosts: nginx
+  gather_facts: yes
+  become: yes
+  vars_files:
+  - vars.yaml
+
+  vars:
+    rolesnames:
+    - test1
+    - test2
+    - test3
+
+  tasks:
+
+  - include_role:
+      name: "{{ item }}"
+    loop: "{{ rolesnames }}"
+
+  - import_role:
+      name: nginx

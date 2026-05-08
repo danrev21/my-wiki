@@ -1,0 +1,14 @@
+# /etc/nginx/sites-available/84_conf
+
+server {
+        listen 84;
+
+        root /var/www/html;
+        index index.html index.htm;
+        server_name localhost;
+
+        location / {
+		proxy_pass http://apache2;
+                try_files $uri $uri/ =404;
+        }
+} 

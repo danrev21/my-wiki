@@ -1,0 +1,84 @@
+https://github.com/pyenv/pyenv-installer
+
+# install dependences
+sudo apt-get update; sudo apt-get install make build-essential libssl-dev zlib1g-dev \
+libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
+libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+
+# Prerequisites
+# In general, compiling your own Python interpreter requires the installation of the appropriate 
+# libraries and packages. The installation wiki provides a list of these for common operating systems.
+
+# Installation / Update / Uninstallation
+# Once prerequisites have been installed correctly:
+
+# Install:
+  curl https://pyenv.run | bash
+# pyenv.run redirects to the install script in this repository and the invocation above is equivalent to:
+
+  curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+# Restart your shell so the path changes take effect:
+
+# https://github.com/pyenv/pyenv
+
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+
+  exec $SHELL
+# You can now begin using pyenv.
+
+
+# If you need, export USE_GIT_URI to use git:// instead of https:// for git clone.
+
+# Update:
+  pyenv update
+  
+pyenv help
+pyenv install 3.8.11
+pyenv versions
+pyenv global 3.8.11
+pyenv versions
+
+# Uninstall:
+# pyenv is installed within $PYENV_ROOT (default: ~/.pyenv). To uninstall, just remove it:
+
+  rm -fr ~/.pyenv
+# then remove these three lines from .bashrc:
+
+  export PATH="$HOME/.pyenv/bin:$PATH"
+  eval "$(pyenv init --path)"
+  eval "$(pyenv virtualenv-init -)"
+
+# and finally, restart your shell:
+  exec $SHELL
+
+#######  or  git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+
+# если **pyenv: version `myenv' not installed** :
+git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+exec $SHELL
+
+# если при tox ругается на virtualenv то у тебя установлен virtualenv двумя способами: pip-ом и apt-ом
+pip3 uninstall virtualenv
+sudo apt remove --purge python3-virtualenv
+exec $SHELL
+
+------------------------------------
+
+# install python:
+
+# https://github.com/pyenv/pyenv/blob/master/README.md#install-additional-python-versions
+# https://github.com/pyenv/pyenv/wiki#suggested-build-environment
+
+# system dependencies:
+sudo apt-get update; sudo apt-get install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+
+# For example, to download and install Python 3.10.4, run:
+pyenv install 3.10.4
+
+
+
+
+
+

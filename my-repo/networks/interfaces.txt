@@ -1,0 +1,21 @@
+
+ls /sys/class/net/
+
+sudo vi /etc/network/interfaces  # before ubuntu18.04
+
+#look interfaces:
+ifconfig
+
+ip link show
+ip -br link show
+
+nmcli device status
+nmcli c
+
+netstat -i
+
+cat /proc/net/dev
+
+networkctl
+
+lshw -C network

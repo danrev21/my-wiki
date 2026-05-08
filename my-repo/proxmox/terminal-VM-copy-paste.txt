@@ -1,0 +1,45 @@
+в контейнерах проксмокс вставка работает по умолчанию,
+но в вирт машинах необходимо выполнить инструкции по 
+настройке терминала xterm.js по ссылке:
+
+https://pve.proxmox.com/wiki/Serial_Terminal
+
+# Configuration on the host
+# Add a virtual serial port to the VM
+# Provided your VM IS is 101:
+ qm set 101 -serial0 socket
+
+# Reboot the VM, verify that the emulated serial port is there:
+ 
+ dmesg | grep ttyS
+ 
+# output:
+      [    0.457814] 00:0a: ttyS0 at I/O 0x3f8 (irq = 4) is a 16550A 
+
+# Instruct grub2 to send the boot messages on the VGA display and on the serial port
+# in /etc/default/grub change the GRUB_CMDLINE_LINUX parameter to:
+
+ GRUB_CMDLINE_LINUX="quiet console=tty0 console=ttyS0,115200" 
+
+# run next command:
+
+# debian based
+ update-grub
+# redhat based
+ grub2-mkconfig --output=/boot/grub2/grub.cfg
+and do a final reboot
+
+# Connecting to the Serial Terminal
+# On the Host, just run: 
+
+ qm terminal <VMiD> 
+
+# and enter enter a second time you should get a login prompt
+
+
+
+
+
+
+
+

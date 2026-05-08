@@ -1,0 +1,104 @@
+Пошаговая настройка Zabbix Agent 2 на сервере с MySQL
+Шаг 1. Установка Zabbix Agent 2
+bash
+# Для Ubuntu/Debian
+sudo apt update
+sudo apt install zabbix-agent2
+
+# Для RHEL/CentOS/Rocky
+sudo dnf install zabbix-agent2
+Шаг 2. Базовая настройка агента
+Редактируем файл /etc/zabbix/zabbix_agent2.conf:
+
+bash
+sudo nano /etc/zabbix/zabbix_agent2.conf
+Приводим к виду (меняем только эти три параметра):
+
+ini
+# IP-адрес Zabbix Server (для пассивных проверок, опционально)
+Server=192.168.0.90
+
+# IP-адрес Zabbix Server (для активных проверок — обязательно!)
+ServerActive=192.168.0.90
+
+# Имя хоста — должно СТРОГО совпадать с именем в веб-интерфейсе
+Hostname=db-zabbix-server
+Важно: Hostname чувствителен к регистру! Если в вебе DB-Zabbix-Server, то и здесь пишите так же.
+
+Шаг 3. Перезапуск и проверка агента
+bash
+# Перезапустить агента
+sudo systemctl restart zabbix-agent2
+
+# Проверить статус (должен быть active/running)
+sudo systemctl status zabbix-agent2
+
+# Автоматический запуск при старте системы
+sudo systemctl enable zabbix-agent2
+
+# Проверить логи на ошибки
+sudo journalctl -u zabbix-agent2 -n 50 --no-pager
+Шаг 4. Настройка пользователя в MySQL для мониторинга
+Подключаемся к MySQL и создаём ограниченного пользователя:
+
+sql
+CREATE USER 'zbx_monitor'@'localhost' IDENTIFIED BY 'YourStrongPassword123!';
+
+GRANT PROCESS, REPLICATION CLIENT ON *.* TO 'zbx_monitor'@'localhost';
+
+FLUSH PRIVILEGES;
+Важно: Если Zabbix Agent 2 и MySQL на разных серверах, замените localhost на '%' или конкретный IP агента:
+
+sql
+CREATE USER 'zbx_monitor'@'%' IDENTIFIED BY 'YourStrongPassword123!';
+Шаг 5. Настройка в веб-интерфейсе Zabbix
+Создать хост: Configuration → Hosts → Create host
+
+Host name = db-zabbix-server (строго как в zabbix_agent2.conf)
+
+Groups = выберите или создайте группу (например, Databases)
+
+Agent interfaces = IP-адрес вашего сервера с MySQL (где стоит агент)
+
+Привязать шаблон: Templates → Add → выберите MySQL by Zabbix agent 2
+
+Настроить макросы: вкладка Macros → добавьте:
+
+Макрос	Значение
+{$MYSQL.USER}	zbx_monitor
+{$MYSQL.PASSWORD}	YourStrongPassword123!
+{$MYSQL.DSN}	tcp://localhost:3306 (или unix:/var/run/mysqld/mysqld.sock)
+Сохранить хост: кнопка Update (или Add)
+
+Шаг 6. Проверка работоспособности
+На сервере с агентом:
+bash
+# Проверить, что агент видит Zabbix Server
+grep -i "connected\|registered" /var/log/zabbix/zabbix_agent2.log
+
+# Успех — увидите строки вроде:
+# successfully connected to Zabbix server [192.168.0.90:10051]
+# registered with Zabbix server
+В веб-интерфейсе Zabbix:
+Monitoring → Latest data → выберите хост db-zabbix-server
+
+Должны появиться метрики с префиксом mysql. (например, mysql.ping, mysql.version, mysql.uptime)
+
+Если данных нет — подождите 2-3 минуты, Zabbix опрашивает не мгновенно
+
+Быстрая проверка через zabbix_get (с сервера Zabbix):
+bash
+zabbix_get -s <IP_агента> -k "mysql.ping"
+# Должен вернуть "1"
+Шаг 7. Проблемы и их решение
+Проблема	Возможное решение
+Нет данных в Latest data	Проверить Hostname (совпадает ли с вебом?)
+Ошибка подключения к MySQL	Проверить пользователя zbx_monitor и пароль в макросах
+Агент не коннектится к серверу	Проверить ServerActive, доступность порта 10051 (nc -zv 192.168.0.90 10051)
+В логах "no active checks"	Может быть, активные проверки отключены в конфиге. Проверьте StartAgents и EnableRemoteCommands
+Типовые пути к файлам
+Файл	Путь
+Конфиг агента 2	/etc/zabbix/zabbix_agent2.conf
+Плагины агента 2	/etc/zabbix/zabbix_agent2.d/plugins.d/
+Лог агента 2	/var/log/zabbix/zabbix_agent2.log
+Итог: эти 7 шагов — полный цикл настройки. Сохраните себе этот алгоритм, для 90% серверов с MySQL он подходит без изменений.

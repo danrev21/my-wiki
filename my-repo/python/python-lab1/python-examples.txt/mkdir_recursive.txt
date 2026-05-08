@@ -1,0 +1,5 @@
+
+
+# In Python >=3.2, that's
+os.makedirs(path, exist_ok=True)
+

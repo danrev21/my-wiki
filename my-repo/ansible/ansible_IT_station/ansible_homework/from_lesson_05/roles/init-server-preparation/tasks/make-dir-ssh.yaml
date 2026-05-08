@@ -1,0 +1,17 @@
+---
+# tasks file for init-server-preparation
+- name: Get current directory
+  command:
+    cmd: pwd
+  delegate_to: localhost
+  register: cwd
+
+- set_fact:
+    ssh_key_location_path: "{{ cwd.stdout }}/{{ ssh_keys_dir }}"
+
+- name: Make dir for ssh-keys
+  file:
+    state: directory
+    path: "{{ ssh_key_location_path }}"
+  delegate_to: localhost
+  run_once: true

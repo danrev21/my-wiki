@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.ssh.insert_key = false
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+    
+  end
+
+  config.vm.define "node1" do |node|
+    node.vm.hostname = "node1"
+    node.vm.box = "ubuntu/jammy64"
+    node.vm.network :public_network, ip: "192.168.0.200", bridge: "wlo1" 
+    node.vm.synced_folder ".", "/home/vagrant/share",  #guest folder
+    owner: "vagrant", group: "vagrant"
+    node.vm.provision "shell", path: "editbashrc.sh"
+    node.vm.provision "shell", path: "docker-install.sh"
+  end
+
+end
+
+#   node.vm.network "public_network", ip: "192.168.0.31", bridge: "wlo1"
+#   owner: "www-data", group: "www-data"  
