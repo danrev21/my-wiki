@@ -14,5 +14,14 @@
       ],
       "key": "R"
     }
+  ],
+  "tars:assistant#DeepSeek": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "L"
+    }
   ]
 }
