@@ -15,15 +15,6 @@
       "key": "R"
     }
   ],
-  "tars:assistant#DeepSeek": [
-    {
-      "modifiers": [
-        "Mod",
-        "Shift"
-      ],
-      "key": "L"
-    }
-  ],
   "tars:newChat#NewChat": [
     {
       "modifiers": [
@@ -58,6 +49,15 @@
         "Shift"
       ],
       "key": "C"
+    }
+  ],
+  "tars:assistant#DeepSeek": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "D"
     }
   ]
 }
