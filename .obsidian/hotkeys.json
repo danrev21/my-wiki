@@ -33,15 +33,6 @@
       "key": "S"
     }
   ],
-  "tars:user#User": [
-    {
-      "modifiers": [
-        "Mod",
-        "Shift"
-      ],
-      "key": "U"
-    }
-  ],
   "tars:cancelGeneration": [
     {
       "modifiers": [
@@ -67,6 +58,15 @@
         "Shift"
       ],
       "key": "T"
+    }
+  ],
+  "tars:user#User": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "U"
     }
   ]
 }

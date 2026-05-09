@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Без названия.md",
+                "file": "здоровье/Снижение инсулинорезистентности.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Без названия"
+              "title": "Снижение инсулинорезистентности"
             }
           }
         ]
@@ -74,12 +74,11 @@
               "title": "Закладки"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 320.5
   },
   "right": {
     "id": "44acafdf6bf8a69e",
@@ -197,20 +196,23 @@
       "audio-recorder:Начать/остановить запись": false
     }
   },
-  "active": "1241dd7e90830387",
+  "active": "ec630a663275ec09",
   "lastOpenFiles": [
     "README.md",
-    "Без названия.md",
-    "здоровье",
+    "здоровье/Снижение инсулинорезистентности.md",
     "it-repo/networks/dns_names.txt",
     "it-repo/networks/close-ports-ubuntu.txt",
     "it-repo/networks/centos-interfaces.txt",
+    "травы.md",
+    "здоровье/Боярышник кроваво красный.md",
+    "it-repo/vim.txt",
+    "здоровье/9. Крапива_двудомная.md.md",
+    "здоровье",
     "it-repo/python/python_lessons_IT_station/python_lesson_logs/venv_log/lib/python3.10/site-packages/pip/_vendor/urllib3/packages/backports/__pycache__/makefile.cpython-310.pyc",
     "it-repo/python/python_lessons_IT_station/python_lesson_logs/venv_log/lib/python3.10/site-packages/pip/_vendor/urllib3/packages/backports/__pycache__/__init__.cpython-310.pyc",
     "it-repo/python/python_lessons_IT_station/python_lesson_logs/venv_log/lib/python3.10/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__/low_level.cpython-310.pyc",
     "it-repo/python/python_lessons_IT_station/python_lesson_logs/venv_log/lib/python3.10/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__/bindings.cpython-310.pyc",
     "it-repo/python/python_lessons_IT_station/python_lesson_logs/venv_log/lib/python3.10/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__/__init__.cpython-310.pyc",
-    "it-repo/python/python_lessons_IT_station/python_lesson_01/my_env_02/lib/python3.10/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__/low_level.cpython-310.pyc",
     "it-repo/ansible/ansible_IT_station/ansible_homework/last_homework/roles/install-nginx/README.md",
     "it-repo/ansible/ansible_IT_station/ansible_homework/last_homework/roles/init-server-preparation/README.md",
     "it-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_05/roles/init-server-preparation/README.md",
@@ -235,9 +237,6 @@
     "it-repo/python/python_lessons_IT_station/python_lesson_08/yaml.md",
     "it-repo/python/python_lessons_IT_station/python_lesson_08/requests.md",
     "it-repo/python/python_lessons_IT_station/python_lesson_08/json.md",
-    "it-repo/python/python_lessons_IT_station/python_lesson_06/tarfile.md",
-    "it-repo/python/python_lessons_IT_station/python_lesson_06/subprocess.md",
-    "it-repo/python/python_lessons_IT_station/python_lesson_06/hashlib.md",
     "it-repo/ftpd/ftp-mars/upload/125168.jpg",
     "it-repo/ftpd/ftp-mars/upload/1152660.jpg",
     "it-repo/ftpd/ftp-mars/foto/795666.jpg",
