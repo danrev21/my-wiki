@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "здоровье/Снижение инсулинорезистентности.md",
+                "file": "здоровье/Травы/Снижение инсулинорезистентности.md",
                 "mode": "source",
                 "source": false
               },
@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "очумелые ручки/Приготовление олифы (вареное льняное масло).md",
+                "file": "здоровье/Травы/ИР/Имбирь и корица.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Приготовление олифы (вареное льняное масло)"
+              "title": "Имбирь и корица"
             }
           }
         ],
@@ -211,17 +211,22 @@
       "audio-recorder:Начать/остановить запись": false
     }
   },
-  "active": "c5b79f5a333312b2",
+  "active": "be3cf4b98184f05f",
   "lastOpenFiles": [
-    "здоровье/ИР",
-    "очумелые ручки/Ремонт гитары акустической.md",
+    "здоровье/Травы/ИР/Куркума.md",
+    "здоровье/Травы/ИР/Имбирь и корица.md",
+    "здоровье/Травы/ИР/Гвоздика.md",
+    "здоровье/Травы/Угревая сыпь.md",
+    "здоровье/Травы",
     "очумелые ручки/Приготовление олифы (вареное льняное масло).md",
+    "здоровье/Травы/ИР",
+    "очумелые ручки/Ремонт гитары акустической.md",
     "очумелые ручки/Рецепт масло для дерева.md",
-    "здоровье/Семена расторопши.md",
+    "здоровье/Травы/Семена расторопши.md",
     "очумелые ручки",
-    "здоровье/Семена льна.md",
+    "здоровье/Травы/Семена льна.md",
     "сад/Ржавчина.md",
-    "здоровье/Снижение инсулинорезистентности.md",
+    "здоровье/Травы/Снижение инсулинорезистентности.md",
     "сад",
     "README.md",
     "it-repo/networks/dns_names.txt",
@@ -233,8 +238,6 @@
     "здоровье/9. Крапива_двудомная.md.md",
     "здоровье",
     "it-repo/python/python_lessons_IT_station/python_lesson_logs/venv_log/lib/python3.10/site-packages/pip/_vendor/urllib3/packages/backports/__pycache__/makefile.cpython-310.pyc",
-    "it-repo/python/python_lessons_IT_station/python_lesson_logs/venv_log/lib/python3.10/site-packages/pip/_vendor/urllib3/packages/backports/__pycache__/__init__.cpython-310.pyc",
-    "it-repo/python/python_lessons_IT_station/python_lesson_logs/venv_log/lib/python3.10/site-packages/pip/_vendor/urllib3/contrib/_securetransport/__pycache__/low_level.cpython-310.pyc",
     "it-repo/ansible/ansible_IT_station/ansible_homework/last_homework/roles/install-nginx/README.md",
     "it-repo/ansible/ansible_IT_station/ansible_homework/last_homework/roles/init-server-preparation/README.md",
     "it-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_05/roles/init-server-preparation/README.md",
@@ -246,9 +249,6 @@
     "it-repo/ansible/ansible_IT_station/ansible_lesson_05/roles/test3/README.md",
     "it-repo/ansible/ansible_IT_station/ansible_lesson_05/roles/test2/README.md",
     "it-repo/ansible/ansible_IT_station/ansible_lesson_05/roles/test1/README.md",
-    "it-repo/ansible/ansible_IT_station/ansible_lesson_05/roles/nginx/README.md",
-    "it-repo/python/python-lab1/home-tasks/devops_lab(clear)/README.md",
-    "it-repo/ansible/ansible_IT_station/examples/environment/path-explain.md",
     "it-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_03/Screenshot_hw_2.png",
     "it-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_02/Screenshot_hw_1.png",
     "it-repo/python/python-lab1/home-tasks/screenshot.png",
