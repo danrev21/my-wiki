@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "здоровье/Травы/ИР/Список средств по уменьшению ИР.md",
+                "file": "здоровье/Травы/ИР/Недельный рацион для уменшьения ИР.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Список средств по уменьшению ИР"
+              "title": "Недельный рацион для уменшьения ИР"
             }
           }
         ],
@@ -213,8 +213,10 @@
   },
   "active": "be3cf4b98184f05f",
   "lastOpenFiles": [
+    "здоровье/Травы/ИР/Список подробный средств по уменьшению ИР.md",
+    "здоровье/Травы/ИР/Недельный рацион для уменшьения ИР.md",
+    "здоровье/Травы/ИР/Список короткий средств по уменьшению ИР.md",
     "здоровье/Травы/ИР/Какао на молоке.md",
-    "здоровье/Травы/ИР/Список средств по уменьшению ИР.md",
     "здоровье/Травы/ИР/Пажитник, орехи, яблочный уксус, какао, пробиотики.md",
     "здоровье/Травы/ИР/Имбирь и корица.md",
     "здоровье/Травы/ИР/Куркума.md",
@@ -247,8 +249,6 @@
     "it-repo/docker/docker-theory-IT-station-lab/practice/projects/wordpress_certbot/README_short.md",
     "it-repo/docker/docker-theory-IT-station-lab/practice/projects/wordpress_certbot/README_full.md",
     "it-repo/docker/docker-theory-IT-station-lab/practice/projects/nginx_cerbot/readme.md",
-    "it-repo/docker/docker-theory-IT-station-lab/practice/projects/cms/readme.md",
-    "it-repo/docker/docker-theory-IT-station-lab/practice/projects/cloud/readme.md",
     "it-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_03/Screenshot_hw_2.png",
     "it-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_02/Screenshot_hw_1.png",
     "it-repo/python/python-lab1/home-tasks/screenshot.png",
