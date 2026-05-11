@@ -28,7 +28,7 @@
               "type": "markdown",
               "state": {
                 "file": "it-repo/networks/fail2ban.md",
-                "mode": "source",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
