@@ -211,8 +211,9 @@
       "audio-recorder:Начать/остановить запись": false
     }
   },
-  "active": "be3cf4b98184f05f",
+  "active": "c5b79f5a333312b2",
   "lastOpenFiles": [
+    "здоровье/ИР",
     "очумелые ручки/Ремонт гитары акустической.md",
     "очумелые ручки/Приготовление олифы (вареное льняное масло).md",
     "очумелые ручки/Рецепт масло для дерева.md",
@@ -248,7 +249,6 @@
     "it-repo/ansible/ansible_IT_station/ansible_lesson_05/roles/nginx/README.md",
     "it-repo/python/python-lab1/home-tasks/devops_lab(clear)/README.md",
     "it-repo/ansible/ansible_IT_station/examples/environment/path-explain.md",
-    "it-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_04/README.md",
     "it-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_03/Screenshot_hw_2.png",
     "it-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_02/Screenshot_hw_1.png",
     "it-repo/python/python-lab1/home-tasks/screenshot.png",
