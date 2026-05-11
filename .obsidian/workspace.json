@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "it-repo/nextcloud/nextcloud-openvpn-romnero.txt",
+                "file": "README.md",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "nextcloud-openvpn-romnero"
+              "title": "README"
             }
           }
         ],
@@ -213,6 +213,7 @@
   },
   "active": "be3cf4b98184f05f",
   "lastOpenFiles": [
+    "it-repo/nextcloud/nextcloud-openvpn-romnero.txt",
     "it-repo/networks/iptables.txt",
     "it-repo/networks/fail2ban.md",
     "it-repo/networks/ip-geolocation-block.txt",
