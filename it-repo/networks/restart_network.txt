@@ -1,5 +1,3 @@
-
-
  #For ubuntu server 18.04, this works :
 sudo systemctl restart systemd-networkd    <----- for 22.04
 

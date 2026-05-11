@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "it-repo/networks/fail2ban.md",
+                "file": "it-repo/nextcloud/nextcloud-openvpn-romnero.txt",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "fail2ban"
+              "title": "nextcloud-openvpn-romnero"
             }
           }
         ],
@@ -213,11 +213,15 @@
   },
   "active": "be3cf4b98184f05f",
   "lastOpenFiles": [
-    "it-repo/networks/dns_names.txt",
-    "it-repo/networks/fail2ban.md",
-    "it-repo/networks/hostname-change.txt",
-    "it-repo/networks/ip-geolocation-block.txt",
     "it-repo/networks/iptables.txt",
+    "it-repo/networks/fail2ban.md",
+    "it-repo/networks/ip-geolocation-block.txt",
+    "it-repo/networks/restart_network.txt",
+    "it-repo/networks/server-investigate.txt",
+    "it-repo/networks/tcpdump.txt",
+    "it-repo/ftpd/ftp-provision.sh",
+    "it-repo/networks/dns_names.txt",
+    "it-repo/networks/hostname-change.txt",
     "it-repo/networks/initial-setup-server.txt",
     "it-repo/networks/close-ports-ubuntu.txt",
     "Очумелые ручки/Массажер перевод на сеть 220.md",
@@ -232,16 +236,12 @@
     "Здоровье/Травы/ИР/Куркума.md",
     "Здоровье/Травы/ИР/Гвоздика.md",
     "Здоровье/Травы/Угревая сыпь.md",
-    "Здоровье/Травы",
     "Очумелые ручки/Приготовление олифы (вареное льняное масло).md",
-    "Здоровье/Травы/ИР",
     "Очумелые ручки/Ремонт гитары акустической.md",
     "Здоровье/Травы/Семена расторопши.md",
-    "Очумелые ручки",
     "Здоровье/Травы/Семена льна.md",
     "Сад/Ржавчина.md",
     "Здоровье/Травы/Снижение инсулинорезистентности.md",
-    "Сад",
     "README.md",
     "травы.md",
     "здоровье/Боярышник кроваво красный.md",
