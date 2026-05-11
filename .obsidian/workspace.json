@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "очумелые ручки/Рецепт масло для дерева.md",
+                "file": "очумелые ручки/Приготовление олифы (вареное льняное масло).md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Рецепт масло для дерева"
+              "title": "Приготовление олифы (вареное льняное масло)"
             }
           }
         ],
@@ -211,10 +211,12 @@
       "audio-recorder:Начать/остановить запись": false
     }
   },
-  "active": "c5b79f5a333312b2",
+  "active": "be3cf4b98184f05f",
   "lastOpenFiles": [
-    "здоровье/Семена расторопши.md",
+    "очумелые ручки/Ремонт гитары акустической.md",
+    "очумелые ручки/Приготовление олифы (вареное льняное масло).md",
     "очумелые ручки/Рецепт масло для дерева.md",
+    "здоровье/Семена расторопши.md",
     "очумелые ручки",
     "здоровье/Семена льна.md",
     "сад/Ржавчина.md",
@@ -248,9 +250,7 @@
     "it-repo/ansible/ansible_IT_station/examples/environment/path-explain.md",
     "it-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_04/README.md",
     "it-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_03/Screenshot_hw_2.png",
-    "it-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_03/README.md",
     "it-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_02/Screenshot_hw_1.png",
-    "it-repo/ansible/ansible_IT_station/ansible_homework/from_lesson_02/README.md",
     "it-repo/python/python-lab1/home-tasks/screenshot.png",
     "it-repo/python/python-lab1/home-tasks/Screenshot_1.png",
     "it-repo/ftpd/ftp-mars/upload/125168.jpg",
