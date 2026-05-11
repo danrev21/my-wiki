@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "сад/Ржавчина.md",
+                "file": "здоровье/Семена расторопши.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Ржавчина"
+              "title": "Семена расторопши"
             }
           }
         ],
@@ -211,8 +211,10 @@
       "audio-recorder:Начать/остановить запись": false
     }
   },
-  "active": "be3cf4b98184f05f",
+  "active": "c5b79f5a333312b2",
   "lastOpenFiles": [
+    "здоровье/Семена льна.md",
+    "здоровье/Семена расторопши.md",
     "сад/Ржавчина.md",
     "здоровье/Снижение инсулинорезистентности.md",
     "сад",
@@ -251,8 +253,6 @@
     "it-repo/python/python-lab1/home-tasks/screenshot.png",
     "it-repo/python/python-lab1/home-tasks/Screenshot_1.png",
     "it-repo/python/python_lessons_IT_station/python_lesson_08/yaml.md",
-    "it-repo/python/python_lessons_IT_station/python_lesson_08/requests.md",
-    "it-repo/python/python_lessons_IT_station/python_lesson_08/json.md",
     "it-repo/ftpd/ftp-mars/upload/125168.jpg",
     "it-repo/ftpd/ftp-mars/upload/1152660.jpg",
     "it-repo/ftpd/ftp-mars/foto/795666.jpg",
