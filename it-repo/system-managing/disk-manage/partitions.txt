@@ -1,5 +1,3 @@
-
-
 # List All Block Devices:
 lsblk
 

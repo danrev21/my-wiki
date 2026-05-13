@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Очумелые ручки/Массажер перевод на сеть 220.md",
+                "file": "it-repo/system-managing/disk-manage/partitions.txt",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Массажер перевод на сеть 220"
+              "title": "partitions"
             }
           }
         ],
@@ -213,10 +213,14 @@
   },
   "active": "be3cf4b98184f05f",
   "lastOpenFiles": [
+    "it-repo/system-managing/disk-manage/mnt.txt",
+    "it-repo/system-managing/disk-manage/partitions.txt",
+    "it-repo/system-managing/disk-manage/lvm-extend.txt",
+    "it-repo/system-managing/disk-manage/lvm.txt",
+    "Очумелые ручки/Массажер перевод на сеть 220.md",
     "Очумелые ручки/Рецепт масло для дерева.md",
     "Очумелые ручки/Ремонт гитары акустической.md",
     "Очумелые ручки/Приготовление олифы (вареное льняное масло).md",
-    "Очумелые ручки/Массажер перевод на сеть 220.md",
     "README.md",
     "it-repo/nextcloud/nextcloud-openvpn-romnero.txt",
     "it-repo/networks/iptables.txt",
@@ -226,9 +230,6 @@
     "it-repo/networks/server-investigate.txt",
     "it-repo/networks/tcpdump.txt",
     "it-repo/ftpd/ftp-provision.sh",
-    "it-repo/networks/dns_names.txt",
-    "it-repo/networks/hostname-change.txt",
-    "it-repo/networks/initial-setup-server.txt",
     "Здоровье/Травы/ИР/Сравнение пажитник и расторопша.md",
     "Здоровье/Травы/ИР/Список подробный средств по уменьшению ИР.md",
     "Здоровье/Травы/ИР/Недельный рацион для уменшьения ИР.md",
