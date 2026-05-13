@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "it-repo/system-managing/disk-manage/mnt.txt",
+                "file": "it-repo/system-managing/disk-manage/partitions.txt",
                 "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "mnt"
+              "title": "partitions"
             }
           }
         ],
@@ -213,9 +213,9 @@
   },
   "active": "be3cf4b98184f05f",
   "lastOpenFiles": [
+    "it-repo/system-managing/disk-manage/mnt.txt",
     "it-repo/system-managing/disk-manage/lvm-extend.txt",
     "it-repo/system-managing/disk-manage/partitions.txt",
-    "it-repo/system-managing/disk-manage/mnt.txt",
     "it-repo/system-managing/disk-manage/lvm.txt",
     "Очумелые ручки/Массажер перевод на сеть 220.md",
     "Очумелые ручки/Рецепт масло для дерева.md",
